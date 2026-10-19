@@ -1,5 +1,35 @@
 [
   {
+    "version": "1.1.0-dev.26",
+    "date": "2026-10-20",
+    "summary": {
+      "id": "Sidebar tanpa blok profil; nama & peran pindah ke tooltip foto header.",
+      "en": "Sidebar without the profile block; name & role move to the header photo tooltip."
+    },
+    "entries": [
+      {
+        "id": "dev26-sidebar-profile",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Sidebar",
+            "en": "Sidebar"
+          }
+        },
+        "title": {
+          "id": "Blok “Halo, nama” di sidebar dihapus",
+          "en": "Sidebar “Hello, name” block removed"
+        },
+        "detail": {
+          "id": "Memberi ruang untuk menu. Nama dan peran (Super Admin, Admin, atau Label · paket) tampil saat kursor diarahkan ke foto di header.",
+          "en": "Frees room for the menu. Name and role show when hovering the header photo."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.25",
     "date": "2026-10-19",
     "summary": {

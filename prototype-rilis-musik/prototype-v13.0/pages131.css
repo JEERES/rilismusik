@@ -679,3 +679,7 @@ html:root body.release124.release124 .masthead124 .hero134 .hero-insight122 stro
 #main .d134 .mt134:hover{background:color-mix(in srgb,var(--surface) 60%,transparent)!important}
 #main .d134 .mt134.on{background:var(--surface)!important;box-shadow:0 1px 2px #0000000f,0 6px 16px -10px #00000040,inset 0 0 0 1px color-mix(in srgb,var(--text) 6%,transparent)!important}
 #main .d134 .mt134 .pr{flex-direction:column;align-items:flex-start;gap:6px;flex-wrap:nowrap}
+
+/* dev.26 — blok "Halo, nama · peran" di bawah sidebar dihapus (permintaan pemilik): ruang untuk menu.
+   Nama & peran pindah ke tooltip foto di header. */
+html body .side-person{display:none!important}
