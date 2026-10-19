@@ -122,7 +122,8 @@ def make_get_current_user(db):
         user = await db.users.find_one({"id": payload["sub"]}, {"_id": 0, "password_hash": 0})
         if not user:
             raise HTTPException(status_code=401, detail="User tidak ditemukan")
-        if user.get("status") in {"suspended", "disabled"}:
+        # A merged account was archived into another one; its old sessions end.
+        if user.get("status") in {"suspended", "disabled", "merged"}:
             raise HTTPException(status_code=403, detail="Akun tidak aktif")
         # SEC-003: enforce token_version — bumped on password reset to invalidate
         # all previously-issued access/refresh tokens.

@@ -79,7 +79,10 @@ export function formatApiError(detail) {
 }
 
 export function fileUrl(path) {
-  if (!path) return null;
-  if (path.startsWith("http")) return path;
+  if (typeof path !== "string" || !path) return null;
+  if (/^https?:\/\//i.test(path)) return path;
+  // Stored file links come partly from label input: only same-site paths are
+  // rendered, so javascript:, data: or //other-host values never reach an href/src.
+  if (!path.startsWith("/") || path.startsWith("//")) return null;
   return IS_BROWSER ? path : `${BACKEND_URL}${path}`;
 }

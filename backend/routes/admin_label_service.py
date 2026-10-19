@@ -11,7 +11,7 @@ from fastapi import HTTPException
 from auth_utils import hash_password
 from email_service import h, send_email
 from models import LabelStatusUpdate, new_id, now_iso
-from .deps import db, logger, log_activity
+from .deps import db, end_label_sessions, logger, log_activity
 from .admin_permission_service import assert_admin_permission, has_permission
 from .royalty_recalculation import run_label_recalculation_job
 
@@ -114,10 +114,15 @@ async def update_label(label_id: str, body: LabelStatusUpdate, user: dict) -> di
     update: Dict[str, Any] = {}
     # Validate package access before royalty jobs/history or any other writes.
     subscription_update = _subscription_update(body, label, user)
-    if body.account_status is not None:
+    blacklisting = False
+    if body.account_status is not None and body.account_status != label.get("account_status"):
+        # Entering or leaving the blacklist is the labels.blacklist decision
+        # (or its request → Super Admin approval flow), not a plain label edit.
+        if "blacklisted" in (body.account_status, label.get("account_status")) and not has_permission(user, "labels.blacklist"):
+            raise HTTPException(status_code=403, detail="Blacklist hanya lewat izin Blacklist Langsung atau pengajuan blacklist")
         update["account_status"] = body.account_status
-        if body.account_status == "blacklisted":
-            update["blacklisted"] = True
+        update["blacklisted"] = body.account_status == "blacklisted"
+        blacklisting = update["blacklisted"]
     royalty_update, job_id = await _queue_royalty_change(
         label_id=label_id, label=label, body=body, user=user,
     )
@@ -130,6 +135,8 @@ async def update_label(label_id: str, body: LabelStatusUpdate, user: dict) -> di
             operation["$inc"] = {"package_revision": 1}
         await db.labels.update_one({"id": label_id}, operation)
         await log_activity(user["id"], "update_label", "label", label_id, before=label, after=update)
+    if blacklisting:
+        await end_label_sessions(label_id)
     if job_id:
         await run_background(run_label_recalculation_job,
             job_id=job_id, label_id=label_id,

@@ -20,6 +20,7 @@ from .deps import (
     LABEL_ROLE, ARTIST_ROLE, ADMIN_ROLES, SUPER_ADMIN,
 )
 from .admin_permission_service import assert_can_grant
+from .deps import end_label_sessions
 from models import (
     RegisterLabelIn, LoginIn, ForgotPasswordIn, ResetPasswordIn, VerifyEmailIn,
     LabelProfileUpdate, BankAccountIn, BankAccountChangeRequestIn, BankAccountChangeActionIn,
@@ -1004,6 +1005,7 @@ async def admin_blacklist_label(label_id: str, body: BlacklistIn, user: dict = D
         "blacklist_reason": body.reason, "blacklisted_at": now_iso(),
         "blacklisted_by": user["id"], "updated_at": now_iso(),
     }})
+    await end_label_sessions(label_id)
     await log_activity(user["id"], "blacklist_label", "label", label_id, after={"reason": body.reason})
     return {"ok": True}
 

@@ -120,6 +120,15 @@ async def get_labels_for_user(user: dict) -> list:
     return await db.labels.find({"user_id": user["id"]}, {"_id": 0}).sort("created_at", 1).to_list(200)
 
 
+async def end_label_sessions(label_id: str) -> None:
+    """Log out the account behind a label right away (e.g. on blacklist): bumping
+    token_version voids every access and refresh token already issued, and the
+    next login is refused by the blacklist check."""
+    label = await db.labels.find_one({"id": label_id}, {"_id": 0, "user_id": 1})
+    if label and label.get("user_id"):
+        await db.users.update_one({"id": label["user_id"]}, {"$inc": {"token_version": 1}})
+
+
 def _account_authority(labels: list, user: dict) -> dict:
     """The label that holds the account entitlement (Multi Label tier), else the
     primary/first label. Used to resolve account-level benefits."""

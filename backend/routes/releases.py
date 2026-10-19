@@ -244,6 +244,19 @@ async def download_copyright_letter(release_id: str, user: dict = Depends(requir
     )
 
 
+_LABEL_AUDIO_URL = re.compile(r"/api/files/audio/[A-Za-z0-9-]+\.wav")
+
+
+async def _owned_audio_url(value: Optional[str], label_id: str) -> Optional[str]:
+    """Audio URLs are written by the upload endpoint; a value sent by the client
+    is only kept when it is one of this label's own uploaded WAVs, so a track
+    can never point at (and later delete) someone else's storage object."""
+    if not value or not _LABEL_AUDIO_URL.fullmatch(value):
+        return None
+    owner = await db.tracks.find_one({"audio_url": value, "label_id": label_id}, {"_id": 0, "id": 1})
+    return value if owner else None
+
+
 @release_r.post("/draft")
 async def create_release_draft(body: ReleaseDraftIn, user: dict = Depends(require_label)):
     label = await get_label_by_user(user)
@@ -315,7 +328,7 @@ async def create_release_draft(body: ReleaseDraftIn, user: dict = Depends(requir
             "genre": t.genre,
             "language": t.language,
             "explicit": t.explicit,
-            "audio_url": t.audio_url,
+            "audio_url": await _owned_audio_url(t.audio_url, label["id"]),
             "isrc": t.isrc,
             "preview_start_seconds": t.preview_start_seconds,
             "title_language": t.title_language,
@@ -405,7 +418,7 @@ async def update_release(release_id: str, body: ReleaseDraftIn, user: dict = Dep
             "genre": t.genre,
             "language": t.language,
             "explicit": t.explicit,
-            "audio_url": t.audio_url or (existing or {}).get("audio_url"),
+            "audio_url": (existing or {}).get("audio_url") or await _owned_audio_url(t.audio_url, label["id"]),
             "audio_filename": (existing or {}).get("audio_filename"),
             "audio_sample_rate": (existing or {}).get("audio_sample_rate"),
             "isrc": t.isrc or (existing or {}).get("isrc"),

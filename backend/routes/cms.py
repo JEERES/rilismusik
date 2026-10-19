@@ -16,6 +16,7 @@ from .deps import (
     LABEL_ROLE, ARTIST_ROLE, ADMIN_ROLES, SUPER_ADMIN,
 assert_admin_permission,
 )
+from .admin_permission_service import is_admin_identity
 from models import (
     RegisterLabelIn, LoginIn, ForgotPasswordIn, ResetPasswordIn, VerifyEmailIn,
     LabelProfileUpdate, BankAccountIn,
@@ -49,11 +50,28 @@ from withdraw_utils import withdraw_window_state, jakarta_now, MIN_WITHDRAW_IDR
 cms_r = APIRouter(prefix="/cms", tags=["cms"])
 
 
+# The company's signature and stamp are used server-side for generated
+# documents only; they are never part of the public landing payload.
+_PRIVATE_DOCUMENT_FIELDS = ("signature_url", "stamp_url")
+
+
+async def _is_admin_request(request: Request) -> bool:
+    try:
+        return is_admin_identity(await get_current_user(request))
+    except HTTPException:
+        return False
+
+
 @cms_r.get("/landing")
-async def get_landing(user: Optional[dict] = None):
-    """Public endpoint — returns all landing page settings as key/value map."""
+async def get_landing(request: Request):
+    """Public endpoint — returns all landing page settings as key/value map
+    (admins also receive the private document assets for the CMS editor)."""
     settings = await db.landing_settings.find({}, {"_id": 0}).to_list(500)
     result = {s["key"]: s["value"] for s in settings}
+    documents = result.get("documents")
+    if isinstance(documents, dict) and any(documents.get(k) for k in _PRIVATE_DOCUMENT_FIELDS):
+        if not await _is_admin_request(request):
+            result["documents"] = {k: v for k, v in documents.items() if k not in _PRIVATE_DOCUMENT_FIELDS}
     return result
 
 

@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 from typing import Literal
 
 from models import new_id, now_iso
-from .deps import db, log_activity, notify, notify_many, require_admin
+from .deps import db, end_label_sessions, log_activity, notify, notify_many, require_admin
 from .admin_permission_service import assert_admin_permission, has_permission
 from .label_package_service import LabelPackageUpdate, change_label_package
 from .admin_label_service import apply_label_email_change, prepare_label_email_change
@@ -180,6 +180,7 @@ async def _apply_blacklist(*, label: dict, payload: dict, actor: dict) -> None:
             "blacklist_reason": payload.get("reason"), "blacklisted_at": now_iso(),
             "blacklisted_by": actor["id"], "updated_at": now_iso(),
         }})
+        await end_label_sessions(label_id)
         await log_activity(actor["id"], "blacklist_label", "label", label_id, after={"reason": payload.get("reason")})
     else:
         await db.labels.update_one({"id": label_id}, {"$set": {

@@ -16,12 +16,13 @@ from .admin_permission_service import is_admin_identity
 AUTHENTICATED_PREFIXES = (
     "contract/", "copyright/", "csv/", "csv-repair/", "csv-replacements/",
     "background-inputs/", "direct-uploads/", "remix-permission/",
-    "addon-delivery/", "chat/", "audio/", "ticket/",
+    "addon-delivery/", "chat/", "audio/", "ticket/", "cms/signatures/",
 )
 
 # Admin-only prefixes — no member-side ownership rule exists for these.
+# cms/signatures/ holds the company signature and stamp.
 _ADMIN_ONLY_PREFIXES = ("csv/", "csv-repair/", "csv-replacements/",
-                        "background-inputs/", "direct-uploads/")
+                        "background-inputs/", "direct-uploads/", "cms/signatures/")
 
 
 def _file_ref(path: str) -> str:

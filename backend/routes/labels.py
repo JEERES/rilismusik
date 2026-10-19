@@ -40,7 +40,7 @@ from auth_utils import (
 from royalty_utils import (
     parse_csv_bytes, detect_columns, parse_amount, normalize_header,
     parse_period_from_value, calculate_line, label_percentage_at,
-    strip_sensitive,
+    strip_sensitive, label_name_key,
 )
 from withdraw_utils import withdraw_window_state, jakarta_now, MIN_WITHDRAW_IDR
 from .bank_change_service import create_bank_change_request, review_bank_change_request
@@ -124,6 +124,9 @@ async def set_active_label(body: ActiveLabelIn, user: dict = Depends(require_lab
 async def label_update(body: LabelProfileUpdate, user: dict = Depends(require_label)):
     label = await get_label_by_user(user)
     upd = {k: v for k, v in body.model_dump(exclude_none=True).items()}
+    if "label_name" in upd and label_name_key(upd["label_name"]) != label_name_key(label.get("label_name")):
+        from .label_name_guard import assert_label_name_available
+        await assert_label_name_available(upd["label_name"], exclude_label_id=label["id"])
     upd["updated_at"] = now_iso()
     identity_fields = {"label_name", "pic_name", "whatsapp", "address", "city"}
     identity_changed = any(

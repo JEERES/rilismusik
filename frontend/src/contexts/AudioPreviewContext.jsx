@@ -9,7 +9,9 @@ import "@/styles/audio-player.css";
 const Context = createContext(null);
 const timeLabel = (seconds) => Number.isFinite(seconds) ? `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, "0")}` : "0:00";
 export const trackDownloadUrl = (track) => {
-  const url = new URL(fileUrl(track.audio_url), window.location.origin);
+  const source = fileUrl(track.audio_url);
+  if (!source) return undefined;
+  const url = new URL(source, window.location.origin);
   url.searchParams.set("download", track.audio_filename || `${track.track_title || "audio"}.wav`);
   return url.toString();
 };

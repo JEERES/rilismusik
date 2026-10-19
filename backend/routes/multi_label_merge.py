@@ -262,7 +262,7 @@ async def merge_commit(body: MergeIn, user: dict = Depends(require_admin)):
             await db.users.update_many({"id": {"$in": old_ids}}, {"$set": {
                 "status": "merged", "merged_into_user_id": body.primary_user_id,
                 "merged_at": now, "merged_by": user["id"], "updated_at": now,
-            }})
+            }, "$inc": {"token_version": 1}})
         # 6) Complete.
         after = {"authority_label_id": authority["id"], "payout_bank_account_id": payout_bank_id,
                  "archived_user_ids": old_ids, "combined_balance_idr": preview["combined_balance_idr"]}

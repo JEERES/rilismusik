@@ -95,6 +95,10 @@ async def register(body: RegisterLabelIn, response: Response, request: Request):
             status_code=400,
             detail="Nama label lama wajib diisi jika Anda mencentang 'Saya sudah punya data lama'.",
         )
+    if not body.claim_existing:
+        # A claim names the legacy label on purpose; a new label must not.
+        from .label_name_guard import assert_label_name_available
+        await assert_label_name_available(body.label_name)
 
     user_id = new_id()
     user_doc = {
@@ -430,7 +434,7 @@ async def refresh(request: Request, response: Response):
     user = await db.users.find_one({"id": payload["sub"]})
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    if user.get("status") in {"suspended", "disabled"}:
+    if user.get("status") in {"suspended", "disabled", "merged"}:
         raise HTTPException(status_code=403, detail="Akun tidak aktif")
     token_version = int(user.get("token_version") or 0)
     if int(payload.get("tv") or 0) != token_version:

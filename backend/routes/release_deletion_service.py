@@ -20,7 +20,7 @@ async def delete_release_record(release_id: str, actor_id: str, *, label_id: str
     if release.get("status") not in ("draft", "rejected"):
         raise HTTPException(status_code=400, detail="Hanya rilisan berstatus draft atau ditolak yang dapat dihapus")
 
-    tracks = await db.tracks.find({"release_id": release_id}, {"_id": 0, "audio_url": 1}).to_list(None)
+    tracks = await db.tracks.find({"release_id": release_id}, {"_id": 0, "id": 1, "audio_url": 1}).to_list(None)
     # Re-check status and ownership in the atomic delete, before touching any files.
     result = await db.releases.delete_one({
         "id": release_id, "status": release["status"], "label_id": release.get("label_id"),
@@ -42,12 +42,16 @@ async def delete_release_record(release_id: str, actor_id: str, *, label_id: str
         "status": release["status"], "title": release.get("release_title"), "label_id": release.get("label_id"),
     })
 
+    # Only this release's own storage objects may be removed: its cover
+    # (cover/<release_id>.<ext>) and its tracks' WAVs (audio/<track_id>.wav).
+    # A stored URL pointing anywhere else is left alone, whoever wrote it.
+    audio_keys = {f"audio/{track['id']}.wav" for track in tracks if track.get("id")}
     urls = {release.get("cover_url"), *(track.get("audio_url") for track in tracks)}
     for url in urls:
         if not isinstance(url, str) or not url.startswith("/api/files/"):
             continue
         key = url.removeprefix("/api/files/")
-        if not key:
+        if ".." in key or not (key in audio_keys or key.startswith(f"cover/{release_id}.")):
             continue
         # Legacy releases may reference a shared file; never remove another release's asset.
         shared_cover = await db.releases.find_one({"cover_url": url}, {"_id": 0, "id": 1})

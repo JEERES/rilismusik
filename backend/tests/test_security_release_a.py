@@ -13,8 +13,12 @@ from mongomock_motor import AsyncMongoMockClient
 from auth_utils import hash_password, verify_password
 import server
 import storage_service
-from models import AdminRoleCreateIn, AdminRoleUpdateIn, AdminUserCreateIn
-from routes import admin, admin_access, deps, file_access, migrate, royalty, seed
+import auth_utils
+from models import AdminRoleCreateIn, AdminRoleUpdateIn, AdminUserCreateIn, LabelStatusUpdate
+from routes import (
+    admin, admin_access, admin_label_service, cms, deps, file_access, label_name_guard, migrate,
+    release_deletion_service, releases, royalty, seed,
+)
 
 SUPER = {"id": "super", "role": "super_admin", "is_admin": True, "admin_role_active": True, "permissions": [], "name": "Super"}
 STAFF_EMAILS = {"support1@rilismusik.com", "finance1@rilismusik.com", "release1@rilismusik.com",
@@ -303,6 +307,87 @@ class AdminTakeoverTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["admin_role_id"], "r-finance")
         role = await admin_access.update_role("r-viewer", AdminRoleUpdateIn(permissions=["withdraw.pay"]), user=SUPER)
         self.assertEqual(role["permissions"], ["withdraw.pay"])
+
+
+LABEL_MANAGER = {"id": "lm", "role": "admin_custom", "admin_role_id": "r-lm", "is_admin": True,
+                 "admin_role_active": True, "permissions": ["labels.view", "labels.manage"]}
+
+
+class LabelAbuseTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.db = AsyncMongoMockClient().test
+        self.storage_delete = AsyncMock()
+        self.patches = [patch.object(module, "db", self.db) for module in (
+            deps, releases, release_deletion_service, label_name_guard, admin_label_service, cms)]
+        self.patches += [patch.object(release_deletion_service.storage_service, "delete_object", self.storage_delete),
+                         patch.object(release_deletion_service, "log_activity", new_callable=AsyncMock),
+                         patch.object(admin_label_service, "log_activity", new_callable=AsyncMock)]
+        for item in self.patches:
+            item.start()
+        self.addCleanup(lambda: [item.stop() for item in reversed(self.patches)])
+        await self.db.users.insert_many([{"id": "u1", "role": "label", "status": "active", "token_version": 0},
+                                         {"id": "u2", "role": "label", "status": "active", "token_version": 0}])
+        await self.db.labels.insert_many([
+            {"id": "lab-1", "user_id": "u1", "label_name": "Senja Records", "account_status": "active"},
+            {"id": "lab-2", "user_id": "u2", "label_name": "Utara Music", "account_status": "active",
+             "label_name_aliases": [{"name": "Utara Lama"}]},
+        ])
+        await self.db.tracks.insert_one({"id": "victim", "release_id": "r-victim", "label_id": "lab-2",
+                                         "audio_url": "/api/files/audio/victim.wav"})
+
+    async def test_deleting_a_draft_only_removes_its_own_files(self):
+        await self.db.releases.insert_one({"id": "r1", "label_id": "lab-1", "status": "draft", "cover_url": "/api/files/cover/r1.jpg"})
+        await self.db.tracks.insert_many([
+            {"id": "t1", "release_id": "r1", "label_id": "lab-1", "audio_url": "/api/files/audio/t1.wav"},
+            {"id": "t2", "release_id": "r1", "label_id": "lab-1", "audio_url": "/api/files/contract/c-other.pdf"},
+        ])
+        await release_deletion_service.delete_release_record("r1", "u1", label_id="lab-1")
+        deleted = {call.kwargs["key"] for call in self.storage_delete.await_args_list}
+        self.assertEqual(deleted, {"cover/r1.jpg", "audio/t1.wav"})
+
+    async def test_client_audio_url_kept_only_for_own_uploads(self):
+        await self.db.tracks.insert_one({"id": "mine", "release_id": "r0", "label_id": "lab-1", "audio_url": "/api/files/audio/mine.wav"})
+        self.assertEqual(await releases._owned_audio_url("/api/files/audio/mine.wav", "lab-1"), "/api/files/audio/mine.wav")
+        for value in ("/api/files/audio/victim.wav", "javascript:alert(1)", "/api/files/contract/x.pdf", "/api/files/audio/../x.wav"):
+            self.assertIsNone(await releases._owned_audio_url(value, "lab-1"), value)
+
+    async def test_label_cannot_take_another_labels_name(self):
+        for name in ("utara  music", " UTARA MUSIC ", "Utara Lama"):
+            with self.assertRaises(HTTPException) as ctx:
+                await label_name_guard.assert_label_name_available(name, exclude_label_id="lab-1")
+            self.assertEqual(ctx.exception.status_code, 409, name)
+        await label_name_guard.assert_label_name_available("Senja Records", exclude_label_id="lab-1")
+        await label_name_guard.assert_label_name_available("Senja Baru")
+
+    async def test_blacklist_through_label_edit_needs_blacklist_permission_and_ends_sessions(self):
+        with self.assertRaises(HTTPException) as ctx:
+            await admin_label_service.update_label("lab-1", LabelStatusUpdate(account_status="blacklisted"), LABEL_MANAGER)
+        self.assertEqual(ctx.exception.status_code, 403)
+        await admin_label_service.update_label("lab-1", LabelStatusUpdate(account_status="blacklisted"), SUPER)
+        self.assertEqual((await self.db.users.find_one({"id": "u1"}))["token_version"], 1)
+        self.assertTrue((await self.db.labels.find_one({"id": "lab-1"}))["blacklisted"])
+
+    async def test_old_session_of_merged_account_is_refused(self):
+        get_user = auth_utils.make_get_current_user(self.db)
+        token = auth_utils.create_access_token("u2", "u2@test.dev", "label", 0)
+        request = type("Req", (), {"headers": {"Authorization": f"Bearer {token}"}, "cookies": {}})()
+        await self.db.users.update_one({"id": "u2"}, {"$set": {"status": "merged"}})
+        with self.assertRaises(HTTPException) as ctx:
+            await get_user(request)
+        self.assertEqual(ctx.exception.status_code, 403)
+
+    async def test_signature_and_stamp_are_not_public(self):
+        await self.db.landing_settings.insert_one({"key": "documents", "value": {
+            "signature_url": "/api/files/cms/signatures/s.png", "stamp_url": "/api/files/cms/signatures/t.png",
+            "responsible_person_name": "Jeck"}})
+        with patch.object(cms, "get_current_user", AsyncMock(side_effect=HTTPException(status_code=401))):
+            public = await cms.get_landing(request=None)
+        self.assertEqual(public["documents"], {"responsible_person_name": "Jeck"})
+        with patch.object(cms, "get_current_user", AsyncMock(return_value=SUPER)):
+            private = await cms.get_landing(request=None)
+        self.assertIn("signature_url", private["documents"])
+        self.assertFalse(await file_access.authorize_file_path("cms/signatures/s.png", {"id": "u1", "role": "label"}))
+        self.assertTrue("cms/signatures/s.png".startswith(file_access.AUTHENTICATED_PREFIXES))
 
 
 if __name__ == "__main__":
