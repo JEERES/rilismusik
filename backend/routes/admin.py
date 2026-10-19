@@ -19,6 +19,7 @@ from .deps import (
     log_activity, notify, notify_many, admin_user_ids, label_user_ids,
     LABEL_ROLE, ARTIST_ROLE, ADMIN_ROLES, SUPER_ADMIN,
 )
+from .admin_permission_service import assert_can_grant
 from models import (
     RegisterLabelIn, LoginIn, ForgotPasswordIn, ResetPasswordIn, VerifyEmailIn,
     LabelProfileUpdate, BankAccountIn, BankAccountChangeRequestIn, BankAccountChangeActionIn,
@@ -614,6 +615,9 @@ async def _resolve_admin_role(role_ref: Optional[str], actor: dict) -> Dict[str,
         raise HTTPException(status_code=400, detail="Role admin tidak valid atau sedang nonaktif")
     if role.get("key") == SUPER_ADMIN and actor.get("role") != SUPER_ADMIN:
         raise HTTPException(status_code=403, detail="Hanya Super Admin yang dapat menetapkan role Super Admin")
+    # Creating or re-assigning an account with a stronger role than one's own
+    # would be a way around the role editor's grant limits.
+    assert_can_grant(actor, role.get("permissions") or [])
     return {"role": role.get("key") if role.get("builtin") else "admin_custom", "admin_role_id": role["id"], "role_name": role.get("name")}
 
 
@@ -625,6 +629,8 @@ async def admin_create_admin_user(body: AdminUserCreateIn, user: dict = Depends(
     existing = await db.users.find_one({"email": email}, {"_id": 0})
     if existing and not ((existing.get("role") in ADMIN_ROLES or existing.get("admin_role_id")) and existing.get("status") == "disabled"):
         raise HTTPException(status_code=409, detail="Email sudah terdaftar")
+    if existing and existing.get("role") == SUPER_ADMIN and user.get("role") != SUPER_ADMIN:
+        raise HTTPException(status_code=403, detail="Hanya Super Admin yang dapat memulihkan akun Super Admin")
     if existing:
         await db.users.update_one({"id": existing["id"]}, {
             "$set": {
@@ -661,10 +667,17 @@ async def admin_update_admin_user(user_id: str, body: Dict[str, Any], user: dict
     target = await db.users.find_one({"id": user_id})
     if not target or not (target.get("role") in ADMIN_ROLES or target.get("admin_role_id")):
         raise HTTPException(status_code=404, detail="Admin user tidak ditemukan")
+    acting_super = user.get("role") == SUPER_ADMIN
+    # A Super Admin account (password, status, role, name) can only be changed
+    # by a Super Admin; otherwise staff with access.users.manage could take it over.
+    if target.get("role") == SUPER_ADMIN and not acting_super:
+        raise HTTPException(status_code=403, detail="Hanya Super Admin yang dapat mengubah akun Super Admin")
     upd = {}
     if user_id == user["id"] and body.get("status") == "suspended":
         raise HTTPException(status_code=400, detail="Anda tidak dapat menangguhkan akun sendiri")
     requested_role = body.get("admin_role_id") or body.get("role")
+    if requested_role and user_id == user["id"] and not acting_super:
+        raise HTTPException(status_code=403, detail="Anda tidak dapat mengubah role Anda sendiri")
     role_assignment = await _resolve_admin_role(requested_role, user) if requested_role else None
     if target.get("role") == SUPER_ADMIN and role_assignment and role_assignment.get("role") != SUPER_ADMIN:
         active_supers = await db.users.count_documents({"role": SUPER_ADMIN, "status": {"$nin": ["disabled", "suspended"]}})
@@ -696,6 +709,8 @@ async def admin_delete_admin_user(user_id: str, permanent: bool = False, user: d
     is_admin_account = target and (target.get("role") in ADMIN_ROLES or target.get("admin_role_id"))
     if not target or not is_admin_account or (not permanent and target.get("status") == "disabled"):
         raise HTTPException(status_code=404, detail="Admin user tidak ditemukan")
+    if target.get("role") == SUPER_ADMIN and user.get("role") != SUPER_ADMIN:
+        raise HTTPException(status_code=403, detail="Hanya Super Admin yang dapat menghapus akun Super Admin")
     if target.get("role") == SUPER_ADMIN:
         active_supers = await db.users.count_documents({"role": SUPER_ADMIN, "status": {"$nin": ["disabled", "suspended"]}})
         if active_supers <= 1:
@@ -734,6 +749,8 @@ async def admin_bulk_purge_admin_users(body: BulkPurgeIn, user: dict = Depends(r
         if not target or not (target.get("role") in ADMIN_ROLES or target.get("admin_role_id")):
             skipped.append(uid); continue
         if target.get("role") == SUPER_ADMIN:
+            if user.get("role") != SUPER_ADMIN:
+                skipped.append(uid); continue
             active_supers = await db.users.count_documents({"role": SUPER_ADMIN, "status": {"$nin": ["disabled", "suspended"]}})
             if active_supers <= 1:
                 skipped.append(uid); continue

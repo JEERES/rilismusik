@@ -13,7 +13,8 @@ from mongomock_motor import AsyncMongoMockClient
 from auth_utils import hash_password, verify_password
 import server
 import storage_service
-from routes import deps, file_access, migrate, royalty, seed
+from models import AdminRoleCreateIn, AdminRoleUpdateIn, AdminUserCreateIn
+from routes import admin, admin_access, deps, file_access, migrate, royalty, seed
 
 SUPER = {"id": "super", "role": "super_admin", "is_admin": True, "admin_role_active": True, "permissions": [], "name": "Super"}
 STAFF_EMAILS = {"support1@rilismusik.com", "finance1@rilismusik.com", "release1@rilismusik.com",
@@ -241,6 +242,67 @@ class FileAccessTests(unittest.IsolatedAsyncioTestCase):
         self.user = OTHER_USER
         with self.assertRaises(HTTPException):
             await self.fetch("cover/../contract/c1.pdf")
+
+
+USER_MANAGER = {"id": "staff", "role": "admin_custom", "admin_role_id": "r-manager", "is_admin": True,
+                "admin_role_active": True, "name": "Staf",
+                "permissions": ["access.users.manage", "access.roles.manage", "labels.view", "withdraw.view"]}
+
+
+class AdminTakeoverTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.db = AsyncMongoMockClient().test
+        self.patches = [patch.object(admin, "db", self.db), patch.object(admin_access, "db", self.db),
+                        patch.object(admin, "log_activity", new_callable=AsyncMock),
+                        patch.object(admin_access, "log_activity", new_callable=AsyncMock)]
+        for item in self.patches:
+            item.start()
+        self.addCleanup(lambda: [item.stop() for item in reversed(self.patches)])
+        await self.db.users.insert_many([
+            {"id": "super", "role": "super_admin", "email": "sa@test.dev", "status": "active", "password_hash": "x"},
+            {"id": "staff", "role": "admin_custom", "admin_role_id": "r-manager", "email": "st@test.dev", "status": "active"},
+            {"id": "peer", "role": "admin_custom", "admin_role_id": "r-viewer", "email": "peer@test.dev", "status": "active"},
+        ])
+        await self.db.admin_roles.insert_many([
+            {"id": "super_admin", "key": "super_admin", "system": True, "builtin": True, "name": "Super Admin", "permissions": []},
+            {"id": "r-manager", "key": "custom_manager", "name": "Manajer", "permissions": USER_MANAGER["permissions"]},
+            {"id": "r-viewer", "key": "custom_viewer", "name": "Pelihat", "permissions": ["labels.view"]},
+            {"id": "r-finance", "key": "custom_finance", "name": "Keuangan", "permissions": ["withdraw.view", "withdraw.pay"]},
+        ])
+
+    async def assert_forbidden(self, call):
+        with self.assertRaises(HTTPException) as ctx:
+            await call
+        self.assertEqual(ctx.exception.status_code, 403)
+
+    async def test_staff_cannot_touch_super_admin_account(self):
+        await self.assert_forbidden(admin.admin_update_admin_user("super", {"password": "Takeover#123"}, user=USER_MANAGER))
+        await self.assert_forbidden(admin.admin_update_admin_user("super", {"status": "suspended"}, user=USER_MANAGER))
+        await self.assert_forbidden(admin.admin_delete_admin_user("super", user=USER_MANAGER))
+        self.assertEqual((await self.db.users.find_one({"id": "super"}))["password_hash"], "x")
+
+    async def test_staff_cannot_raise_own_access(self):
+        await self.assert_forbidden(admin.admin_update_admin_user("staff", {"admin_role_id": "r-finance"}, user=USER_MANAGER))
+        await self.assert_forbidden(admin_access.update_role("r-manager", AdminRoleUpdateIn(permissions=["withdraw.pay"]), user=USER_MANAGER))
+        await self.assert_forbidden(admin_access.update_role("super_admin", AdminRoleUpdateIn(name="Bos"), user=USER_MANAGER))
+
+    async def test_staff_can_only_grant_what_it_holds(self):
+        await self.assert_forbidden(admin_access.update_role("r-viewer", AdminRoleUpdateIn(permissions=["labels.view", "withdraw.pay"]), user=USER_MANAGER))
+        await self.assert_forbidden(admin_access.create_role(AdminRoleCreateIn(name="Bayar", permissions=["withdraw.pay"]), user=USER_MANAGER))
+        await self.assert_forbidden(admin.admin_create_admin_user(
+            AdminUserCreateIn(name="Baru", email="baru@test.dev", password="Password#1", admin_role_id="r-finance"), user=USER_MANAGER))
+        await self.assert_forbidden(admin.admin_update_admin_user("peer", {"admin_role_id": "r-finance"}, user=USER_MANAGER))
+        # Within its own permissions the staff member keeps working normally.
+        updated = await admin_access.update_role("r-viewer", AdminRoleUpdateIn(permissions=["labels.view", "withdraw.view"]), user=USER_MANAGER)
+        self.assertEqual(set(updated["permissions"]), {"labels.view", "withdraw.view"})
+        peer = await admin.admin_update_admin_user("peer", {"name": "Rekan"}, user=USER_MANAGER)
+        self.assertEqual(peer["name"], "Rekan")
+
+    async def test_super_admin_keeps_full_control(self):
+        result = await admin.admin_update_admin_user("peer", {"admin_role_id": "r-finance"}, user=SUPER)
+        self.assertEqual(result["admin_role_id"], "r-finance")
+        role = await admin_access.update_role("r-viewer", AdminRoleUpdateIn(permissions=["withdraw.pay"]), user=SUPER)
+        self.assertEqual(role["permissions"], ["withdraw.pay"])
 
 
 if __name__ == "__main__":

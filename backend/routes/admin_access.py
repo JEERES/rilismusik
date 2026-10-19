@@ -9,7 +9,7 @@ from .admin_permission_service import (
     ALL_PERMISSIONS, DEFAULT_NAV_ITEMS, DEFAULT_NAV_GROUPS, NAV_GROUP_MAP, assert_admin_permission, default_navigation,
     enrich_admin_user, permission_catalog, has_permission,
     compute_permission_warnings, preview_access, bump_role_members, SYSTEM_ROLE,
-    pending_capability_review, complete_capability_review, PERMISSION_NAMES,
+    pending_capability_review, complete_capability_review, PERMISSION_NAMES, assert_can_grant,
 )
 from .deps import db, require_admin, log_activity
 
@@ -171,6 +171,7 @@ async def role_options(user: dict = Depends(require_admin)):
 @access_r.post("/access/roles")
 async def create_role(body: AdminRoleCreateIn, user: dict = Depends(require_admin)):
     assert_admin_permission(user, "access.roles.manage")
+    assert_can_grant(user, _validate_permissions(body.permissions))
     normalized = body.name.strip().casefold()
     if await db.admin_roles.find_one({"normalized_name": normalized}, {"_id": 0, "id": 1}):
         raise HTTPException(status_code=409, detail="Nama role sudah digunakan")
@@ -190,6 +191,16 @@ async def update_role(role_id: str, body: AdminRoleUpdateIn, user: dict = Depend
     role = await db.admin_roles.find_one({"id": role_id}, {"_id": 0})
     if not role:
         raise HTTPException(status_code=404, detail="Role tidak ditemukan")
+    if user.get("role") != SYSTEM_ROLE:
+        # No admin may raise its own access: the Super Admin role and the
+        # actor's own role are Super Admin-only, and added permissions must
+        # already be held by the actor.
+        if role.get("system") or role.get("key") == SYSTEM_ROLE:
+            raise HTTPException(status_code=403, detail="Hanya Super Admin yang dapat mengubah role Super Admin")
+        if role_id == user.get("admin_role_id") or role.get("key") in (user.get("admin_role_id"), user.get("role")):
+            raise HTTPException(status_code=403, detail="Anda tidak dapat mengubah role yang Anda pegang sendiri")
+        if body.permissions is not None:
+            assert_can_grant(user, list(set(_validate_permissions(body.permissions)) - set(role.get("permissions") or [])))
     update: Dict[str, Any] = {"updated_at": now_iso(), "updated_by": user["id"]}
     if body.name is not None:
         normalized = body.name.strip().casefold()

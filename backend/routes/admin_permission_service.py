@@ -647,6 +647,17 @@ def assert_admin_permission(user: Dict[str, Any], permission: str) -> None:
         raise HTTPException(status_code=403, detail={"code": "PERMISSION_DENIED", "permission": permission, "message": "Anda tidak memiliki izin untuk tindakan ini"})
 
 
+def assert_can_grant(actor: Dict[str, Any], permissions: List[str]) -> None:
+    """Only Super Admin may hand out permissions it does not hold itself; any
+    other admin can grant at most what its own role already has."""
+    if actor.get("role") == SYSTEM_ROLE:
+        return
+    extra = sorted({p for p in permissions or [] if not has_permission(actor, p)})
+    if extra:
+        names = ", ".join(PERMISSION_NAMES.get(p, (p,))[0] for p in extra)
+        raise HTTPException(status_code=403, detail=f"Anda tidak dapat memberikan izin yang tidak Anda miliki: {names}")
+
+
 def permission_for_request(path: str, method: str) -> Optional[str]:
     method = method.upper(); mutate = method not in {"GET", "HEAD", "OPTIONS"}
     if "/admin/navigation" in path:
