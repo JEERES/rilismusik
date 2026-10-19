@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.22",
+    "date": "2026-10-19",
+    "summary": {
+      "id": "Transisi layanan lama (Annual/VIP lifetime): pemberitahuan di aplikasi, pengembalian dana penuh, Berita untuk label.",
+      "en": "Legacy service transition (lifetime Annual/VIP): in-app notice, full refund, News for labels."
+    },
+    "entries": [
+      {
+        "id": "dev22-transition-label",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard label · Nusantara Records",
+            "en": "Label dashboard · Nusantara Records"
+          }
+        },
+        "title": {
+          "id": "Pemberitahuan “Layanan Anda berubah”",
+          "en": "“Your service has changed” notice"
+        },
+        "detail": {
+          "id": "Label layanan lama melihat layanan lamanya, paket baru gratis 1 tahun, dan jaminan pengembalian dana penuh berapa pun lama pemakaian. Batas pengajuan 30 hari sejak dibaca. Tombol pengajuan membuka Tiket Bantuan yang sudah terisi; setelah dibayar label pindah ke Basic. Data layanan lama masih contoh.",
+          "en": "Legacy-service labels see their previous service, the free 1-year plan, and a full-refund guarantee regardless of usage time. Requests close 30 days after reading. The request button opens a pre-filled support ticket; once paid the label moves to Basic. Legacy data is sample data."
+        }
+      },
+      {
+        "id": "dev22-refund-super",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Pekerjaan Saya · Pengembalian dana",
+            "en": "My Work · Refunds"
+          }
+        },
+        "title": {
+          "id": "Keputusan pengembalian dana (Super Admin)",
+          "en": "Refund decisions (Super Admin)"
+        },
+        "detail": {
+          "id": "Pengajuan masuk ke Pekerjaan Saya, notifikasi, dan Kotak Masuk. Alur: Diajukan → Bukti diperiksa → Disetujui → Dibayar (label pindah ke Basic) atau Ditolak dengan alasan. Hanya Super Admin.",
+          "en": "Requests land in My Work, notifications and Inbox. Flow: Submitted → Proof check → Approved → Paid (label moves to Basic) or Declined with a reason. Super Admin only."
+        }
+      },
+      {
+        "id": "dev22-news-super",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Kotak Masuk · Berita",
+            "en": "Inbox · News"
+          }
+        },
+        "title": {
+          "id": "Berita: siaran ke label tanpa email",
+          "en": "News: broadcasts to labels without email"
+        },
+        "detail": {
+          "id": "Tab baru di Kotak Masuk. Super Admin menulis berita untuk semua label aktif atau label layanan lama; label melihatnya sebagai jendela wajib dibaca. Tercatat siapa yang sudah membaca, serta nilai maksimum pengembalian dana bila semua mengajukan.",
+          "en": "New Inbox tab. Super Admin writes news for all active labels or legacy-service labels; labels see it as a must-read window. Read receipts are recorded, plus the maximum refund if everyone requests."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.21",
     "date": "2026-10-18",
     "summary": {

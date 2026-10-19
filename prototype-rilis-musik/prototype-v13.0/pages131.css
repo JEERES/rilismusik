@@ -414,3 +414,33 @@
 .profile4-131 .g131>.rows131{flex:none;justify-content:flex-start;padding:8px 24px 12px}
 .profile4-131 .g131>.rows131 .srow131{padding:16px 0}
 .profile4-131 .g131 form>.note131{margin-top:auto}
+
+/* dev.22 — transisi layanan lama: pemberitahuan label, keputusan pengembalian dana, Berita */
+.tr132{display:grid;gap:12px;font-size:14px;line-height:1.55;max-width:620px}
+.tr132 p{margin:0}
+.tr-lead132{font-size:15px}
+.tr-meta132{font-size:12px;color:var(--muted)}
+.tr-cmp132{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tr-cmp132>div{display:grid;gap:3px;padding:12px 14px;border-radius:14px;background:var(--soft,#0000000a);box-shadow:inset 0 0 0 1px var(--line)}
+.tr-cmp132>div+div{background:transparent}
+.tr-cmp132 small{font-size:12px;color:var(--muted)}.tr-cmp132 b{font-weight:500;font-size:15px}.tr-cmp132 span{font-size:12.5px;color:var(--muted)}
+.tr-due132{font-size:13px;color:var(--muted)}.tr-due132 b{color:var(--text);font-weight:500}
+.tr-acts132{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.tr-status132{display:grid;gap:2px;padding:12px 14px;border-radius:14px;box-shadow:inset 0 0 0 1px var(--line)}
+.tr-status132 small{font-size:12px;color:var(--muted)}.tr-status132 b{font-weight:500}
+.tr-new132{font-size:11px;padding:1px 7px;border-radius:99px;background:#2e689e;color:#fff;vertical-align:1px;margin-left:4px}
+.tr-steps132{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tr-steps132 li{display:grid;gap:6px;font-size:12px;color:var(--muted)}
+.tr-steps132 li i{height:4px;border-radius:99px;background:var(--line)}
+.tr-steps132 li.done i{background:#1eaa36}.tr-steps132 li.now i{background:#2e689e}.tr-steps132 li.now{color:var(--text)}
+.tr-facts132{display:grid;gap:8px;margin:0}
+.tr-facts132>div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:7px}
+.tr-facts132 dt{color:var(--muted);font-size:13px}.tr-facts132 dd{margin:0;text-align:right;font-size:13px}.tr-facts132 b{font-weight:500;font-size:15px}
+.tr-read132{display:flex;align-items:baseline;gap:6px}.tr-read132 b{font-size:28px;font-weight:400}.tr-read132 span{color:var(--muted);font-size:13px}
+.tr-bar132{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:8px}.tr-bar132 i{display:block;height:100%;background:#1eaa36;border-radius:inherit}
+.tr-who132{display:grid;gap:8px}.tr-who132>div{display:grid;gap:1px}.tr-who132 span{font-size:13px}.tr-who132 small{font-size:12px;color:var(--muted)}
+.tr-form132{display:grid;gap:12px;max-width:560px}
+@media (max-width:700px){.tr-cmp132,.tr-steps132{grid-template-columns:1fr}}
+.cha-switch131:has(> :nth-child(3)){grid-template-columns:repeat(3,minmax(0,1fr));display:grid}
+.cha-switch131:has(> :nth-child(3))>button{padding-inline:8px;min-width:0}
+.tr-facts132 dd{white-space:nowrap}
