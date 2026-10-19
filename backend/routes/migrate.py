@@ -20,6 +20,7 @@ from datetime import datetime, timezone, timedelta
 from typing import Optional, List, Dict, Any
 from fastapi import APIRouter, HTTPException, UploadFile, File, Depends, Form
 from fastapi.responses import StreamingResponse
+from pymongo.errors import BulkWriteError
 
 from .deps import (
     db, db_bg, logger, UPLOAD_DIR,
@@ -538,8 +539,13 @@ async def bulk_import_withdraws(
     report: List[Dict[str, Any]] = []
     inserted = 0
     errors = 0
+    duplicates = 0
     wd_docs: List[Dict[str, Any]] = []
     tx_docs: List[Dict[str, Any]] = []
+    # Re-uploading the same CSV must not book the same payout twice: each row
+    # gets a deterministic key, checked against this file and the database.
+    seen_rows: Dict[str, int] = {}
+    pending: List[Dict[str, Any]] = []
 
     for i, r in enumerate(rows, start=2):
         label_legacy_id = (r.get("label_legacy_id") or "").strip()
@@ -579,22 +585,33 @@ async def bulk_import_withdraws(
         if status_raw == "completed":
             status_raw = "paid"
 
+        bank_ref = (r.get("bank_ref") or "").strip()
+        notes = (r.get("notes") or "").strip()
+        row_key = "bulk:" + "|".join([lab["id"], req_date, pay_date or "", str(amount), status_raw, bank_ref, notes])
+        if row_key in seen_rows:
+            duplicates += 1
+            report.append({"row": i, "label_name": label_name, "status": "SKIP",
+                           "reason": f"Sama persis dengan baris {seen_rows[row_key]}"})
+            continue
+        seen_rows[row_key] = i
+
         wd_id = new_id()
-        wd_docs.append({
+        wd_doc = {
             "id": wd_id,
             "label_id": lab["id"],
             "amount_idr": amount,
             "status": status_raw,
-            "bank_ref": (r.get("bank_ref") or "").strip() or None,
-            "notes": (r.get("notes") or "").strip() or None,
+            "bank_ref": bank_ref or None,
+            "notes": notes or None,
             "requested_at": req_date,
             "paid_at": pay_date,
             "legacy_import": True,
+            "legacy_bulk_key": row_key,
             "created_at": req_date,  # back-date for history fidelity
             "updated_at": pay_date or req_date,
-        })
+        }
         # Matching balance_transaction for accounting trail (does NOT mutate current balance)
-        tx_docs.append({
+        tx_doc = {
             "id": new_id(),
             "label_id": lab["id"],
             "type": "withdraw_paid" if status_raw == "paid" else f"withdraw_{status_raw}",
@@ -604,20 +621,50 @@ async def bulk_import_withdraws(
             "description": f"[Legacy] Withdraw {status_raw} — Rp {amount:,}".replace(",", "."),
             "legacy_import": True,
             "created_at": pay_date or req_date,
-        })
-        inserted += 1
+        }
         report.append({"row": i, "label_name": label_name, "status": "OK", "reason": f"withdraw_id={wd_id}, amount={amount}"})
+        pending.append({"key": row_key, "wd": wd_doc, "tx": tx_doc, "report": report[-1]})
+
+    already = set()
+    keys = [p["key"] for p in pending]
+    for start in range(0, len(keys), 500):
+        async for doc in db.withdraw_requests.find(
+            {"legacy_bulk_key": {"$in": keys[start:start + 500]}}, {"_id": 0, "legacy_bulk_key": 1},
+        ):
+            already.add(doc["legacy_bulk_key"])
+    for p in pending:
+        if p["key"] in already:
+            duplicates += 1
+            p["report"].update({"status": "SKIP", "reason": "Sudah pernah diimpor"})
+        else:
+            wd_docs.append(p["wd"])
+            tx_docs.append(p["tx"])
+    inserted = len(wd_docs)
 
     if not dry_run and wd_docs:
-        await db.withdraw_requests.insert_many(wd_docs)
-        await db.balance_transactions.insert_many(tx_docs)
-        await log_activity(user["id"], "bulk_import_withdraws", "migrate", None, after={"inserted": inserted, "errors": errors})
+        # The unique index on legacy_bulk_key is the last guard against two
+        # uploads racing each other; rows it rejects keep no ledger entry.
+        rejected: set = set()
+        try:
+            await db.withdraw_requests.insert_many(wd_docs, ordered=False)
+        except BulkWriteError as exc:
+            rejected = {wd_docs[e["index"]]["id"] for e in exc.details.get("writeErrors", []) if e.get("code") == 11000}
+            if len(rejected) != len(exc.details.get("writeErrors", [])):
+                raise
+        tx_docs = [tx for tx in tx_docs if tx["reference_id"] not in rejected]
+        if tx_docs:
+            await db.balance_transactions.insert_many(tx_docs)
+        duplicates += len(rejected)
+        inserted -= len(rejected)
+        await log_activity(user["id"], "bulk_import_withdraws", "migrate", None,
+                           after={"inserted": inserted, "errors": errors, "duplicates": duplicates})
 
     return {
         "dry_run": dry_run,
         "total_rows": len(rows),
         "inserted": inserted,
         "errors": errors,
+        "duplicates": duplicates,
         "report": report[:1000],
     }
 
@@ -828,6 +875,15 @@ async def bulk_import_withdraws_legacy_period(
         raise HTTPException(status_code=400, detail="CSV kosong")
     if not any("period_end" in row for row in rows[:5]):
         raise HTTPException(status_code=400, detail="Kolom 'period_end' tidak ditemukan di CSV")
+    if not dry_run:
+        # Two commits at once would each insert the same history rows.
+        recent = (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat()
+        busy = await db_bg.migrate_jobs.find_one({
+            "kind": "withdraws_legacy_period", "dry_run": False,
+            "status": {"$in": ["queued", "running", "processing"]}, "submitted_at": {"$gte": recent},
+        }, {"_id": 0, "id": 1})
+        if busy:
+            raise HTTPException(status_code=409, detail="Impor riwayat penarikan lain masih berjalan. Tunggu sampai selesai.")
 
     job_id = new_id()
     submitted_at = now_iso()
@@ -1325,13 +1381,15 @@ async def _commit_legacy_period_bg(
                     prev_end = hr.get("period_end")
 
                     trx_id = hr.get("trx_id")
-                    if trx_id:
-                        exists = await db_bg.withdraw_requests.find_one(
-                            {"label_id": label_id, "legacy_trx_id": trx_id},
-                            {"_id": 0, "id": 1},
-                        )
-                        if exists:
-                            continue
+                    # Rows without a transaction id are matched on their
+                    # period and dates, so a re-run never adds them twice.
+                    dup_filter = {"label_id": label_id, "legacy_trx_id": trx_id} if trx_id else {
+                        "label_id": label_id, "legacy_import": True, "legacy_trx_id": None,
+                        "period_to": hr.get("period_end"),
+                        "request_date": hr.get("request_date"), "paid_date": hr.get("payment_date"),
+                    }
+                    if await db_bg.withdraw_requests.find_one(dup_filter, {"_id": 0, "id": 1}):
+                        continue
                     await db_bg.withdraw_requests.insert_one({
                         "id": new_id(),
                         "label_id": label_id,

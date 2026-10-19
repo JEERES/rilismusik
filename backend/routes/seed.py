@@ -90,6 +90,7 @@ async def seed_indexes_and_admins():
     await db_bg.bank_account_change_requests.create_index("status")
     await db_bg.monthly_email_deliveries.create_index([("label_id", 1), ("period", 1)], unique=True)
     await db_bg.withdraw_requests.create_index("manual_legacy_key", unique=True, sparse=True)
+    await db_bg.withdraw_requests.create_index("legacy_bulk_key", unique=True, sparse=True)
     await db_bg.withdraw_requests.create_index([("status", 1), ("request_date", -1)])
     await db_bg.withdraw_requests.create_index([("status", 1), ("paid_date", -1)])
     await db_bg.legacy_withdraw_edit_previews.create_index("id", unique=True)
@@ -136,10 +137,18 @@ async def seed_indexes_and_admins():
         logger.warning("Legacy subscription migration skipped: %s", e)
 
     # ---- Super admin ----
+    # No hard-coded fallback: a password committed to the repo would be a
+    # public credential for the production super admin. An existing account
+    # keeps its password (so a rotation done in the app is not undone on the
+    # next cold start) unless ADMIN_PASSWORD_RESET=1 is set for one deploy.
     admin_email = os.environ.get("ADMIN_EMAIL", "superadmin@rilismusik.com").lower().strip()
-    admin_password = os.environ.get("ADMIN_PASSWORD", "SuperAdmin#2026")
+    admin_password = os.environ.get("ADMIN_PASSWORD", "").strip()
+    force_reset = os.environ.get("ADMIN_PASSWORD_RESET", "").strip().lower() in ("1", "true", "yes")
     existing = await db.users.find_one({"email": admin_email})
-    if existing is None:
+    if not admin_password:
+        if existing is None:
+            logger.warning("ADMIN_PASSWORD not set — super admin %s was not seeded", admin_email)
+    elif existing is None:
         await db.users.insert_one({
             "id": new_id(),
             "name": "Super Admin",
@@ -152,22 +161,29 @@ async def seed_indexes_and_admins():
             "updated_at": now_iso(),
         })
         logger.info("Super admin seeded: %s", admin_email)
-    elif not verify_password(admin_password, existing["password_hash"]):
+    elif force_reset and not verify_password(admin_password, existing.get("password_hash") or ""):
         await db.users.update_one(
             {"email": admin_email},
             {"$set": {"password_hash": hash_password(admin_password), "updated_at": now_iso()}},
         )
-        logger.info("Super admin password updated for: %s", admin_email)
+        logger.info("Super admin password reset from ADMIN_PASSWORD for: %s", admin_email)
 
-    # ---- Sub-admin accounts (idempotent + repair deterministic password drift) ----
+    # ---- Sub-admin fixtures (dev/CI only) ----
+    # Opt-in via SEED_STAFF_FIXTURES=1 with the password from SEED_STAFF_PASSWORD.
+    # Production never seeds or resets staff passwords from code.
+    fixture_password = os.environ.get("SEED_STAFF_PASSWORD", "").strip()
+    seed_fixtures = os.environ.get("SEED_STAFF_FIXTURES", "").strip().lower() in ("1", "true", "yes")
+    if seed_fixtures and not fixture_password:
+        logger.warning("SEED_STAFF_FIXTURES set without SEED_STAFF_PASSWORD — staff fixtures skipped")
     sub_admins = [
-        ("Admin Support", "support1@rilismusik.com", "Support#2026", "admin_support"),
-        ("Admin Finance", "finance1@rilismusik.com", "Finance#2026", "admin_finance"),
-        ("Admin Release", "release1@rilismusik.com", "Release#2026", "admin_release"),
-        ("Admin Marketing", "marketing1@rilismusik.com", "Marketing#2026", "admin_marketing"),
-        ("Admin Content", "content1@rilismusik.com", "Content#2026", "admin_content"),
-    ]
-    for name, email, pwd, role in sub_admins:
+        ("Admin Support", "support1@rilismusik.com", "admin_support"),
+        ("Admin Finance", "finance1@rilismusik.com", "admin_finance"),
+        ("Admin Release", "release1@rilismusik.com", "admin_release"),
+        ("Admin Marketing", "marketing1@rilismusik.com", "admin_marketing"),
+        ("Admin Content", "content1@rilismusik.com", "admin_content"),
+    ] if seed_fixtures and fixture_password else []
+    for name, email, role in sub_admins:
+        pwd = fixture_password
         existing_sub_admin = await db.users.find_one({"email": email})
         if existing_sub_admin is None:
             await db.users.insert_one({

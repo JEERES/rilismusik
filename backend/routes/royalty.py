@@ -1597,6 +1597,10 @@ async def _mark_dana_received_bg(*, import_id: str, user_id: str):
         )
 
 
+def royalty_reset_enabled() -> bool:
+    return os.environ.get("ROYALTY_RESET_ENABLED", "").strip().lower() in ("1", "true", "yes")
+
+
 @royalty_r.post("/admin/reset-demo-data")
 async def admin_reset_demo_royalty_data(
     confirm: str = Form(...),
@@ -1613,6 +1617,10 @@ async def admin_reset_demo_royalty_data(
     """
     if user["role"] != "super_admin":
         raise HTTPException(status_code=403, detail="Hanya Super Admin")
+    # Live royalty data is real money: the wipe only exists on servers that
+    # opt in explicitly (local/dev), never by default in production.
+    if not royalty_reset_enabled():
+        raise HTTPException(status_code=403, detail="Reset data royalti dinonaktifkan di server ini.")
     if confirm != "RESET":
         raise HTTPException(status_code=400, detail="Konfirmasi tidak cocok. Ketik 'RESET' untuk melanjutkan.")
 

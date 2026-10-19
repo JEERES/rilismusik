@@ -321,7 +321,8 @@ class TestResetDemoData:
 
     def test_wrong_confirm_returns_400(self, admin_session):
         r = admin_session.post(f"{BASE_URL}{self.URL}", data={"confirm": "reset"}, timeout=20)
-        assert r.status_code == 400, r.text[:200]
+        # 403 when the server has the reset switched off (the default).
+        assert r.status_code in (400, 403), r.text[:200]
         # Indonesian message
         body = r.text.lower()
         assert "konfirmasi" in body or "reset" in body
@@ -329,7 +330,7 @@ class TestResetDemoData:
     def test_empty_confirm_returns_400_or_422(self, admin_session):
         # Form param required → FastAPI will respond 422 if missing entirely.
         r = admin_session.post(f"{BASE_URL}{self.URL}", data={"confirm": ""}, timeout=20)
-        assert r.status_code in (400, 422), r.text[:200]
+        assert r.status_code in (400, 403, 422), r.text[:200]
 
     def test_admin_finance_forbidden(self, admin_finance_session):
         r = admin_finance_session.post(
