@@ -91,16 +91,20 @@ function decisionsCard134(){
   const has=(x,f)=>f==='all'||x.k.includes(f),rows=all.filter(x=>has(x,d134.tab)),LIM=7,extra=rows.length-LIM;
   return `<section class="d134-card" data-d134="decide"><div class="ch134"><h2>${T('Perlu keputusan Anda','Needs your decision')} <span class="sub134 n">${all.length}</span></h2><button type="button" class="link134" data-action="nav" data-page="mywork9">${T('Semua pekerjaan','All work')} ${svg134('arrow',2)}</button></div>
    <div class="tabs134">${tabs.map(([f,l])=>{const n=all.filter(x=>has(x,f)).length;return n||f==='all'?`<button type="button" class="${d134.tab===f?'on':''}" data-d134-tab="${f}">${l}<b>${n}</b></button>`:'';}).join('')}</div>
-   <div class="list134">${rows.map((x,i)=>`<div class="it134${!d134.open&&i>=LIM?' more134':''}" style="--i:${i}"><span class="ty134">${svg134(x.ic)}</span><div class="mid134"><div class="tt134">${E(x.t)} ${statusBadge111(x.chip[0],x.chip[1])}</div><div class="sub134">${x.s}</div></div><div class="stack134" data-tip131="${E(x.w.length?T('Penanggung jawab: ','Owner: ')+x.w.map(pname134).join(' & '):T('Belum ada penanggung jawab','No owner yet'))}">${x.w.length?x.w.map(w=>`<span class="mini134">${E(ini134(w))}</span>`).join(''):'<span class="mini134 none"></span>'}</div><span class="qa134"><button type="button" class="qbtn134" ${x.act}>${E(x.q)}</button><button type="button" class="go134" ${x.act} aria-label="${T('Buka','Open')}">${svg134('arrow',2)}</button></span></div>`).join('')||`<p class="empty134">${T('Tidak ada yang menunggu keputusan.','Nothing awaits your decision.')}</p>`}</div>
+   <div class="list134">${rows.map((x,i)=>`<div class="it134${!d134.open&&i>=LIM?' more134':''}" style="--i:${i}"><span class="ty134">${svg134(x.ic)}</span><div class="mid134"><div class="tt134">${E(x.t)} ${statusBadge111(x.chip[0],x.chip[1])}</div><div class="sub134">${x.s}</div></div><span class="qa134"><button type="button" class="qbtn134" ${x.act}>${E(x.q)}</button></span><div class="stack134" data-tip131="${E(x.w.length?T('Penanggung jawab: ','Owner: ')+x.w.map(pname134).join(' & '):T('Belum ada penanggung jawab','No owner yet'))}">${x.w.length?x.w.map(w=>`<span class="mini134">${E(ini134(w))}</span>`).join(''):'<span class="mini134 none"></span>'}</div></div>`).join('')||`<p class="empty134">${T('Tidak ada yang menunggu keputusan.','Nothing awaits your decision.')}</p>`}</div>
    <div class="foot134">${extra>0?`<button type="button" class="more-btn134" data-d134-more>${d134.open?T('Tampilkan lebih sedikit','Show less'):T(`Tampilkan ${extra} lainnya`,`Show ${extra} more`)}</button>`:'<span></span>'}<span>${T('Urut menurut tenggat','Sorted by deadline')} · ${typeof todayRecords==='function'?todayRecords().length:0} ${T('tahapan selesai hari ini','stages done today')}</span></div></section>`;
 }
 function moneyCard134(){
-  const y=cycle134(),wajib=y.d.unpaid,cov=wajib>0?KAS134/wajib:9,zone=cov<1?['Kurang','red']:cov<1.5?['Tipis','mustard']:['Aman','green'];
+  const y=cycle134(),wajib=y.d.unpaid,sisa=KAS134-wajib,used=KAS134>0?Math.min(100,wajib/KAS134*100):100,zone=sisa<0?['Kurang','red']:sisa<wajib*.5?['Tipis','mustard']:['Aman','green'];
   const rv=data.revenue||{},keys=Object.keys(rv).sort(),cur=rv[keys[keys.length-1]]||0,prev=rv[keys[keys.length-2]]||0,mk=keys[keys.length-1]||'',mn=MON134[(+mk.slice(5,7)||1)-1]||'';
   return `<section class="d134-card" data-d134="money"><div class="ch134"><h2>${T('Kesehatan uang','Money health')}</h2><span class="sub134">${E(y.month)} · ${T('mulai ulang tiap bulan','resets monthly')}</span></div>
-   <div class="sub134">${T('Cakupan kas untuk pembayaran bulan ini','Cash cover for this month’s payouts')} <span class="ex134">${T('contoh kas','sample cash')}</span></div>
-   <div class="gauge134"><svg viewBox="0 0 220 124" data-gauge134="${Math.min(4,cov).toFixed(2)}"></svg><div class="gv134"><span class="big134 n"><span class="cu134" data-to="${Math.min(cov,99).toFixed(1)}" data-dec="1">${nf134(cov)}</span><small>×</small></span>${statusBadge111(T(zone[0],zone[0]==='Aman'?'Safe':zone[0]==='Tipis'?'Thin':'Short'),zone[1])}</div></div>
-   <div class="covl134"><span>${T('Wajib dibayar','Due')} ${jt134(wajib)}</span><span>${T('Kas','Cash')} ${jt134(KAS134)}</span></div>
+   <div class="cash134">
+    <div class="cash-top134"><div><div class="sub134">${T('Sisa kas setelah semua pembayaran bulan ini','Cash left after this month’s payouts')} <span class="ex134">${T('contoh kas','sample cash')}</span></div>
+     <span class="big134 n">${sisa<0?'−':''}Rp <span class="cu134" data-to="${(Math.abs(sisa)/1e6).toFixed(1)}" data-dec="1">${nf134(Math.abs(sisa)/1e6)}</span> <small>${T('jt','M')}</small></span></div>${statusBadge111(T(zone[0],zone[0]==='Aman'?'Safe':zone[0]==='Tipis'?'Thin':'Short'),zone[1])}</div>
+    <div class="cashbar134 ${sisa<0?'short':''}"><span class="due" style="flex:${Math.min(wajib,KAS134)}" data-ftip131="${E(T(`Wajib dibayar · ${money(wajib)} · ${y.open.length} pengajuan`,`Due · ${money(wajib)}`))}"></span><span class="left" style="flex:${Math.max(0,sisa)}" data-ftip131="${E(T(`Sisa kas · ${money(Math.max(0,sisa))}`,`Cash left · ${money(Math.max(0,sisa))}`))}"></span></div>
+    <div class="covl134"><span><i class="k-due134"></i>${T('Wajib dibayar','Due')} ${jt134(wajib)} · ${nf134(used,0)}% ${T('kas','of cash')}</span><span><i class="k-left134"></i>${T('Kas','Cash')} ${jt134(KAS134)}</span></div>
+    <p class="hint134">${sisa<0?T(`Kas kurang ${jt134(-sisa)} untuk menutup pembayaran bulan ini.`,`Cash is ${jt134(-sisa)} short of this month’s payouts.`):zone[0]==='Tipis'?T('Kas cukup, tapi cadangan setelah pembayaran tipis (kurang dari separuh kewajiban).','Cash covers payouts, but the buffer is thin.'):T(`Kas cukup untuk membayar semua pengajuan bulan ini, dengan cadangan ${jt134(sisa)}.`,`Cash covers every payout this month with ${jt134(sisa)} to spare.`)}</p>
+   </div>
    <div class="mrow134"><span>${T('Kas siap bayar','Cash ready')}</span><div><b class="n">${jt134(KAS134)}</b><em>${T('contoh · catat di Rekonsiliasi Kas','sample · record in Cash Reconciliation')}</em></div></div>
    <div class="mrow134"><span>${T(`Wajib dibayar s.d. ${y.c.payDue} ${y.month.slice(0,3)}`,`Due by ${y.c.payDue}`)}</span><div><b class="n">${jt134(wajib)}</b><em>${y.open.length} ${T('pengajuan','requests')}</em></div></div>
    <div class="mrow134"><span>${T('Tidak diajukan','Not requested')}</span><div><b class="n">${jt134(y.notReq)}</b><em>${T('ikut saldo bulan depan, tidak dijumlah','carried into next month, not added')}</em></div></div>
@@ -121,11 +125,28 @@ function teamCard134(){
 }
 function growthCard134(){
   const g=growth134();if(!g.find(x=>x.id===d134.growth))d134.growth=g[0]?.id;const m=g.find(x=>x.id===d134.growth)||g[0];if(!m)return '';
-  const fmt=(x,v)=>x.money?jt134(v):(x.flow?'+':'')+nf134(v,0),tot=x=>x.money?x.period:x.id==='members'?T(`${nf134(x.cur,0)} dari ${nf134(platformData6.find(r=>r[0]==='labels')[3],0)} label`,`${nf134(x.cur,0)} of all labels`):T('Total ','Total ')+nf134(x.cur,0);
   return `<section class="d134-card" data-d134="growth"><div class="ch134"><h2>${T('Pertumbuhan','Growth')}</h2><span class="sub134">${E(m.period)}</span></div>
-   <div class="mts134">${g.map(x=>`<button type="button" class="mt134 ${x.id===m.id?'on':''}" data-d134-growth="${x.id}"><span class="l">${E(x.l)}</span><span class="vr">${fmt(x,x.flow?x.diff:x.cur)} ${delta134(x.pct)}</span><span class="t">${E(tot(x))}</span></button>`).join('')}</div>
-   <div class="gh134"><div class="k">${E(m.l)}</div><div class="h n">${fmt(m,m.flow?m.diff:m.cur)} ${delta134(m.pct)}</div><div class="s">${T('Batang terakhir = data prototipe; 4 bulan awal = contoh.','Last bars = prototype data; first 4 months = sample.')}</div></div>
-   <div class="chart134" data-chart134="${m.id}"></div></section>`;
+   <div class="mts134">${g.map(x=>`<button type="button" aria-pressed="${x.id===m.id}" class="mt134 ${x.id===m.id?'on':''}" data-d134-growth="${x.id}"><span class="l">${E(x.l)}</span><span class="v n">${gfmt134(x,x.flow?x.diff:x.cur)}</span><span class="pr">${delta134(x.pct)}<small>${E(gtot134(x))}</small></span></button>`).join('')}</div>
+   <div class="gbody134">${gsum134(m)}<div class="gchart134"><div class="ggrid134"><i></i><i></i><i></i></div><div class="gbars134">${gcols134(m)}</div></div></div></section>`;
+}
+function gfmt134(x,v){return x.money?jt134(v):(x.flow?'+':'')+nf134(v,0);}
+function gtot134(x){return x.money?T('periode sebelumnya','previous period'):x.id==='members'?T(`${nf134(x.cur,0)} dari ${nf134(platformData6.find(r=>r[0]==='labels')[3],0)}`,`${nf134(x.cur,0)} of all`):T('total ','total ')+nf134(x.cur,0);}
+function gins134(m){const d=m.series,cur=d[d.length-1],prev=d[d.length-2],avg=d.reduce((a,b)=>a+b,0)/d.length,top=cur>=Math.max(...d);
+  if(m.money)return T(`${cur>=prev?'Naik':'Turun'} ${nf134(Math.abs(m.pct))}% dari periode sebelumnya${top?' · tertinggi dalam 6 bulan':''}.`,`${cur>=prev?'Up':'Down'} ${nf134(Math.abs(m.pct))}% from the previous period${top?' · 6-month high':''}.`);
+  return T(`${top?'Tertinggi dalam 6 bulan':cur<prev?'Turun dari bulan lalu':'Naik dari bulan lalu'} · rata-rata ${gfmt134(m,Math.round(avg))} per bulan.`,`${top?'6-month high':cur<prev?'Down from last month':'Up from last month'} · average ${gfmt134(m,Math.round(avg))} per month.`);}
+function gsum134(m){return `<div class="gsum134"><div class="k">${E(m.l)}</div><div class="h n"><span class="gval134">${gfmt134(m,m.flow?m.diff:m.cur)}</span>${delta134(m.pct)}</div><p class="gins134">${E(gins134(m))}</p><p class="gnote134">${m.flow?T('Bulan terakhir dari data prototipe; 5 bulan sebelumnya contoh.','Last month from prototype data; earlier months are samples.'):T('Dua bulan terakhir dari data prototipe; sisanya contoh.','Last two months from prototype data; the rest are samples.')}</p></div>`;}
+function gmons134(n){const {m:mo}=pmonth134();return Array.from({length:n},(_,i)=>MONS134[(mo-1-(n-1-i)+24)%12]);}
+function gcols134(m){const d=m.series,mx=Math.max(...d)*1.12,mons=gmons134(d.length),real=m.flow?1:2;
+  return d.map((v,i)=>{const cur=i===d.length-1,smp=i<d.length-real;return `<div class="gcol134" style="--i:${i}" data-ftip131="${E(`${mons[i]} · ${gfmt134(m,v)}${smp?' · '+T('contoh','sample'):''}`)}"><span class="gv134t${cur?' cur':''}">${gfmt134(m,v)}</span><span class="gbar134${cur?' cur':''}${smp?' smp':''}" style="height:${(v/mx*100).toFixed(1)}%"></span><span class="gm134">${mons[i]}</span></div>`;}).join('');}
+/* ganti metrik tanpa render ulang: batang berubah tinggi dengan transisi, angka menghitung */
+function switchGrowth134(id){
+  const card=document.querySelector('.d134-card[data-d134="growth"]'),m=growth134().find(x=>x.id===id);if(!card||!m){render();return;}
+  d134.growth=id;card.querySelectorAll('.mt134').forEach(b=>{const on=b.dataset.d134Growth===id;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
+  const sum=card.querySelector('.gsum134');if(sum){sum.outerHTML=gsum134(m);const nv=card.querySelector('.gsum134');nv.classList.add('swap134');}
+  const d=m.series,mx=Math.max(...d)*1.12,mons=gmons134(d.length),real=m.flow?1:2;
+  card.querySelectorAll('.gcol134').forEach((col,i)=>{const v=d[i],smp=i<d.length-real,bar=col.querySelector('.gbar134'),lab=col.querySelector('.gv134t');
+    bar.style.height=(v/mx*100).toFixed(1)+'%';bar.classList.toggle('smp',smp);col.dataset.ftip131=`${mons[i]} · ${gfmt134(m,v)}${smp?' · '+T('contoh','sample'):''}`;
+    if(RM134())lab.textContent=gfmt134(m,v);else{const t0=performance.now(),from=0;lab.classList.add('tick134');const st=n=>{const k=Math.min(1,(n-t0)/650),e=1-Math.pow(1-k,3);lab.textContent=gfmt134(m,m.money?from+(v-from)*e:Math.round(from+(v-from)*e));if(k<1)requestAnimationFrame(st);else lab.classList.remove('tick134');};requestAnimationFrame(st);}});
 }
 function page134(){
   return `<div class="d134">${cycleCard134()}<div class="row134">${decisionsCard134()}${moneyCard134()}</div>${teamCard134()}${growthCard134()}</div>`;
@@ -143,19 +164,11 @@ const hero122Before134=hero122;
 hero122=function(){return on134()?hero134():hero122Before134();};
 
 /* ---------- gambar setelah masuk DOM: jarum, grafik, gerak ---------- */
-function gauge134(svg){const v=+svg.dataset.gauge134,cx=110,cy=110,r=86,mx=4,ang=x=>Math.PI-(x/mx)*Math.PI,pt=x=>[cx+r*Math.cos(ang(x)),cy-r*Math.sin(ang(x))];
-  const arc=(a,b,c)=>{const [x1,y1]=pt(a),[x2,y2]=pt(b);return `<path class="gz134" d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" style="stroke:${c}"/>`;};
-  const tick=(x,l)=>{const a=ang(x),tx=cx+(r+16)*Math.cos(a),ty=cy-(r+16)*Math.sin(a);return `<text class="gt134" x="${tx.toFixed(1)}" y="${(ty+3).toFixed(1)}" text-anchor="middle">${l}</text>`;};
-  svg.innerHTML=arc(0,1,'var(--r134)')+arc(1.02,1.5,'var(--o134)')+arc(1.52,4,'var(--g134)')+tick(0,'0×')+tick(1,'1×')+tick(1.5,'1,5×')+tick(4,'4×')+`<g class="needle134" style="--deg:${(v/mx*180).toFixed(1)}deg"><line x1="${cx}" y1="${cy}" x2="${cx-r+18}" y2="${cy}"/><circle cx="${cx}" cy="${cy}" r="5"/></g>`;}
-function chart134(box){const m=growth134().find(x=>x.id===box.dataset.chart134);if(!m)return;const d=m.series,{m:mo}=pmonth134(),mons=d.map((_,i)=>MONS134[(mo-1-(d.length-1-i)+24)%12]);
-  const W=box.clientWidth||800,H=170,bw=Math.min(84,W/9),gap=(W-bw*d.length)/(d.length-1),mx=Math.max(...d)*1.15,fmt=v=>m.money?jt134(v):'+'+nf134(v,0);
-  box.innerHTML=`<svg viewBox="0 0 ${W} ${H+24}">${[0,.5,1].map(g=>`<line class="grid134" x1="0" x2="${W}" y1="${(H-g*H*.87).toFixed(1)}" y2="${(H-g*H*.87).toFixed(1)}"/>`).join('')}${d.map((v,i)=>{const h=v/mx*H,x=i*(bw+gap),cur=i===d.length-1,sample=i<d.length-2;return `<rect class="bar134g${cur?' cur':''}${sample?' smp':''}" x="${x.toFixed(1)}" y="${(H-h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="8" style="--i:${i}" data-ftip131="${E(`${mons[i]} · ${fmt(v)}${sample?' · '+T('contoh','sample'):''}`)}"/><text class="val134${cur?' cur':''}" x="${(x+bw/2).toFixed(1)}" y="${(H-h-7).toFixed(1)}" text-anchor="middle">${fmt(v)}</text><text class="ax134" x="${(x+bw/2).toFixed(1)}" y="${H+18}" text-anchor="middle">${mons[i]}</text>`;}).join('')}</svg>`;}
 const RM134=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
 function count134(el){if(el.dataset.done134)return;el.dataset.done134=1;const to=+el.dataset.to,dec=+(el.dataset.dec||0),suf=el.dataset.suf||'',t0=performance.now(),dur=900;const f=v=>(dec?nf134(v,dec):nf134(Math.round(v),0))+suf;const st=n=>{const k=Math.min(1,(n-t0)/dur),e=1-Math.pow(1-k,3);el.textContent=f(to*e);if(k<1)requestAnimationFrame(st);};requestAnimationFrame(st);}
 function reveal134(c){c.classList.add('in');d134.seen.add(c.dataset.d134);if(!RM134())c.querySelectorAll('.cu134').forEach(count134);}
 function mount134(main){
-  main.querySelectorAll('[data-gauge134]').forEach(gauge134);main.querySelectorAll('[data-chart134]').forEach(chart134);
-  const cards=[...main.querySelectorAll('.d134-card')];d134.io?.disconnect();
+    const cards=[...main.querySelectorAll('.d134-card')];d134.io?.disconnect();
   if(RM134()){cards.forEach(c=>c.classList.add('in','still134'));return;}
   cards.forEach(c=>{if(d134.seen.has(c.dataset.d134))c.classList.add('in','still134');else c.classList.add('rv134');});
   d134.io=new IntersectionObserver(es=>{let k=0;es.forEach(e=>{if(e.isIntersecting){const c=e.target;d134.io.unobserve(c);setTimeout(()=>reveal134(c),90*k++);}});},{threshold:.2});
@@ -174,7 +187,9 @@ document.addEventListener('click',e=>{
   e.preventDefault();e.stopImmediatePropagation();
   if(b.dataset.d134Tab){d134.tab=b.dataset.d134Tab;d134.open=false;}
   else if(b.hasAttribute('data-d134-more'))d134.open=!d134.open;
-  else if(b.dataset.d134Growth)d134.growth=b.dataset.d134Growth;
+  else if(b.dataset.d134Growth){switchGrowth134(b.dataset.d134Growth);return;}
   else if(b.dataset.d134Go==='monitor'){go('liability9','platform');return;}
   render();
 },true);
+/* klik di mana pun pada baris keputusan = tombol aksinya */
+document.addEventListener('click',e=>{const row=e.target.closest('.it134');if(!row||e.target.closest('button'))return;row.querySelector('.qbtn134')?.click();});

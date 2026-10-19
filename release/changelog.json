@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.25",
+    "date": "2026-10-19",
+    "summary": {
+      "id": "Dashboard: aksi di samping foto, Kesehatan uang lebih mudah dibaca, kartu Pertumbuhan baru bergerak saat ganti metrik.",
+      "en": "Dashboard: actions next to the photo, easier Money health, new Growth card that animates between metrics."
+    },
+    "entries": [
+      {
+        "id": "dev25-decide",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard · Perlu keputusan",
+            "en": "Dashboard · Decisions"
+          }
+        },
+        "title": {
+          "id": "Aksi muncul di samping foto",
+          "en": "Actions appear next to the photo"
+        },
+        "detail": {
+          "id": "Tombol panah dihapus; foto penanggung jawab di paling kanan. Saat baris diarahkan, aksi spesifik (Bayar, Setujui, Tinjau, Balas) muncul di sebelah foto; klik di mana pun pada baris menjalankan aksinya.",
+          "en": "The arrow button is gone; the owner photo sits on the far right. On hover the specific action appears next to it; clicking anywhere on the row runs it."
+        }
+      },
+      {
+        "id": "dev25-money",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard · Kesehatan uang",
+            "en": "Dashboard · Money health"
+          }
+        },
+        "title": {
+          "id": "Kesehatan uang: sisa kas setelah pembayaran",
+          "en": "Money health: cash left after payouts"
+        },
+        "detail": {
+          "id": "Jarum rasio (1×, 1,5×, 4×) diganti angka sisa kas setelah semua pembayaran bulan ini, satu batang wajib dibayar vs sisa, dan satu kalimat penjelas. Status: Aman, Tipis (sisa kurang dari separuh kewajiban), atau Kurang.",
+          "en": "The ratio gauge is replaced by cash left after this month’s payouts, one due-vs-left bar and a plain sentence. Status: Safe, Thin (buffer under half of what is due) or Short."
+        }
+      },
+      {
+        "id": "dev25-growth",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard · Pertumbuhan",
+            "en": "Dashboard · Growth"
+          }
+        },
+        "title": {
+          "id": "Kartu Pertumbuhan baru",
+          "en": "New Growth card"
+        },
+        "detail": {
+          "id": "Enam metrik dalam satu panel; ringkasan di kiri (angka, pil persentase, kalimat wawasan) dan grafik di kanan. Saat metrik diganti, batang berubah tinggi dengan animasi dan angka menghitung, tanpa memuat ulang kartu.",
+          "en": "Six metrics in one panel; summary on the left and chart on the right. Switching metrics morphs the bars and counts the numbers without reloading the card."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.24",
     "date": "2026-10-19",
     "summary": {
