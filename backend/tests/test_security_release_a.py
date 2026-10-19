@@ -7,10 +7,13 @@ from unittest.mock import AsyncMock, patch
 
 import test_vercel_preview  # Configures offline environment before real router imports.
 from fastapi import HTTPException, UploadFile
+from fastapi.testclient import TestClient
 from mongomock_motor import AsyncMongoMockClient
 
 from auth_utils import hash_password, verify_password
-from routes import migrate, royalty, seed
+import server
+import storage_service
+from routes import deps, file_access, migrate, royalty, seed
 
 SUPER = {"id": "super", "role": "super_admin", "is_admin": True, "admin_role_active": True, "permissions": [], "name": "Super"}
 STAFF_EMAILS = {"support1@rilismusik.com", "finance1@rilismusik.com", "release1@rilismusik.com",
@@ -153,6 +156,91 @@ class LegacyWithdrawImportTests(unittest.IsolatedAsyncioTestCase):
         queued = await migrate.bulk_import_withdraws_legacy_period(file=csv_upload(csv), dry_run=True, create_history_docs=True,
                                                                      flip_royalty_lines=True, adjust_balances=True, user=SUPER)
         self.assertEqual(queued["status"], "queued")
+
+
+LABEL_USER = {"id": "u-label", "role": "label", "email": "label@test.dev"}
+OTHER_USER = {"id": "u-other", "role": "label", "email": "other@test.dev"}
+
+
+class CsrfOriginTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.bootstrap = patch.object(server, "_bootstrap_async", new_callable=AsyncMock)
+        cls.bootstrap.start()
+        cls.client = TestClient(server.app)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.bootstrap.stop()
+
+    def post(self, origin=None):
+        headers = {"Origin": origin} if origin else {}
+        return self.client.post("/api/auth/login", json={}, headers=headers)
+
+    def test_untrusted_origin_mutation_rejected(self):
+        response = self.post("https://evil.example")
+        self.assertEqual(response.status_code, 403)
+        self.assertIn("Origin", response.json()["detail"])
+
+    def test_trusted_and_same_host_origins_pass(self):
+        for origin in ("https://preview.example.invalid", "https://rilismusik.com", "http://testserver"):
+            self.assertNotEqual(self.post(origin).status_code, 403, origin)
+
+    def test_requests_without_origin_and_reads_are_unaffected(self):
+        self.assertNotEqual(self.post().status_code, 403)
+        self.assertNotEqual(self.client.get("/api/", headers={"Origin": "https://evil.example"}).status_code, 403)
+
+
+class FileAccessTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.db = AsyncMongoMockClient().test
+        self.user = None
+        async def current_user(request):
+            if self.user is None:
+                raise HTTPException(status_code=401, detail="Not authenticated")
+            return self.user
+        self.patches = [patch.object(deps, "db", self.db), patch.object(file_access, "db", self.db),
+                        patch.object(deps, "get_current_user", current_user),
+                        patch.object(storage_service, "is_configured", lambda: True),
+                        patch.object(storage_service, "head_object", AsyncMock(return_value={"size": 1})),
+                        patch.object(storage_service, "generate_presigned_url", AsyncMock(return_value="https://r2.example/signed"))]
+        for item in self.patches:
+            item.start()
+        self.addCleanup(lambda: [item.stop() for item in reversed(self.patches)])
+        await self.db.labels.insert_many([{"id": "lab-1", "user_id": "u-label", "created_at": "1"},
+                                          {"id": "lab-2", "user_id": "u-other", "created_at": "1"}])
+        await self.db.contracts.insert_one({"id": "c1", "label_id": "lab-1", "file_url": "/api/files/contract/c1.pdf"})
+        await self.db.releases.insert_one({"id": "r1", "label_id": "lab-1"})
+        await self.db.tracks.insert_one({"id": "t1", "release_id": "r1"})
+
+    async def fetch(self, path):
+        return await server.serve_file(request=None, path=path)
+
+    async def test_private_file_needs_login(self):
+        with self.assertRaises(HTTPException) as ctx:
+            await self.fetch("contract/c1.pdf")
+        self.assertEqual(ctx.exception.status_code, 401)
+
+    async def test_owner_gets_file_other_label_does_not(self):
+        self.user = LABEL_USER
+        self.assertEqual((await self.fetch("contract/c1.pdf")).status_code, 302)
+        self.assertEqual((await self.fetch("audio/t1.wav")).status_code, 302)
+        self.user = OTHER_USER
+        for path in ("contract/c1.pdf", "audio/t1.wav", "csv/import.csv"):
+            with self.assertRaises(HTTPException) as ctx:
+                await self.fetch(path)
+            self.assertEqual(ctx.exception.status_code, 404, path)
+
+    async def test_admin_allowed_and_public_prefix_open(self):
+        self.user = SUPER
+        self.assertEqual((await self.fetch("csv/import.csv")).status_code, 302)
+        self.user = None
+        self.assertEqual((await self.fetch("cover/r1.jpg")).status_code, 302)
+
+    async def test_path_tricks_do_not_skip_the_check(self):
+        self.user = OTHER_USER
+        with self.assertRaises(HTTPException):
+            await self.fetch("cover/../contract/c1.pdf")
 
 
 if __name__ == "__main__":

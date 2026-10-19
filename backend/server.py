@@ -13,8 +13,8 @@ load_dotenv(ROOT_DIR / ".env")
 import os
 import logging
 from urllib.parse import urlsplit, urlunsplit
-from fastapi import FastAPI, APIRouter
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi import FastAPI, APIRouter, Request
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from starlette.middleware.cors import CORSMiddleware
 
 # Configure root logger BEFORE importing the route modules so they
@@ -67,6 +67,7 @@ from routes.migrate import migrate_r
 from routes.cron_jobs import cron_r, start_scheduler, stop_scheduler
 from routes.seed import seed_indexes_and_admins
 import storage_service
+from routes.file_access import AUTHENTICATED_PREFIXES as AUTHENTICATED_FILE_PREFIXES
 
 
 app = FastAPI(title="RILIS MUSIK API", version="0.1.0")
@@ -99,11 +100,21 @@ def expand_origin_variants(origins: list[str]) -> list[str]:
 # Hybrid file serving: try R2 (presigned redirect) first, fall back to local disk
 # for legacy files uploaded before the R2 migration.
 @app.get("/api/files/{path:path}")
-async def serve_file(path: str, download: str | None = None):
+async def serve_file(request: Request, path: str, download: str | None = None):
     from fastapi import HTTPException
     import posixpath
-    if posixpath.normpath(path.replace("\\", "/")).lstrip("/").startswith(("kyc-private/", "contentid-private/", "release-internal/")):
+    normalized = posixpath.normpath(path.replace("\\", "/")).lstrip("/")
+    if normalized.startswith(("kyc-private/", "contentid-private/", "release-internal/")):
         raise HTTPException(status_code=404, detail="File not found")
+    # Legal docs, financial exports, paid deliverables and private uploads are
+    # authenticated: the URL alone (unguessable but leakable) is not enough.
+    if normalized.startswith(AUTHENTICATED_FILE_PREFIXES):
+        from routes import deps as route_deps
+        from routes.file_access import authorize_file_path
+        user = await route_deps.get_current_user(request)
+        if not await authorize_file_path(normalized, user):
+            raise HTTPException(status_code=404, detail="File not found")
+        path = normalized
     # 1) Try R2
     if storage_service.is_configured():
         try:
@@ -215,6 +226,42 @@ else:
         raise RuntimeError("FRONTEND_URL wajib diisi")
     cors_origins = [frontend_url]
 cors_origins = expand_origin_variants(cors_origins)
+
+
+def trusted_request_origins() -> set:
+    """Origins allowed to issue cookie-authenticated mutations: the configured
+    CORS origins plus this deployment's own Vercel aliases and the project's
+    production domains."""
+    allowed = set(cors_origins)
+    for name in ("VERCEL_URL", "VERCEL_BRANCH_URL", "VERCEL_PROJECT_PRODUCTION_URL"):
+        host = os.environ.get(name, "").strip()
+        if host:
+            allowed.update(expand_origin_variants(["https://" + host]))
+    allowed.update({"https://rilismusik.com", "https://www.rilismusik.com", "https://rilismusik.vercel.app"})
+    return allowed
+
+
+_CSRF_SAFE_METHODS = {"GET", "HEAD", "OPTIONS"}
+
+
+def _same_host_origin(request: Request, origin: str) -> bool:
+    """A browser request whose Origin is the host it is sent to is same-origin."""
+    host = (request.headers.get("x-forwarded-host") or request.headers.get("host") or "").split(",")[0].strip().lower()
+    return bool(host) and urlsplit(origin).netloc.lower() == host
+
+
+@app.middleware("http")
+async def csrf_origin_guard(request: Request, call_next):
+    """CSRF defense for cookie-based auth (SameSite=None): browsers always send
+    an Origin header on cross-site mutations, so reject unsafe methods whose
+    Origin is present but untrusted. Requests without Origin (server-to-server
+    calls, webhooks, scripts using Bearer tokens) are unaffected."""
+    if request.method not in _CSRF_SAFE_METHODS:
+        origin = (request.headers.get("origin") or "").strip().rstrip("/")
+        if origin and origin not in trusted_request_origins() and not _same_host_origin(request, origin):
+            return JSONResponse(status_code=403, content={"detail": "Origin permintaan tidak diizinkan"})
+    return await call_next(request)
+
 
 app.add_middleware(
     CORSMiddleware,
