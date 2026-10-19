@@ -49,7 +49,8 @@ function staffSeed132(r){
   if(!data.ops.some(x=>x.id===r.id))data.ops.push({id:r.id,title:[`Pengembalian dana · ${name}`,`Refund · ${name}`],kind:'approval',area:'platform',created:new Date(r.at).toISOString().slice(0,10),status:'pending',
     detail:[`${l.plan} · ${rp132(l.amount)} · dibeli ${date10(day132(l.bought))}. Diajukan lewat ${r.ticket}.`,`${l.plan} · ${rp132(l.amount)} · bought ${date10(day132(l.bought))}. Requested via ${r.ticket}.`],
     policy:{...(data.workRules||[]).find(w=>w.id==='approval')}});
-  if(typeof threadStore131==='function'){const st=threadStore131();if(!st.tickets.some(x=>x.id===r.ticket))st.tickets.push({id:r.ticket,label:name,subject:['Pengembalian dana layanan lama','Legacy service refund'],obj:r.id,status:'submitted',msgs:[{who:name,text:[r.note,r.note],at:date10(r.at,true),ts:r.at}],notes:[]});}
+  const live=typeof Tickets112!=='undefined'&&Tickets112.init(ten).tickets.some(t=>t.id===r.ticket);
+  if(!live&&typeof threadStore131==='function'){const st=threadStore131();if(!st.tickets.some(x=>x.id===r.ticket))st.tickets.push({id:r.ticket,label:name,subject:['Pengembalian dana layanan lama','Legacy service refund'],obj:r.id,status:'submitted',msgs:[{who:name,text:[r.note,r.note],at:date10(r.at,true),ts:r.at}],notes:[]});}
   if(data.notifications&&!data.notifications.some(n=>n.id==='N-'+r.id))people.filter(p=>p.super).forEach(p=>data.notifications.unshift({id:'N-'+r.id+(p.id==='jeck'?'':'-'+p.id),target:p.id,title:[`Pengajuan pengembalian dana · ${name}`,`Refund request · ${name}`],body:[`${l.plan} · ${rp132(l.amount)}. Perlu keputusan Super Admin.`,`${l.plan} · ${rp132(l.amount)}. Needs a Super Admin decision.`],obj:r.id,time:date10(r.at,true),read:[]}));
 }
 function ensure132(){tr132().requests.forEach(staffSeed132);}
@@ -92,16 +93,17 @@ function startRefund132(){
   if(request132(m.id)&&request132(m.id).status!=='rejected')return toast(T('Pengajuan sudah tercatat.','A request already exists.'));
   if(ten.now>deadline132(m.id))return toast(T('Masa pengajuan sudah berakhir.','The request window has ended.'));
   if(typeof closeModal==='function')closeModal();document.querySelector('#dialog')?.close();
-  payload112=fresh112('','general');payload112.refund132=true;ui112.draft=null;
-  payload112.note=T(`Pengajuan pengembalian dana layanan lama.\nLayanan lama: ${l.plan} (dibeli ${date10(day132(l.bought))}, ${rp132(l.amount)}, ref ${l.ref}).\nAlasan: tidak berkenan dengan perubahan layanan.\nRekening tujuan: (nama bank · nomor rekening · nama pemilik)\nBukti pembelian: lampirkan bila ada.`,`Legacy service refund request.\nPrevious service: ${l.plan} (bought ${date10(day132(l.bought))}, ${rp132(l.amount)}, ref ${l.ref}).\nReason: I do not agree with the service change.\nDestination account: (bank · account number · holder)\nProof of purchase: attach if available.`);
-  module102('tickets');render();openForm112();
+  const note=T(`Pengajuan pengembalian dana layanan lama.\nLayanan lama: ${l.plan} (dibeli ${date10(day132(l.bought))}, ${rp132(l.amount)}, ref ${l.ref}).\nAlasan: tidak berkenan dengan perubahan layanan.\nRekening tujuan: (nama bank · nomor rekening · nama pemilik)\nBukti pembelian: lampirkan bila ada.`,`Legacy service refund request.\nPrevious service: ${l.plan} (bought ${date10(day132(l.bought))}, ${rp132(l.amount)}, ref ${l.ref}).\nReason: I do not agree with the service change.\nDestination account: (bank · account number · holder)\nProof of purchase: attach if available.`);
+  /* dev.23: langsung ke Pesan (chat label–admin) dengan percakapan baru yang sudah terisi */
+  if(typeof pesan133!=='undefined'){module102('tickets');render();pesan133.compose={refund:true,note};render();return;}
+  payload112=fresh112('','general');payload112.refund132=true;payload112.note=note;ui112.draft=null;module102('tickets');render();openForm112();
 }
 /* tiket umum bertanda refund132 → pengajuan pengembalian dana */
 const run112Before132=run112;
 run112=function(action,p){
   const id=run112Before132(action,p);
   if(action==='create'&&p&&p.refund132&&isLabel10()){
-    const s=tr132(),m=ten.member,at=ten.now,r={id:'RF-'+(++s.serial),member:m,ticket:id,status:'submitted',at,note:String(p.note||'').split('\n').slice(0,3).join(' '),bank:T('lihat tiket','see ticket'),history:[{status:'submitted',at,actor:m}]};
+    const s=tr132(),m=ten.member,at=ten.now,r={id:'RF-'+(++s.serial),member:m,ticket:id,status:'submitted',at,note:String(p.note||'').split('\n').slice(0,3).join(' '),bank:T('lihat percakapan','see conversation'),history:[{status:'submitted',at,actor:m}]};
     if(!readAt132(m))transitionNews132().reads[m]=at;
     s.requests.push(r);staffSeed132(r);
     s.notices.unshift({member:m,key:'refund_submitted132',ref:r.id,at});save10();

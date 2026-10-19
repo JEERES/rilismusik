@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.23",
+    "date": "2026-10-19",
+    "summary": {
+      "id": "Pesan: chat label ↔ Rilis Musik dalam satu pintu; Kotak Masuk admin membaca semua percakapan label.",
+      "en": "Messages: one door for label ↔ Rilis Musik chat; the admin Inbox reads every label conversation."
+    },
+    "entries": [
+      {
+        "id": "dev23-pesan-label",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "dashboard",
+          "menu": {
+            "id": "Pesan (label)",
+            "en": "Messages (label)"
+          }
+        },
+        "title": {
+          "id": "Pesan: Tiket Bantuan menjadi chat",
+          "en": "Messages: Support Tickets become a chat"
+        },
+        "detail": {
+          "id": "Menu Tiket Bantuan menjadi Pesan, dengan ikon chat di header label (titik merah bila ada balasan). “Pesan baru” untuk topik apa saja; “Permintaan khusus” membuka formulir katalog yang sudah ada. Setiap percakapan tetap tercatat sebagai tiket. Pengajuan pengembalian dana kini langsung membuka percakapan di Pesan.",
+          "en": "Support Tickets becomes Messages, with a chat icon in the label header (red dot on new replies). “New message” for any topic; “Special request” opens the existing catalogue forms. Every conversation is still recorded as a ticket. Refund requests now open a conversation in Messages directly."
+        }
+      },
+      {
+        "id": "dev23-pesan-super",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Kotak Masuk · Percakapan",
+            "en": "Inbox · Conversations"
+          }
+        },
+        "title": {
+          "id": "Kotak Masuk membaca semua percakapan label",
+          "en": "Inbox reads every label conversation"
+        },
+        "detail": {
+          "id": "Balasan admin langsung sampai ke label dan otomatis menangani tiket; catatan internal tidak terlihat label; tombol Tangani, Tandai selesai, dan Rincian tiket di panel kanan.",
+          "en": "Admin replies reach the label and take the ticket automatically; internal notes stay hidden from labels; Take it, Mark as done and Ticket details in the side panel."
+        }
+      },
+      {
+        "id": "dev23-fixes",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Kotak Masuk",
+            "en": "Inbox"
+          }
+        },
+        "title": {
+          "id": "Perbaikan: urutan pesan & tiket umum",
+          "en": "Fixes: message order & general tickets"
+        },
+        "detail": {
+          "id": "Urutan pesan dan catatan internal di Kotak Masuk kembali mengikuti jam. Tiket tanpa rilisan (permintaan umum, royalti) kini bisa diselesaikan.",
+          "en": "Inbox messages and internal notes follow their time again. Tickets without a release (general, royalty) can now be closed."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.22",
     "date": "2026-10-19",
     "summary": {

@@ -444,3 +444,21 @@
 .cha-switch131:has(> :nth-child(3)){grid-template-columns:repeat(3,minmax(0,1fr));display:grid}
 .cha-switch131:has(> :nth-child(3))>button{padding-inline:8px;min-width:0}
 .tr-facts132 dd{white-space:nowrap}
+
+/* dev.23 — Pesan (chat label ↔ Rilis Musik). Memakai komponen CH-A; sidebar label tetap tampil. */
+.pesan133{display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px;height:calc(100dvh - 66px - 120px);min-height:540px}
+.pesan133 .cha-list131,.pesan133 .cha-mid131{min-height:0}
+.p-head133{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.p-head133 h2{margin:0;font-size:20px;font-weight:400}
+.p-new133{display:flex;gap:6px}
+.sys133{display:flex;justify-content:center}
+.sys133 span{font-size:11.5px;color:var(--muted);padding:3px 10px;border-radius:99px;box-shadow:inset 0 0 0 1px var(--line)}
+.need133{font-size:12.5px;margin-bottom:8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,#cc6419 10%,transparent);color:var(--text)}
+.new133{display:grid;gap:12px;padding:18px 20px;max-width:640px}
+.new133 label{display:grid;gap:6px;font-size:13px;color:var(--muted)}
+.new133 select,.new133 textarea{font:inherit;font-size:14px;color:var(--text);background:var(--surface,transparent);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.p-done133{display:flex;justify-content:center}
+.row131.unread strong{font-weight:500}
+.iconbtn.chat133.on{background:var(--soft);box-shadow:inset 0 0 0 1.5px var(--text);color:var(--text)}
+@media (max-width:1000px){.pesan133{grid-template-columns:1fr;height:auto}.pesan133 .cha-list131{max-height:45vh}}
+.pesan133>*{background:var(--surface);border-radius:22px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 6%,transparent);min-width:0;display:flex;flex-direction:column;overflow:hidden}

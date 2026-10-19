@@ -61,7 +61,7 @@ const initials131=n=>String(n||'').split(/\s+/).filter(Boolean).slice(0,2).map(s
 const labelVerified131=name=>{try{const l=(data.v9.labels||[]).find(x=>x.name===name);return !!(l&&verification9(l).status==='verified');}catch{return false;}};
 
 /* urutan linimasa: waktu "HH.MM" (Kem = kemarin), pesan baru (ts) paling akhir; tanpa waktu → urutan asli */
-function key131(at,i){if(typeof at==='number')return at;const m=/(Kems)?(d{1,2}).(d{2})/.exec(at||'');if(m)return (m[1]?-1440:0)+(+m[2])*60+(+m[3]);return /baru|just/.test(at||'')?1e7+i:i;}
+function key131(at,i){if(typeof at==='number')return at;const m=/(Kem\s)?(\d{1,2})\.(\d{2})/.exec(at||'');if(m)return (m[1]?-1440:0)+(+m[2])*60+(+m[3]);return /baru|just/.test(at||'')?1e7+i:i;}
 function threads131(){
   const st=threadStore131(),out=[];
   if(permission('support')!=='none')for(const tk of st.tickets){
