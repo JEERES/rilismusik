@@ -112,7 +112,7 @@ async def label_computed_withdrawable(user: dict = Depends(require_label)):
     """
     label = await get_label_by_user(user)
     info = await _compute_withdrawable(label["id"])
-    can_withdraw = info["withdrawable_idr"] > MIN_WITHDRAW_IDR
+    can_withdraw = info["withdrawable_idr"] >= MIN_WITHDRAW_IDR  # rule: starting from Rp 1 jt
     return {
         **{key: value for key, value in info.items() if key != "adjustment_amount_idr"},
         "min_withdraw_idr": MIN_WITHDRAW_IDR,
@@ -122,7 +122,7 @@ async def label_computed_withdrawable(user: dict = Depends(require_label)):
             if info.get("has_active_withdraw") else
             "Belum ada royalti tersedia setelah penarikan terakhir"
             if info["withdrawable_idr"] == 0 else
-            f"Saldo harus lebih dari Rp {MIN_WITHDRAW_IDR:,}. Saldo saat ini Rp {info['withdrawable_idr']:,}."
+            f"Saldo minimal Rp {MIN_WITHDRAW_IDR:,}. Saldo saat ini Rp {info['withdrawable_idr']:,}."
         ),
     }
 
@@ -149,12 +149,12 @@ async def _create_label_withdrawal(label: dict, user: dict):
     amount_idr = info["withdrawable_idr"]
     if info["has_active_withdraw"]:
         raise HTTPException(status_code=409, detail="Masih ada withdraw yang sedang diproses")
-    if amount_idr <= MIN_WITHDRAW_IDR:
+    if amount_idr < MIN_WITHDRAW_IDR:
         if amount_idr == 0:
             raise HTTPException(status_code=400, detail="Belum ada royalti tersedia untuk ditarik")
         raise HTTPException(
             status_code=400,
-            detail=f"Saldo harus lebih dari Rp {MIN_WITHDRAW_IDR:,.0f}. Saldo saat ini Rp {amount_idr:,.0f}.",
+            detail=f"Saldo minimal Rp {MIN_WITHDRAW_IDR:,.0f}. Saldo saat ini Rp {amount_idr:,.0f}.",
         )
     if not label.get("bank_verified"):
         bank = await db.bank_accounts.find_one({"label_id": label["id"]})
@@ -266,8 +266,8 @@ async def label_request_withdraw_batch(user: dict = Depends(require_label)):
                 shared_period_to = info["period_to"]
     if not eligible:
         raise HTTPException(status_code=400, detail="Belum ada royalti tersedia untuk ditarik")
-    if total <= MIN_WITHDRAW_IDR:
-        raise HTTPException(status_code=400, detail=f"Total saldo harus lebih dari Rp {MIN_WITHDRAW_IDR:,.0f}. Total saat ini Rp {total:,.0f}.")
+    if total < MIN_WITHDRAW_IDR:
+        raise HTTPException(status_code=400, detail=f"Total saldo minimal Rp {MIN_WITHDRAW_IDR:,.0f}. Total saat ini Rp {total:,.0f}.")
 
     batch_id = new_id()
     authority_id = user.get("primary_label_id") or (next((l["id"] for l in labels if l.get("subscription_tier") == "multi_label"), None)) or labels[0]["id"]
@@ -599,10 +599,10 @@ async def _apply_admin_withdraw_action(wd_id: str, body: WithdrawAdminAction, us
                 total_flipped += len(oids)
             logger.info("[WITHDRAW] mark_paid wd=%s flipped %d lines available→withdrawn for %s..%s",
                         wd_id, total_flipped, period_from, period_to)
-            # Synchronized settlement: batch children advance to the SHARED
-            # batch period_to (not just their own), so all account labels end
-            # on the same reporting cutoff after the batch is paid.
-            cutoff_period = wd.get("shared_period_to") or period_to
+            # Each label only settles the periods it was actually paid for.
+            # Advancing a batch child to the batch-wide shared_period_to would
+            # mark that label's later, unpaid lines as already withdrawn.
+            cutoff_period = period_to
             await db.labels.update_one(
                 {"id": wd["label_id"]},
                 {"$set": {"last_withdrawn_period": cutoff_period, "updated_at": now_iso()}},

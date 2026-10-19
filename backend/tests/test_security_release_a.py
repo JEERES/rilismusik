@@ -14,10 +14,12 @@ from auth_utils import hash_password, verify_password
 import server
 import storage_service
 import auth_utils
-from models import AdminRoleCreateIn, AdminRoleUpdateIn, AdminUserCreateIn, LabelStatusUpdate
+from datetime import datetime, timedelta, timezone
+
+from models import AdminRoleCreateIn, AdminRoleUpdateIn, AdminUserCreateIn, LabelStatusUpdate, WithdrawAdminAction
 from routes import (
     admin, admin_access, admin_label_service, cms, deps, file_access, label_name_guard, migrate,
-    release_deletion_service, releases, royalty, seed,
+    financial_lock, release_deletion_service, releases, royalty, seed, withdraw,
 )
 
 SUPER = {"id": "super", "role": "super_admin", "is_admin": True, "admin_role_active": True, "permissions": [], "name": "Super"}
@@ -388,6 +390,80 @@ class LabelAbuseTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("signature_url", private["documents"])
         self.assertFalse(await file_access.authorize_file_path("cms/signatures/s.png", {"id": "u1", "role": "label"}))
         self.assertTrue("cms/signatures/s.png".startswith(file_access.AUTHENTICATED_PREFIXES))
+
+
+FINANCE = {"id": "fin", "role": "admin_custom", "admin_role_id": "r-fin", "is_admin": True, "admin_role_active": True,
+           "permissions": ["withdraw.view", "withdraw.approve", "withdraw.pay", "royalty.import", "migration.claims"]}
+
+
+def iso_minutes_ago(minutes: int) -> str:
+    return (datetime.now(timezone.utc) - timedelta(minutes=minutes)).isoformat()
+
+
+class MoneyBugTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.db = AsyncMongoMockClient().test
+        self.patches = [patch.object(module, name, self.db) for module, name in (
+            (withdraw, "db"), (withdraw, "db_bg"), (financial_lock, "db"), (royalty, "db"), (royalty, "db_bg"),
+            (migrate, "db"), (migrate, "db_bg"), (deps, "db"))]
+        self.patches += [patch.object(withdraw, name, new_callable=AsyncMock) for name in (
+            "refresh_balance_cache", "notify_many", "log_activity", "send_withdraw_paid_email")]
+        self.patches += [patch.object(withdraw, "label_user_ids", AsyncMock(return_value=[])),
+                         patch.object(royalty, "log_activity", new_callable=AsyncMock),
+                         patch.object(royalty, "run_background", new_callable=AsyncMock),
+                         patch.object(migrate, "log_activity", new_callable=AsyncMock)]
+        for item in self.patches:
+            item.start()
+        self.addCleanup(lambda: [item.stop() for item in reversed(self.patches)])
+
+    async def test_batch_child_settles_only_its_own_periods(self):
+        await self.db.labels.insert_one({"id": "lab-a", "user_id": "u1", "last_withdrawn_period": "2025-12"})
+        await self.db.withdraw_requests.insert_one({"id": "wd1", "label_id": "lab-a", "status": "approved",
+            "period_from": "2026-01", "period_to": "2026-03", "shared_period_to": "2026-06", "amount_idr": 1_500_000})
+        await self.db.royalty_lines.insert_many([
+            {"id": "l1", "label_id": "lab-a", "period": "2026-02", "status": "available"},
+            {"id": "l2", "label_id": "lab-a", "period": "2026-05", "status": "available"},
+        ])
+        await withdraw.admin_withdraw_action("wd1", WithdrawAdminAction(action="mark_paid"), user=FINANCE)
+        label = await self.db.labels.find_one({"id": "lab-a"})
+        self.assertEqual(label["last_withdrawn_period"], "2026-03")
+        self.assertEqual((await self.db.royalty_lines.find_one({"id": "l2"}))["status"], "available")
+
+    async def test_running_import_cannot_be_retried_or_deleted(self):
+        await self.db.royalty_imports.insert_one({"id": "imp", "status": "processing", "updated_at": iso_minutes_ago(2)})
+        for call in (royalty.admin_retry_import("imp", user=FINANCE), royalty.admin_delete_import("imp", user=SUPER)):
+            with self.assertRaises(HTTPException) as ctx:
+                await call
+            self.assertEqual(ctx.exception.status_code, 409)
+        self.assertEqual((await self.db.royalty_imports.find_one({"id": "imp"}))["status"], "processing")
+
+    async def test_stalled_import_retry_is_claimed_once(self):
+        await self.db.royalty_imports.insert_one({"id": "imp", "status": "processing", "updated_at": iso_minutes_ago(30)})
+        with patch.object(royalty, "_ensure_local_csv", AsyncMock(return_value=None)):
+            with self.assertRaises(HTTPException) as ctx:
+                await royalty.admin_retry_import("imp", user=FINANCE)
+        self.assertEqual(ctx.exception.status_code, 400)  # claimed, then the missing CSV is reported
+        self.assertTrue((await self.db.royalty_imports.find_one({"id": "imp"})).get("retry_requested_at"))
+
+    async def test_partially_published_import_cannot_be_deleted(self):
+        await self.db.royalty_imports.insert_one({"id": "imp", "status": "publish_error", "updated_at": iso_minutes_ago(60)})
+        with self.assertRaises(HTTPException) as ctx:
+            await royalty.admin_delete_import("imp", user=SUPER)
+        self.assertEqual(ctx.exception.status_code, 409)
+
+    async def test_claim_keeps_a_label_that_holds_payments(self):
+        await self.db.users.insert_one({"id": "u9", "email": "u9@test.dev", "claim_status": "pending_link", "role": "label"})
+        await self.db.labels.insert_many([{"id": "auto", "user_id": "u9", "label_name": "Baru"},
+                                          {"id": "legacy", "user_id": None, "label_name": "Lama"}])
+        await self.db.payments.insert_one({"id": "p1", "label_id": "auto", "status": "paid"})
+        await migrate.link_claim_to_legacy_label("u9", "legacy", user=SUPER)
+        self.assertIsNotNone(await self.db.labels.find_one({"id": "auto"}))
+
+    async def test_minimum_withdrawal_starts_at_one_million(self):
+        source = Path(withdraw.__file__).read_text(encoding="utf-8")
+        self.assertIn("withdrawable_idr\"] >= MIN_WITHDRAW_IDR", source)
+        self.assertIn("if amount_idr < MIN_WITHDRAW_IDR:", source)
+        self.assertIn("if total < MIN_WITHDRAW_IDR:", source)
 
 
 if __name__ == "__main__":

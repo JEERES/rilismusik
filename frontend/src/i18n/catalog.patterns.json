@@ -25,7 +25,7 @@
   "Publish gagal: {0}: {1}",
   "Rentang ini sudah berada dalam cutoff legacy sampai {0}",
   "Retry hanya untuk status processing/error (status saat ini: {0})",
-  "Saldo harus lebih dari Rp {0}. Saldo saat ini Rp {1}.",
+  "Saldo minimal Rp {0}. Saldo saat ini Rp {1}.",
   "Sinkronisasi ditahan: {0} label memiliki withdraw aktif. Selesaikan atau tolak request tersebut terlebih dahulu.",
   "Status import tidak valid untuk finalize: {0}",
   "Subtab hanya boleh satu tingkat: {0}",

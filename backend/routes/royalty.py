@@ -463,10 +463,14 @@ async def admin_finalize_large_upload(import_id: str, user: dict = Depends(requi
         )
 
     now = now_iso()
-    await db.royalty_imports.update_one(
-        {"id": import_id},
+    # Compare-and-set: only the first finalize call moves the import out of
+    # awaiting_upload and starts a processor.
+    claimed = await db.royalty_imports.update_one(
+        {"id": import_id, "status": "awaiting_upload"},
         {"$set": {"status": "processing", "file_size_bytes": file_size, "started_at": now, "updated_at": now}},
     )
+    if claimed.matched_count != 1:
+        raise HTTPException(status_code=409, detail="Import sudah diproses oleh permintaan lain.")
     import asyncio
     await run_background(_process_csv_import_bg,
         import_id=import_id,
@@ -1597,6 +1601,21 @@ async def _mark_dana_received_bg(*, import_id: str, user_id: str):
         )
 
 
+IMPORT_STALL_MINUTES = 15
+
+
+def _import_is_stalled(imp: Dict[str, Any]) -> bool:
+    """A processing import writes progress (updated_at) every few batches; one
+    that has been silent for IMPORT_STALL_MINUTES is considered dead."""
+    try:
+        last = datetime.fromisoformat(str(imp.get("updated_at") or imp.get("started_at")))
+    except (TypeError, ValueError):
+        return True
+    if last.tzinfo is None:
+        last = last.replace(tzinfo=timezone.utc)
+    return datetime.now(timezone.utc) - last >= timedelta(minutes=IMPORT_STALL_MINUTES)
+
+
 def royalty_reset_enabled() -> bool:
     return os.environ.get("ROYALTY_RESET_ENABLED", "").strip().lower() in ("1", "true", "yes")
 
@@ -2125,6 +2144,17 @@ async def admin_retry_import(import_id: str, user: dict = Depends(require_admin)
         raise HTTPException(status_code=404, detail="Import tidak ditemukan")
     if imp["status"] not in ("processing", "error"):
         raise HTTPException(status_code=400, detail=f"Retry hanya untuk status processing/error (status saat ini: {imp['status']})")
+    if imp["status"] == "processing" and not _import_is_stalled(imp):
+        # A live processor still writes progress; restarting it would wipe
+        # its lines mid-run while both keep inserting.
+        raise HTTPException(status_code=409, detail="Import masih berjalan. Coba ulang hanya bila tidak ada kemajuan selama 15 menit.")
+    # Claim the retry atomically so two clicks cannot start two processors.
+    claimed = await db.royalty_imports.update_one(
+        {"id": import_id, "status": imp["status"], "updated_at": imp.get("updated_at")},
+        {"$set": {"status": "processing", "retry_requested_at": now_iso(), "updated_at": now_iso()}},
+    )
+    if claimed.matched_count != 1:
+        raise HTTPException(status_code=409, detail="Import sedang diproses ulang oleh permintaan lain.")
 
     file_path = await _ensure_local_csv(imp)
     if not file_path:
@@ -2621,8 +2651,15 @@ async def admin_delete_import(import_id: str, user: dict = Depends(require_super
     if not imp:
         raise HTTPException(status_code=404, detail="Import tidak ditemukan")
 
-    DELETABLE_STATUSES = {"awaiting_upload", "processing", "error", "publish_error", "pending_review", "deleting"}
+    DELETABLE_STATUSES = {"awaiting_upload", "processing", "error", "pending_review", "deleting"}
     status_val = imp.get("status")
+    if status_val == "publish_error":
+        # A failed publish has already credited some labels' pending balance;
+        # deleting lines would leave that balance behind. Retry the publish.
+        raise HTTPException(
+            status_code=409,
+            detail="Publikasi import ini sudah sebagian mengubah saldo label. Ulangi publikasi sampai selesai; import ini tidak bisa dihapus.",
+        )
     if status_val not in DELETABLE_STATUSES:
         raise HTTPException(
             status_code=400,
@@ -2632,6 +2669,9 @@ async def admin_delete_import(import_id: str, user: dict = Depends(require_super
                 "Status yang bisa dihapus: " + ", ".join(sorted(DELETABLE_STATUSES))
             ),
         )
+    if status_val == "processing" and not _import_is_stalled(imp):
+        # The processor would keep inserting lines after the import is gone.
+        raise HTTPException(status_code=409, detail="Import masih berjalan. Hapus hanya bila tidak ada kemajuan selama 15 menit.")
 
     # Flip status to 'deleting' immediately so the UI can render a spinner +
     # block other actions on this row. The heavy cleanup (1M+ row deletions)

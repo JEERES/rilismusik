@@ -671,6 +671,25 @@ async def bulk_import_withdraws(
 
 # ============================ CLAIMS ============================
 
+# Anything a label paid for, owns or is owed keeps its auto-created label alive
+# when the account is linked to a claimed legacy label.
+_LABEL_DATA_COLLECTIONS = (
+    "releases", "royalty_lines", "payments", "service_orders", "wami_orders", "addon_orders",
+    "withdraw_requests", "balance_transactions", "support_tickets", "artists",
+)
+
+
+async def _label_has_account_data(label: Dict[str, Any]) -> bool:
+    if int(label.get("token_balance") or 0) > 0 or int(label.get("balance_available_idr") or 0) > 0:
+        return True
+    if label.get("payment_type") == "annual_subscription" or label.get("subscription_status") == "active":
+        return True
+    for name in _LABEL_DATA_COLLECTIONS:
+        if await db[name].find_one({"label_id": label["id"]}, {"_id": 0, "id": 1}):
+            return True
+    return False
+
+
 @migrate_r.get("/claims")
 async def list_pending_claims(user: dict = Depends(require_admin)):
     """List label-claim requests awaiting admin link."""
@@ -705,9 +724,7 @@ async def link_claim_to_legacy_label(user_id: str, legacy_label_id: str, user: d
     existing = await db.labels.find_one({"user_id": user_id, "id": {"$ne": legacy_label_id}}, {"_id": 0})
     if existing:
         old_label_id = existing["id"]
-        has_release = await db.releases.find_one({"label_id": old_label_id}, {"_id": 0, "id": 1})
-        has_royalty = await db.royalty_lines.find_one({"label_id": old_label_id}, {"_id": 0, "id": 1})
-        if has_release or has_royalty:
+        if await _label_has_account_data(existing):
             logger.warning("Claim link: existing label %s has data, skipping auto-delete", old_label_id)
         else:
             import storage_service

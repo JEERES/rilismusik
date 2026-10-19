@@ -1507,7 +1507,7 @@
   "Sab": "Sat",
   "Salah satu layanan tambahan tidak tersedia": "One additional service is not available",
   "Saldo aktif dari salinan": "Active balance of copy",
-  "Saldo harus lebih dari Rp {0}. Saldo saat ini Rp {1}.": "Saldo must be more than Rp {0}. Current balance Rp {1}.",
+  "Saldo minimal Rp {0}. Saldo saat ini Rp {1}.": "Minimum balance is Rp {0}. Current balance Rp {1}.",
   "Saldo legacy sebelumnya": "Previous legacy balance",
   "Saldo negatif": "Negative balance",
   "Saldo saat pembatalan": "Saldo on revocation",
