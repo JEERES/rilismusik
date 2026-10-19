@@ -47,6 +47,8 @@ class LabelTransferIn(BaseModel):
     reference: Optional[str] = Field(default=None, max_length=240)
     believe_confirmed: bool = False
     apply_now: bool = False
+    # Merge/move between two accounts of the SAME owner (e.g. two emails).
+    cross_account_same_owner: bool = False
 
 
 class LabelTransferDecisionIn(BaseModel):
@@ -63,14 +65,21 @@ def _actor_name(user: dict) -> str:
     return user.get("name") or user.get("role_name") or user.get("email") or user["id"]
 
 
-def can_apply_directly(user: dict, mode: str) -> bool:
+def can_apply_directly(user: dict, mode: str, cross_account: bool = False) -> bool:
     # A sale always needs a second Super Admin; nobody applies it alone.
-    return mode != "sale" and has_permission(user, "labels.transfer")
+    if mode == "sale":
+        return False
+    if cross_account:
+        # Money leaves one login for another: only a Super Admin vouches for the owner.
+        return user.get("role") == "super_admin"
+    return has_permission(user, "labels.transfer")
 
 
 def can_decide(user: dict, transfer: dict) -> bool:
     if transfer["mode"] == "sale":
         return user.get("role") == "super_admin" and transfer["requested_by"] != user["id"]
+    if transfer.get("cross_account"):
+        return user.get("role") == "super_admin"
     if not has_permission(user, "labels.transfer.approve"):
         return False
     return transfer["requested_by"] != user["id"] or has_permission(user, "labels.transfer")
@@ -115,7 +124,7 @@ async def build_transfer_request(body: LabelTransferIn, *, actor: dict, actor_ki
     doc: Dict[str, Any] = {
         "mode": body.mode, "source_label_id": source["id"], "source_label_name": source.get("label_name"),
         "source_user_id": source.get("user_id"), "target_label_id": None, "target_label_name": None,
-        "target_user_id": None, "new_name": None, "release_ids": [],
+        "target_user_id": None, "new_name": None, "release_ids": [], "cross_account": False,
         "effective_period": body.effective_period, "carry_balance": True,
         "reason": body.reason.strip(), "reference": (body.reference or "").strip() or None,
     }
@@ -139,7 +148,13 @@ async def build_transfer_request(body: LabelTransferIn, *, actor: dict, actor_ki
             raise HTTPException(status_code=409, detail="Label tujuan sudah digabung ke label lain")
         same_account = bool(source.get("user_id")) and source.get("user_id") == target.get("user_id")
         if body.mode in SAME_ACCOUNT_MODES and not same_account:
-            raise HTTPException(status_code=400, detail="Label tujuan harus berada di akun yang sama. Untuk label yang dijual ke akun lain, gunakan mode Penjualan.")
+            if actor_kind != "admin" or not body.cross_account_same_owner:
+                raise HTTPException(status_code=400, detail="Label tujuan ada di akun lain. Jika kedua akun milik orang yang sama, centang \"Akun berbeda, pemilik sama\". Untuk label yang dijual, gunakan mode Penjualan.")
+            if not source.get("user_id") or not target.get("user_id"):
+                raise HTTPException(status_code=400, detail="Kedua label harus sudah punya akun login. Klaim label yang belum punya akun lewat menu Migrasi.")
+            if len(doc["reference"] or "") < 3:
+                raise HTTPException(status_code=400, detail="Isi rujukan bukti pemilik sama (mis. nomor tiket atau KTP yang dicocokkan)")
+            doc["cross_account"] = True
         if body.mode == "sale":
             if same_account:
                 raise HTTPException(status_code=400, detail="Kedua label ada di akun yang sama — gunakan mode Gabung atau Pilih Rilisan")
@@ -180,11 +195,12 @@ def summarize(doc: dict) -> str:
         return f"Ganti nama {doc['source_label_name']} → {doc['new_name']}"
     scope = f"{len(doc['release_ids'])} rilisan" if doc.get("release_ids") else "semua rilisan"
     verb = {"merge": "Gabung", "releases": "Pindah", "sale": "Jual"}[doc["mode"]]
-    return f"{verb} {scope} {doc['source_label_name']} → {doc['target_label_name']}"
+    suffix = " (akun berbeda, pemilik sama)" if doc.get("cross_account") else ""
+    return f"{verb} {scope} {doc['source_label_name']} → {doc['target_label_name']}{suffix}"
 
 
-async def _approver_ids(mode: str, exclude: str) -> List[str]:
-    if mode == "sale":
+async def _approver_ids(doc: dict, exclude: str) -> List[str]:
+    if doc["mode"] == "sale" or doc.get("cross_account"):
         query: Dict[str, Any] = {"role": "super_admin"}
     else:
         role_ids = await db.admin_roles.distinct("id", {"permissions": "labels.transfer.approve", "active": {"$ne": False}})
@@ -194,12 +210,12 @@ async def _approver_ids(mode: str, exclude: str) -> List[str]:
 
 
 async def notify_submitted(doc: dict) -> None:
-    approvers = await _approver_ids(doc["mode"], doc["requested_by"])
+    approvers = await _approver_ids(doc, doc["requested_by"])
     await notify_many(approvers, "label_transfer_request", "Permintaan Pindah Label",
                       f"{summarize(doc)} menunggu persetujuan ({doc['reference_id']}).",
                       link="/admin/label-transfers", meta={"transfer_id": doc["id"]})
-    if doc["mode"] == "sale":
-        # Both owners hear about a sale before anything moves, so a mistaken or
+    if doc["mode"] == "sale" or doc.get("cross_account"):
+        # Both accounts hear about it before anything moves, so a mistaken or
         # fraudulent request is caught while it is still pending.
         owners = [user_id for user_id in {doc.get("source_user_id"), doc.get("target_user_id")} if user_id]
         await notify_many(owners, "label_transfer_sale_pending", "Pengajuan Penjualan Label",
@@ -400,7 +416,9 @@ async def _apply_labels(doc: dict, actor: dict) -> None:
             "$push": {"label_name_aliases": _alias(doc["source_label_name"], doc, from_label_id=source_id)},
             "$set": {"updated_at": now_iso()},
         })
-        await db.users.update_many({"active_label_id": source_id}, {"$set": {"active_label_id": doc["target_label_id"]}})
+        if not doc.get("cross_account"):
+            # The other login of a cross-account merge never owns the target.
+            await db.users.update_many({"active_label_id": source_id}, {"$set": {"active_label_id": doc["target_label_id"]}})
 
 
 async def _notify_owners(doc: dict) -> None:
