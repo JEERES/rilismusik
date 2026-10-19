@@ -116,7 +116,7 @@ async def admin_get_transfer(transfer_id: str, user: dict = Depends(require_admi
 @label_transfer_r.post("/admin/label-transfers/preview")
 async def admin_preview_transfer(body: LabelTransferIn, user: dict = Depends(require_admin)):
     assert_admin_permission(user, "labels.manage")
-    return {**await _preview(body, user, "admin"), "can_apply_directly": can_apply_directly(user, body.mode)}
+    return {**await _preview(body, user, "admin"), "can_apply_directly": can_apply_directly(user, body.mode, body.cross_account_same_owner)}
 
 
 @label_transfer_r.post("/admin/label-transfers")
@@ -124,7 +124,7 @@ async def admin_create_transfer(body: LabelTransferIn, user: dict = Depends(requ
     assert_admin_permission(user, "labels.manage")
     doc = await build_transfer_request(body, actor=user, actor_kind="admin")
     await build_plan(doc)
-    direct = body.apply_now and can_apply_directly(user, body.mode)
+    direct = body.apply_now and can_apply_directly(user, body.mode, doc["cross_account"])
     if direct:
         if not body.believe_confirmed:
             raise HTTPException(status_code=400, detail="Konfirmasi dulu bahwa perpindahan di Believe sudah berhasil")
@@ -173,7 +173,7 @@ async def admin_resume_transfer(transfer_id: str, user: dict = Depends(require_a
     doc = await db.label_transfers.find_one({"id": transfer_id}, {"_id": 0})
     if not doc:
         raise HTTPException(status_code=404, detail="Perpindahan tidak ditemukan")
-    allowed = user["id"] in {doc.get("decided_by"), doc.get("applied_by")} or can_decide(user, doc) or can_apply_directly(user, doc["mode"])
+    allowed = user["id"] in {doc.get("decided_by"), doc.get("applied_by")} or can_decide(user, doc) or can_apply_directly(user, doc["mode"], bool(doc.get("cross_account")))
     if not allowed:
         raise HTTPException(status_code=403, detail="Anda tidak dapat melanjutkan perpindahan ini")
     return await apply_transfer(transfer_id, user)

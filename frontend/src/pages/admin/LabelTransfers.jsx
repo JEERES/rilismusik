@@ -113,7 +113,7 @@ function TransferRow({ row, busy, onAct, onResume }) {
           <button type="button" disabled={busy} onClick={() => onAct(row, "approve")} className="inline-flex items-center gap-1 rounded-md border border-emerald-400/30 px-4 py-2 text-xs font-bold text-emerald-300 hover:bg-emerald-500/10 disabled:opacity-50" data-testid={`label-transfer-approve-${row.id}`}><Check className="h-4 w-4" /> Setujui & Terapkan</button>
           <button type="button" disabled={busy} onClick={() => onAct(row, "reject")} className="inline-flex items-center gap-1 rounded-md border border-red-400/30 px-4 py-2 text-xs font-bold text-red-300 hover:bg-red-500/10 disabled:opacity-50"><X className="h-4 w-4" /> Tolak</button>
         </>}
-        {row.status === "pending" && !row.can_decide && <span className="text-xs text-zinc-500">{row.mode === "sale" ? "Menunggu persetujuan Super Admin lain." : "Menunggu persetujuan admin lain."}</span>}
+        {row.status === "pending" && !row.can_decide && <span className="text-xs text-zinc-500">{row.mode === "sale" ? "Menunggu persetujuan Super Admin lain." : row.cross_account ? "Menunggu persetujuan Super Admin." : "Menunggu persetujuan admin lain."}</span>}
         {canResume && <button type="button" disabled={busy} onClick={() => onResume(row)} className="inline-flex items-center gap-1 rounded-md border border-sky-400/30 px-4 py-2 text-xs font-bold text-sky-300 hover:bg-sky-500/10 disabled:opacity-50"><RotateCcw className="h-4 w-4" /> Lanjutkan</button>}
       </div>
     </div>
@@ -156,6 +156,7 @@ function TransferForm({ initialSource, onDone }) {
   const [reason, setReason] = useState("");
   const [believe, setBelieve] = useState(false);
   const [applyNow, setApplyNow] = useState(false);
+  const [sameOwner, setSameOwner] = useState(false);
   const [preview, setPreview] = useState(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -164,11 +165,13 @@ function TransferForm({ initialSource, onDone }) {
     setReleases([]); setSelected([]);
     if (source && pickRelease) api.get(`/admin/label-transfers/labels/${source.id}/releases`).then((r) => setReleases(r.data || [])).catch(() => {});
   }, [source, pickRelease]);
-  useEffect(() => { setPreview(null); }, [source, target, mode, newName, selected, effective, carry, reference, reason]);
+  useEffect(() => { setPreview(null); }, [source, target, mode, newName, selected, effective, carry, reference, reason, sameOwner]);
+  const sameOwnerOption = mode === "merge" || mode === "releases";
   const body = () => ({
     mode, source_label_id: source?.id, target_label_id: mode === "rename" ? null : target?.id, new_name: mode === "rename" ? newName : null,
     release_ids: pickRelease ? selected : [], effective_period: effective || null, carry_balance: mode === "sale" ? carry : true,
     reference: reference || null, reason, believe_confirmed: believe, apply_now: applyNow,
+    cross_account_same_owner: sameOwnerOption && sameOwner,
   });
   const run = async (path, onOk) => {
     setBusy(true); setErr("");
@@ -191,7 +194,7 @@ function TransferForm({ initialSource, onDone }) {
         <LabelPicker label="Label asal" value={source} onChange={setSource} testId="label-transfer-source-search" />
         {mode === "rename"
           ? <div><label className="rm-label">Nama baru</label><input className="rm-input" value={newName} onChange={(e) => setNewName(e.target.value)} required placeholder="Sesuai nama di Believe" /></div>
-          : <LabelPicker label={mode === "sale" ? "Label pembeli" : "Label tujuan (akun yang sama)"} value={target} onChange={setTarget} testId="label-transfer-target-search" />}
+          : <LabelPicker label={mode === "sale" ? "Label pembeli" : "Label tujuan"} value={target} onChange={setTarget} testId="label-transfer-target-search" />}
       </div>
       {pickRelease && source && (
         <div><label className="rm-label">{mode === "sale" ? `Rilisan yang dijual (${selected.length || "semua"})` : `Rilisan yang dipindah (${selected.length})`}</label>
@@ -205,9 +208,10 @@ function TransferForm({ initialSource, onDone }) {
       )}
       <div className="grid gap-4 md:grid-cols-3">
         <div><label className="rm-label">Berlaku mulai laporan{mode === "sale" ? "" : " (opsional)"}</label><input type="month" className="rm-input" value={effective} onChange={(e) => setEffective(e.target.value)} required={mode === "sale"} /></div>
-        <div><label className="rm-label">Rujukan{mode === "sale" ? " dokumen jual-beli" : " (tiket/Believe)"}</label><input className="rm-input" value={reference} onChange={(e) => setReference(e.target.value)} required={mode === "sale"} /></div>
+        <div><label className="rm-label">Rujukan{mode === "sale" ? " dokumen jual-beli" : sameOwnerOption && sameOwner ? " bukti pemilik sama" : " (tiket/Believe)"}</label><input className="rm-input" value={reference} onChange={(e) => setReference(e.target.value)} required={mode === "sale" || (sameOwnerOption && sameOwner)} /></div>
         <div><label className="rm-label">Alasan</label><input className="rm-input" value={reason} onChange={(e) => setReason(e.target.value)} minLength={3} required /></div>
       </div>
+      {sameOwnerOption && <label className="flex items-start gap-2 text-sm text-zinc-300"><input type="checkbox" className="mt-1" checked={sameOwner} onChange={(e) => setSameOwner(e.target.checked)} data-testid="label-transfer-same-owner" /><span>Akun berbeda, pemilik sama<span className="block text-xs text-zinc-500">Untuk pemilik yang punya dua akun (beda email). Semua saldo belum ditarik ikut pindah. Hanya Super Admin yang bisa menerapkan; kedua akun mendapat notifikasi.</span></span></label>}
       {mode === "sale" && <label className="flex items-center gap-2 text-sm text-zinc-300"><input type="checkbox" checked={carry} onChange={(e) => setCarry(e.target.checked)} /> Saldo penjual sebelum bulan efektif ikut pindah ke pembeli</label>}
       <label className="flex items-center gap-2 text-sm text-zinc-300"><input type="checkbox" checked={believe} onChange={(e) => setBelieve(e.target.checked)} data-testid="label-transfer-believe" /> Perpindahan di Believe sudah berhasil</label>
       {preview?.can_apply_directly && <label className="flex items-center gap-2 text-sm text-zinc-300"><input type="checkbox" checked={applyNow} onChange={(e) => setApplyNow(e.target.checked)} data-testid="label-transfer-apply-now" /> Terapkan langsung tanpa persetujuan</label>}

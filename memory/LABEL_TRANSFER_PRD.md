@@ -19,6 +19,8 @@ satu nama, laporan atas nama lama tetap dikenali, saldo ikut pindah.
 | `releases` | label lain di akun yang sama | dipilih | tetap aktif |
 | `sale` | label di akun lain | semua / dipilih | tetap milik penjual |
 
+**Akun berbeda, pemilik sama** (opsi `cross_account_same_owner` pada `merge`/`releases`): pemilik yang punya dua akun (beda email). Hanya input admin, wajib rujukan bukti pemilik sama, hanya Super Admin yang menerapkan/menyetujui, kedua akun dinotifikasi saat pengajuan. Uang mengikuti aturan merge (semua saldo belum ditarik pindah, tanpa batas bulan efektif); login lama tidak mendapat akses ke label tujuan.
+
 ## Aturan uang
 - Saldo = baris royalti pending/available setelah `last_withdrawn_period` + ledger penyesuaian − withdraw aktif.
 - Yang dipindah: baris royalti **belum ditarik** (draft/pending/available, bukan legacy, periode > cutoff asal) milik katalog yang dipindah. Mode `merge` memindah semua baris label asal.

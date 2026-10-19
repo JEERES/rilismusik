@@ -225,6 +225,38 @@ class LabelTransferTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(approvers, ["super", "super-2"])
         self.assertEqual((await self.db.releases.find_one({"id": "r1"}))["label_id"], "pel")
 
+    async def test_same_owner_on_two_accounts_can_merge_with_super_admin(self):
+        # Pelpendo was renamed to the other account's label in Believe; one owner, two logins.
+        with self.assertRaises(HTTPException) as ctx:
+            await self.create(SUPPORT, mode="merge", source_label_id="pel", target_label_id="buy")
+        self.assertIn("pemilik sama", ctx.exception.detail)
+        with self.assertRaises(HTTPException):
+            await self.create(OWNER, kind="label", mode="merge", source_label_id="pel", target_label_id="buy",
+                              cross_account_same_owner=True, reference="TIKET-9")
+        with self.assertRaises(HTTPException) as ctx:
+            await self.create(SUPPORT, mode="merge", source_label_id="pel", target_label_id="buy", cross_account_same_owner=True)
+        self.assertIn("rujukan", ctx.exception.detail)
+        doc = await self.create(SUPPORT, mode="merge", source_label_id="pel", target_label_id="buy",
+                                cross_account_same_owner=True, reference="TIKET-9")
+        self.assertTrue(doc["cross_account"])
+        self.assertIn("pemilik sama", service.summarize(doc))
+        self.assertFalse(service.can_apply_directly(SUPPORT, "merge", True))
+        self.assertFalse(service.can_decide(APPROVER, doc))
+        self.assertTrue(service.can_decide(SUPER, doc))
+        self.assertTrue(service.can_apply_directly(SUPER, "merge", True))
+        await service.notify_submitted(doc)
+        alerted = sorted([item["user_id"] async for item in self.db.notifications.find({"type": "label_transfer_sale_pending"})])
+        self.assertEqual(alerted, ["buyer", "owner"])
+        await self.approve_and_apply(doc)
+        self.assertEqual(await self.balance("pel"), (0, 0))
+        self.assertEqual(await self.balance("buy"), (3_300, 500))  # whole balance follows, no sale cutoff
+        self.assertEqual(await self.db.releases.count_documents({"label_id": "buy"}), 2)
+        self.assertEqual((await self.db.labels.find_one({"id": "pel"}))["merged_into_label_id"], "buy")
+        # The old login keeps its own active label; it never gains the target.
+        self.assertEqual((await self.db.users.find_one({"id": "owner"}))["active_label_id"], "pel")
+        index = royalty._label_name_index({item["id"]: item async for item in self.db.labels.find({}, {"_id": 0})})
+        self.assertEqual(index["pelpendo"]["id"], "buy")
+
     async def test_decision_rules_for_requests(self):
         doc = await self.create(SUPPORT, mode="merge", source_label_id="pel", target_label_id="elf")
         self.assertFalse(service.can_decide(SUPPORT, doc))

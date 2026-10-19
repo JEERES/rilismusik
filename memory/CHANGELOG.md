@@ -1,5 +1,9 @@
 # RILIS MUSIK — Changelog
 
+## 2026-10 — Pindah label: akun berbeda, pemilik sama
+- Gabung/Pindah rilisan kini bisa lintas akun bila pemiliknya sama (dua akun beda email): opsi admin "Akun berbeda, pemilik sama", wajib rujukan, hanya Super Admin yang menerapkan, kedua akun dinotifikasi.
+
+
 ## 2026-10 — Pindah / Ganti Nama Label (ikut Believe)
 - Mode: **ganti nama**, **gabung** (akun sama), **pindah rilisan terpilih** (akun sama), **penjualan** ke akun lain (lebih ketat). Detail: `memory/LABEL_TRANSFER_PRD.md`.
 - Saldo belum ditarik ikut pindah: baris royalti unsettled dipindah; bagian yang periodenya sudah ditarik label tujuan dikreditkan lewat jurnal penyesuaian (`source=LABEL_TRANSFER`). Gabung juga memindah saldo Inject Saldo. Urutan tulis aman: terputus di tengah hanya menyembunyikan saldo sementara, tidak pernah dobel; klik Lanjutkan untuk meneruskan.
