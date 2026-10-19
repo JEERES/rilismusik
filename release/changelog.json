@@ -1,5 +1,55 @@
 [
   {
+    "version": "1.1.0-dev.24",
+    "date": "2026-10-19",
+    "summary": {
+      "id": "Dashboard Super Admin baru: Sorotan hari ini, Siklus royalti, Perlu keputusan, Kesehatan uang, Tim, Pertumbuhan.",
+      "en": "New Super Admin dashboard: Today’s highlight, Royalty cycle, Decisions, Money health, Team, Growth."
+    },
+    "entries": [
+      {
+        "id": "dev24-dashboard",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Dashboard Super Admin dirombak",
+          "en": "Super Admin dashboard redesigned"
+        },
+        "detail": {
+          "id": "Urutan baru: Sorotan hari ini di header → Siklus royalti (4 tahap + cincin hitung mundur) → Perlu keputusan Anda (satu daftar urut tenggat dengan tab dan tombol aksi saat diarahkan) + Kesehatan uang (jarum cakupan kas) → Tim hari ini → Pertumbuhan. Admin dan Label tidak berubah. Posisi kas dan 4 bulan awal grafik masih contoh.",
+          "en": "New order: Today’s highlight in the header → Royalty cycle (4 stages + countdown ring) → Needs your decision (one deadline-sorted list with tabs and hover actions) + Money health (cash-cover gauge) → Team today → Growth. Admin and Label unchanged. Cash position and the first 4 chart months are sample data."
+        }
+      },
+      {
+        "id": "dev24-motion",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Gerak saat kartu terlihat",
+          "en": "Motion when cards come into view"
+        },
+        "detail": {
+          "id": "Setiap kartu muncul sekali per sesi saat masuk layar: angka menghitung naik, batang & cincin terisi, jarum bergerak, grafik tumbuh. Tanpa gerak untuk pengguna “kurangi gerakan”.",
+          "en": "Each card animates once per session when it enters the viewport: counters, bars and rings fill, the gauge needle moves, the chart grows. No motion for “reduce motion” users."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.23",
     "date": "2026-10-19",
     "summary": {
