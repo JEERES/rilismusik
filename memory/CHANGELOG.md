@@ -1,5 +1,9 @@
 # RILIS MUSIK — Changelog
 
+## 2026-10 — Pindah label: label belum diklaim
+- Opsi "Akun berbeda, pemilik sama" kini juga menerima label asal yang belum diklaim (placeholder impor Believe) untuk digabung ke label yang sudah punya pemilik. Super Admin saja, wajib rujukan bukti kepemilikan.
+
+
 ## 2026-10 — Pindah label: akun berbeda, pemilik sama
 - Gabung/Pindah rilisan kini bisa lintas akun bila pemiliknya sama (dua akun beda email): opsi admin "Akun berbeda, pemilik sama", wajib rujukan, hanya Super Admin yang menerapkan, kedua akun dinotifikasi.
 

@@ -20,6 +20,7 @@ satu nama, laporan atas nama lama tetap dikenali, saldo ikut pindah.
 | `sale` | label di akun lain | semua / dipilih | tetap milik penjual |
 
 **Akun berbeda, pemilik sama** (opsi `cross_account_same_owner` pada `merge`/`releases`): pemilik yang punya dua akun (beda email). Hanya input admin, wajib rujukan bukti pemilik sama, hanya Super Admin yang menerapkan/menyetujui, kedua akun dinotifikasi saat pengajuan. Uang mengikuti aturan merge (semua saldo belum ditarik pindah, tanpa batas bulan efektif); login lama tidak mendapat akses ke label tujuan.
+Opsi yang sama juga dipakai untuk **label asal yang belum diklaim** (placeholder dari impor Believe, tanpa akun) ke label yang sudah punya pemilik (`source_unclaimed`); label tujuan wajib sudah punya akun.
 
 ## Aturan uang
 - Saldo = baris royalti pending/available setelah `last_withdrawn_period` + ledger penyesuaian − withdraw aktif.
