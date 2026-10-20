@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.27",
+    "date": "2026-10-21",
+    "summary": {
+      "id": "Pekerjaan dirancang ulang: satu daftar semua pekerjaan, alur waktu, dan rincian di samping.",
+      "en": "Work redesigned: one list of all work, a time flow and side details."
+    },
+    "entries": [
+      {
+        "id": "dev27-work-page",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "mywork9",
+          "menu": {
+            "id": "Pekerjaan",
+            "en": "Work"
+          }
+        },
+        "title": {
+          "id": "Pekerjaan: satu daftar untuk semua pekerjaan tim",
+          "en": "Work: one list for all team work"
+        },
+        "detail": {
+          "id": "Menu “Pekerjaan Saya” menjadi “Pekerjaan”. Rilisan, klaim, tiket, persetujuan, penarikan, WAMI, layanan tambahan, dan transaksi tampil dalam satu daftar dengan penanggung jawab dan tenggat. Tombol di setiap baris membuka menu khususnya.",
+          "en": "“My Work” becomes “Work”. Releases, claims, tickets, approvals, withdrawals, WAMI, add-ons and transactions share one list with owner and deadline. Each row button opens its own menu."
+        }
+      },
+      {
+        "id": "dev27-work-flow",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "mywork9",
+          "menu": {
+            "id": "Pekerjaan",
+            "en": "Work"
+          }
+        },
+        "title": {
+          "id": "Berikutnya untukmu & alur waktu",
+          "en": "Next for you & time flow"
+        },
+        "detail": {
+          "id": "Pita biru menunjukkan satu pekerjaan paling mendesak, lalu alur Terlambat → Hari ini → 7 hari → Nanti → Menunggu pihak lain. Klik titiknya untuk menampilkan kelompok itu saja. Kanan atas: ✓ jumlah selesai hari ini.",
+          "en": "A blue band shows the most urgent item, then a Late → Today → 7 days → Later → Waiting flow; click a point to filter. Top right: ✓ done today."
+        }
+      },
+      {
+        "id": "dev27-work-detail",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "mywork9",
+          "menu": {
+            "id": "Pekerjaan",
+            "en": "Work"
+          }
+        },
+        "title": {
+          "id": "Rincian di samping, memanjang sesuai isi",
+          "en": "Side details that grow with content"
+        },
+        "detail": {
+          "id": "Klik pekerjaan untuk melihat tahapan, rincian rilisan atau transfer, lama → baru, aturan waktu, dan riwayat tanpa scroll di dalam kartu. Penanggung jawab bisa diganti, dan pekerjaan tanpa penanggung jawab bisa diambil.",
+          "en": "Click an item to see stages, release or payout details, old → new, timing rule and history without inner scrolling. Owner can be changed; unassigned work can be taken."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.26",
     "date": "2026-10-20",
     "summary": {
