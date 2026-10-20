@@ -866,3 +866,66 @@ html body .side-person{display:none!important}
  .find135{width:100%}.it135{grid-template-columns:32px minmax(0,1fr) auto;gap:10px;padding:12px 8px}.it135 .qbtn135{display:none}
  .relb135{grid-template-columns:1fr}.hd135,.pb135{padding-left:16px;padding-right:16px}
 }
+/* ===== v1.1.0-dev.28 · Manajemen Label (label136, di atas gaya work135) ===== */
+.tabs136{display:flex;gap:4px;padding:4px;border-radius:99px;align-self:flex-start;background:color-mix(in srgb,var(--text) 6%,transparent);max-width:100%;overflow-x:auto;scrollbar-width:none}
+.tabs136 button{font:inherit;border:0;background:none;cursor:pointer;color:var(--muted);font-size:14px;padding:9px 18px;border-radius:99px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.tabs136 button b{font-weight:400;font-size:12px;min-width:22px;height:20px;padding:0 6px;border-radius:99px;display:grid;place-items:center;background:color-mix(in srgb,var(--text) 8%,transparent)}
+.tabs136 button[aria-pressed=true]{background:var(--wh135);color:var(--text);box-shadow:0 1px 3px #0000001a}
+.tabs136 button.hot b{background:var(--r134);color:#fff}
+.lav136{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;font-size:13px;flex:none;background:linear-gradient(135deg,hsl(var(--h) 65% 55%),hsl(calc(var(--h) + 35) 60% 38%))}
+.lav136.big{width:64px;height:64px;border-radius:18px;font-size:20px;box-shadow:0 12px 24px -14px #0007}
+.it136{grid-template-columns:40px minmax(0,1fr) auto}
+.why136{font-size:12.5px;margin-top:4px;color:var(--o134)}.why136.r{color:var(--r134)}
+.note136{margin:6px 0 0;font-size:12.5px;color:var(--muted)}
+.l136 .tt135 .verify9 svg{width:16px!important;height:16px!important}
+#main .l136 .head136 .verify9 svg{width:20px!important;height:20px!important}
+.head136{display:flex;align-items:center;gap:16px}
+.head136 h2{margin:0;font-size:25px;font-weight:400;letter-spacing:-.4px;display:flex;align-items:center;gap:8px}
+.head136 .meta135{margin-top:8px}
+.stats136{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.stats136>div{border-radius:14px;padding:12px 14px;background:color-mix(in srgb,var(--text) 5%,transparent)}
+.stats136 b{display:block;font-weight:400;font-size:20px;letter-spacing:-.4px}
+.stats136 span{font-size:12px;color:var(--muted)}
+.sbtns136{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.sbtn136{font:inherit;cursor:pointer;color:var(--text);font-size:13px;padding:8px 14px;border-radius:99px;border:0;box-shadow:inset 0 0 0 1px var(--line);background:var(--wh135);white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+#main .l136 .sbtn136 svg{width:14px!important;height:14px!important}
+.sbtn136.dan{color:var(--r134)}
+.attn136{display:grid;gap:8px}
+.attn136>div{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;font-size:14px;background:color-mix(in srgb,var(--o134) 10%,transparent)}
+.attn136>div.r{background:color-mix(in srgb,var(--r134) 9%,transparent)}
+.attn136>div i{width:8px;height:8px;border-radius:50%;background:var(--o134);flex:none}.attn136>div.r i{background:var(--r134)}
+.attn136>div button{margin-left:auto}
+.raw136{font-size:14px}
+.raw136 :is(h3,h4){font-weight:400}
+.kids136{display:grid;gap:6px;margin-top:12px}
+.kids136>div{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:color-mix(in srgb,var(--text) 5%,transparent);font-size:13.5px}
+.kids136 .lav136{width:28px;height:28px;border-radius:8px;font-size:10px}
+.kids136 small{margin-left:auto;color:var(--muted);font-size:12px}
+.tl136{display:grid}
+.tl136>div{display:grid;grid-template-columns:28px 1fr;gap:10px;position:relative;padding-bottom:14px;font-size:13.5px}
+.tl136>div::before{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--line)}.tl136>div:last-child::before{display:none}
+.tl136 small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.minis136{display:flex;gap:4px;margin-top:8px}
+.minis136 i{flex:1;height:5px;border-radius:99px;background:var(--line);max-width:44px}.minis136 i.d{background:var(--g134)}.minis136 i.n{background:var(--b134)}
+.checks136{display:grid;gap:8px}
+.checks136>div{display:flex;align-items:center;gap:12px;font-size:14px;padding:11px 14px;border-radius:14px;background:color-mix(in srgb,var(--text) 5%,transparent)}
+.checks136 b{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;color:#fff;background:var(--muted);font-weight:500}
+.checks136 .ok b{background:var(--g134)}
+#main .l136 .checks136 svg{width:12px!important;height:12px!important}
+.checks136 small{margin-left:auto;color:var(--muted);font-size:12.5px}
+.cmp136{display:grid;grid-template-columns:1fr 28px 1fr;gap:10px;align-items:center}
+.cmp136>div{border-radius:14px;padding:12px 14px;background:color-mix(in srgb,var(--text) 5%,transparent);font-size:14px;min-width:0}
+.cmp136>div small{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}
+.cmp136>div.nw{background:color-mix(in srgb,var(--g134) 12%,transparent)}
+#main .l136 .cmp136>svg{width:18px!important;height:18px!important;color:var(--muted);justify-self:center}
+.lbl136{font:inherit;border:0;cursor:pointer;color:var(--text);width:100%;text-align:left;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--text) 5%,transparent)}
+.lbl136 b{font-weight:400;display:block}.lbl136 small{color:var(--muted);font-size:12.5px}
+#main .l136 .lbl136>svg{width:16px!important;height:16px!important;margin-left:auto;color:var(--muted)}
+.pane135.play135 .lav136.big{animation:pop135 .6s cubic-bezier(.3,1.5,.5,1) .05s both}
+.pane135.play135 .stats136>div{animation:rise135 .5s ease both}
+.pane135.play135 .stats136>div:nth-child(2){animation-delay:.25s}.pane135.play135 .stats136>div:nth-child(3){animation-delay:.3s}.pane135.play135 .stats136>div:nth-child(4){animation-delay:.35s}
+.pane135.play135 .cmp136 .nw{animation:mark135 1.2s ease .6s both}
+@media (max-width:760px){.cmp136{grid-template-columns:1fr}#main .l136 .cmp136>svg{transform:rotate(90deg)}.it136{grid-template-columns:36px minmax(0,1fr) auto}.head136 h2{font-size:21px}}
+.l136 .top135{flex-wrap:nowrap}
+.l136 .focus135{flex:1;min-width:0}
+@media (max-width:1100px){.l136 .top135{flex-wrap:wrap}}

@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.28",
+    "date": "2026-10-21",
+    "summary": {
+      "id": "Manajemen Label dirancang ulang: kondisi label, rincian lengkap di samping, tab Verifikasi.",
+      "en": "Label Management redesigned: label health, full side details, a Verification tab."
+    },
+    "entries": [
+      {
+        "id": "dev28-labels-health",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "labels9",
+          "menu": {
+            "id": "Manajemen Label",
+            "en": "Label Management"
+          }
+        },
+        "title": {
+          "id": "Kondisi label hari ini & penyaring perhatian",
+          "en": "Label health today & attention filters"
+        },
+        "detail": {
+          "id": "Pita biru merangkum label yang butuh perhatian (paket berakhir, dana ditahan, akses dibatasi, verifikasi), lalu penyaring Butuh perhatian · Akses dibatasi · Paket berakhir · Data lama · Multi-label. Daftar punya kotak cari, alasan perhatian tertulis di bawah nama, dan tombol › yang dobel dihapus.",
+          "en": "A blue band summarises labels needing attention, followed by filters (attention, restricted, plan ending, legacy data, multi-label). The list has search, shows reasons under each name, and the duplicate › button is gone."
+        }
+      },
+      {
+        "id": "dev28-labels-detail",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "labels9",
+          "menu": {
+            "id": "Manajemen Label",
+            "en": "Label Management"
+          }
+        },
+        "title": {
+          "id": "Rincian label lengkap di samping daftar",
+          "en": "Full label details beside the list"
+        },
+        "detail": {
+          "id": "Ringkasan, perlu perhatian, identitas & dokumen, rekening, kontrak, paket-kredit-tarif, akses & tindakan, akun & multi-label, data lama, dan riwayat perubahan. Memanjang sesuai isi tanpa scroll di dalam kartu; tombol memakai aksi yang sudah ada (lihat kontrak, ubah tarif, perpanjang paket, periksa data).",
+          "en": "Summary, attention, identity & documents, bank account, contract, plan-credits-rate, access, account & multi-label, legacy data and change history, growing with content; buttons reuse existing actions."
+        }
+      },
+      {
+        "id": "dev28-labels-verify",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "labels9",
+          "menu": {
+            "id": "Manajemen Label",
+            "en": "Label Management"
+          }
+        },
+        "title": {
+          "id": "Tab Verifikasi & penggabungan Penyesuaian Data Label",
+          "en": "Verification tab & Label Data Updates merged"
+        },
+        "detail": {
+          "id": "Pemeriksaan rekening, perubahan identitas, penggantian dokumen, pendaftaran, dan verifikasi identitas (AP-201) menjadi satu antrean. Menu Penyesuaian Data Label tidak lagi di sidebar; isinya menjadi penyaring Data lama dan bagian di rincian label. Calon member tampil sebagai tahapan Daftar → Bayar → Identitas → Rekening → Kontrak → Aktif.",
+          "en": "Bank, identity, document, application and identity-verification reviews share one queue. Label Data Updates leaves the sidebar and becomes the Legacy data filter and a detail section. Prospects show as stages."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.27",
     "date": "2026-10-21",
     "summary": {
