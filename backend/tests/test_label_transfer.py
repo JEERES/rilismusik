@@ -257,6 +257,39 @@ class LabelTransferTests(unittest.IsolatedAsyncioTestCase):
         index = royalty._label_name_index({item["id"]: item async for item in self.db.labels.find({}, {"_id": 0})})
         self.assertEqual(index["pelpendo"]["id"], "buy")
 
+    async def test_unclaimed_label_can_be_merged_into_an_owned_label(self):
+        # "Label Lama" was auto-created from Believe reports and never claimed;
+        # Believe renamed it to the buyer account's label.
+        await self.db.releases.insert_one({"id": "rg", "label_id": "ghost", "release_title": "Lama", "upc": "333"})
+        await self.db.tracks.insert_one({"id": "tg", "release_id": "rg", "label_id": "ghost", "isrc": "IDA000000009"})
+        await self.db.royalty_lines.insert_many([
+            line("g1", "ghost", "2026-05", "available", 700, release_id="rg", track_id="tg"),
+            line("g0", "ghost", "2025-01", "withdrawn", 900, release_id="rg", track_id="tg", legacy_settled=True),
+        ])
+        with self.assertRaises(HTTPException) as ctx:
+            await self.create(SUPER, mode="merge", source_label_id="ghost", target_label_id="buy")
+        self.assertIn("belum diklaim", ctx.exception.detail)
+        with self.assertRaises(HTTPException) as ctx:  # never into a label nobody owns
+            await self.create(SUPER, mode="merge", source_label_id="buy", target_label_id="ghost",
+                              cross_account_same_owner=True, reference="Believe LC-1")
+        self.assertEqual(ctx.exception.status_code, 400)
+        doc = await self.create(SUPPORT, mode="merge", source_label_id="ghost", target_label_id="buy",
+                                cross_account_same_owner=True, reference="Believe LC-1")
+        self.assertTrue(doc["source_unclaimed"])
+        self.assertIn("belum diklaim", service.summarize(doc))
+        self.assertFalse(service.can_decide(APPROVER, doc))
+        self.assertTrue(service.can_decide(SUPER, doc))
+        await service.notify_submitted(doc)
+        alerted = [item["user_id"] async for item in self.db.notifications.find({"type": "label_transfer_sale_pending"})]
+        self.assertEqual(alerted, ["buyer"])
+        await self.approve_and_apply(doc)
+        self.assertEqual(await self.balance("buy"), (700, 0))
+        self.assertEqual((await self.db.releases.find_one({"id": "rg"}))["label_id"], "buy")
+        self.assertEqual((await self.db.royalty_lines.find_one({"id": "g0"}))["label_id"], "ghost")  # settled history stays
+        self.assertEqual((await self.db.labels.find_one({"id": "ghost"}))["merged_into_label_id"], "buy")
+        index = royalty._label_name_index({item["id"]: item async for item in self.db.labels.find({}, {"_id": 0})})
+        self.assertEqual(index["label lama"]["id"], "buy")
+
     async def test_decision_rules_for_requests(self):
         doc = await self.create(SUPPORT, mode="merge", source_label_id="pel", target_label_id="elf")
         self.assertFalse(service.can_decide(SUPPORT, doc))

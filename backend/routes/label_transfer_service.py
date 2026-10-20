@@ -47,7 +47,8 @@ class LabelTransferIn(BaseModel):
     reference: Optional[str] = Field(default=None, max_length=240)
     believe_confirmed: bool = False
     apply_now: bool = False
-    # Merge/move between two accounts of the SAME owner (e.g. two emails).
+    # Merge/move between two accounts of the SAME owner (e.g. two emails), or
+    # from a label nobody has claimed yet into the owner's account.
     cross_account_same_owner: bool = False
 
 
@@ -149,12 +150,14 @@ async def build_transfer_request(body: LabelTransferIn, *, actor: dict, actor_ki
         same_account = bool(source.get("user_id")) and source.get("user_id") == target.get("user_id")
         if body.mode in SAME_ACCOUNT_MODES and not same_account:
             if actor_kind != "admin" or not body.cross_account_same_owner:
-                raise HTTPException(status_code=400, detail="Label tujuan ada di akun lain. Jika kedua akun milik orang yang sama, centang \"Akun berbeda, pemilik sama\". Untuk label yang dijual, gunakan mode Penjualan.")
-            if not source.get("user_id") or not target.get("user_id"):
-                raise HTTPException(status_code=400, detail="Kedua label harus sudah punya akun login. Klaim label yang belum punya akun lewat menu Migrasi.")
+                raise HTTPException(status_code=400, detail="Label tujuan ada di akun lain. Jika pemiliknya sama atau label asal belum diklaim, centang \"Akun berbeda, pemilik sama\". Untuk label yang dijual, gunakan mode Penjualan.")
+            if not target.get("user_id"):
+                raise HTTPException(status_code=400, detail="Label tujuan belum punya akun login. Pilih label tujuan yang sudah diklaim pemiliknya.")
             if len(doc["reference"] or "") < 3:
-                raise HTTPException(status_code=400, detail="Isi rujukan bukti pemilik sama (mis. nomor tiket atau KTP yang dicocokkan)")
+                raise HTTPException(status_code=400, detail="Isi rujukan bukti kepemilikan (mis. bukti perpindahan di Believe, nomor tiket, atau KTP yang dicocokkan)")
             doc["cross_account"] = True
+            # Claiming royalties nobody owns yet; same Super Admin-only rules apply.
+            doc["source_unclaimed"] = not source.get("user_id")
         if body.mode == "sale":
             if same_account:
                 raise HTTPException(status_code=400, detail="Kedua label ada di akun yang sama — gunakan mode Gabung atau Pilih Rilisan")
@@ -195,7 +198,8 @@ def summarize(doc: dict) -> str:
         return f"Ganti nama {doc['source_label_name']} → {doc['new_name']}"
     scope = f"{len(doc['release_ids'])} rilisan" if doc.get("release_ids") else "semua rilisan"
     verb = {"merge": "Gabung", "releases": "Pindah", "sale": "Jual"}[doc["mode"]]
-    suffix = " (akun berbeda, pemilik sama)" if doc.get("cross_account") else ""
+    suffix = (" (label belum diklaim)" if doc.get("source_unclaimed")
+              else " (akun berbeda, pemilik sama)" if doc.get("cross_account") else "")
     return f"{verb} {scope} {doc['source_label_name']} → {doc['target_label_name']}{suffix}"
 
 
