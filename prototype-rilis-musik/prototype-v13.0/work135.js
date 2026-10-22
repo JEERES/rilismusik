@@ -140,7 +140,7 @@ function pane135(w){
 }
 function page135(all){
   const y=cycle134(),recs=typeof todayRecords==='function'?todayRecords():[],done=recs.length,total=done+all.length;
-  return `<div class="d134 w135"><div class="ph135"><div><h1>${T('Pekerjaan','Work')}</h1><div class="sub135">${E(y.wd)}, ${y.c.today} ${E(y.month)} · ${T('semua pekerjaan dari semua menu','all work from every menu')}</div></div>
+  return `<div class="d134 w135"><div class="ph135"><div><h1>${T('Pekerjaan','Work')}</h1><div class="sub135">${E(new Date(day()+'T00:00:00Z').toLocaleDateString(state.lang==='id'?'id-ID':'en-US',{weekday:'long',day:'numeric',month:'long',timeZone:'UTC'}))} · ${T('semua pekerjaan dari semua menu','all work from every menu')}</div></div>
     <div class="donecard135" title="${T('Pekerjaan selesai hari ini','Work finished today')}"><div class="dring135"><svg viewBox="0 0 36 36"><circle class="trk" cx="18" cy="18" r="15.9"/><circle class="arc" cx="18" cy="18" r="15.9" pathLength="100" style="--p:${total?Math.round(done/total*100):0}"/></svg><b>${svg135('check',2.6)}</b></div><div><div class="big135 n">${done}<small>/${total}</small></div><div class="lb135">${T('selesai hari ini','done today')}</div></div></div></div>
     ${band135(all)}
     <div class="wk135">${list135(all)}<section class="d134-card pane135" data-w135="pane"><div class="pin135">${pane135(all.find(w=>w.id===w135.sel))}</div></section></div></div>`;
@@ -187,11 +187,11 @@ document.addEventListener('click',e=>{
   e.preventDefault();e.stopImmediatePropagation();
   if(hit.dataset.w135G){w135.g=w135.g===hit.dataset.w135G?'':hit.dataset.w135G;w135.read=false;draw135();return;}
   if(hit.hasAttribute('data-w135-done')){w135.done=!w135.done;draw135();return;}
-  if(hit.dataset.w135Take){const x=(data.tasks||[]).find(x=>x.id===hit.dataset.w135Take);if(x){x.handler=me().id;say135(T(`${tl134(x.title)} sekarang kamu yang tangani`,`You now handle ${tl134(x.title)}`));}w135.sel=hit.dataset.w135Take;render();return;}
+  if(hit.dataset.w135Take){const x=(data.tasks||[]).find(x=>x.id===hit.dataset.w135Take);if(x){x.handler=me().id;if(typeof assignRelease137==='function')assignRelease137(x.id,me().id);say135(T(`${tl134(x.title)} sekarang kamu yang tangani`,`You now handle ${tl134(x.title)}`));}w135.sel=hit.dataset.w135Take;render();return;}
   if(hit.dataset.w135Open){open135(hit.dataset.w135Open);return;}
   if(hit.hasAttribute('data-w135-assign')){const pop=document.querySelector('[data-w135-pop]');if(!pop)return;if(pop.classList.contains('on')){pop.classList.remove('on');return;}
     pop.innerHTML=`<small>${T('Tugaskan ke','Assign to')}</small>`+TEAM135().map(id=>`<button type="button" data-w135-to="${E(id)}">${mini135(id)}<span>${E(pname134(id))}<small>${E(role135(id))}</small></span><em>${operationalTasks().filter(x=>x.handler===id).length} ${T('aktif','active')}</em></button>`).join('');pop.classList.add('on');return;}
-  if(hit.dataset.w135To){const x=(data.tasks||[]).find(x=>x.id===w135.sel);if(x){x.handler=hit.dataset.w135To;say135(T(`${tl134(x.title)} ditugaskan ke ${pname134(x.handler)}`,`${tl134(x.title)} assigned to ${pname134(x.handler)}`));}render();return;}
+  if(hit.dataset.w135To){const x=(data.tasks||[]).find(x=>x.id===w135.sel);if(x){x.handler=hit.dataset.w135To;if(typeof assignRelease137==='function')assignRelease137(x.id,x.handler);say135(T(`${tl134(x.title)} ditugaskan ke ${pname134(x.handler)}`,`${tl134(x.title)} assigned to ${pname134(x.handler)}`));}render();return;}
   if(hit.hasAttribute('data-w135-back')){w135.read=false;draw135();document.querySelector('.wk135')?.scrollIntoView({block:'start'});return;}
   if(hit.dataset.w135Row){open135(hit.dataset.w135Row);return;}
 },true);

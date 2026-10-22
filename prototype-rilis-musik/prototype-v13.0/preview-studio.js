@@ -56,7 +56,7 @@ function studioRestore(snapshot) {
   labelTab102=snapshot.labelTab102; labelSummary102=snapshot.labelSummary102;
   clock102=null; v8.lastInput=Date.now();
 }
-function studioAccount(role,member='awan',staff='adovi') {
+function studioAccount(role,member='awan',staff='cantika') {
   ten.role=role; ten.member=member; ten.page='home';
   Object.assign(state,{user:role==='super'?'jeck':staff,mode:'platform',page:'dashboard',preview:null,profile:null});
   v5.group=null; v9.photo=null; v9.work='all'; v9.labelFilter='all'; v9.labelSearch='';
@@ -142,7 +142,7 @@ async function studioStart(id) {
     else if(id==='royalties') state.page='liability9';
     else if(id==='standards') state.page='standards9';
     else if(id==='idle') { state.mode='staff';state.page='overview';v8.loggedOut=true; }
-    else if(id==='attendance') { state.mode='staff';state.page='overview';open=()=>attendanceDrawer8('adovi'); }
+    else if(id==='attendance') { state.mode='staff';state.page='overview';open=()=>attendanceDrawer8('cantika'); }
     else if(id==='new-month') { ten.now=Date.parse('2026-10-01T09:00:00+07:00');state.mode='staff';state.page='overview'; }
     else if(id==='messages') {
       data.chats.label.push({who:'Senja Records',text:['Nama artis sudah kami sesuaikan. Mohon diperiksa kembali.','We have corrected the artist name. Please review it again.']});

@@ -1,6 +1,6 @@
 /* V11.6 audit correction — prepared for review; the published version remains V11.5. */
 // Restore the staff identity before the first final render checks permissions.
-if(ten.role!=='label'){const id=ten.staffUser116||state.user,u=user114(id);state.user=u&&!!u.super===(ten.role==='super')?id:ten.role==='super'?'jeck':'adovi';}
+if(ten.role!=='label'){const id=ten.staffUser116||state.user,u=user114(id);state.user=u&&!!u.super===(ten.role==='super')?id:ten.role==='super'?'jeck':'cantika';}
 const errorBefore116=error10;
 error10=function(code){return code==='storage_conflict'?T('Data berubah di tab lain. Isianmu belum disimpan. Tinjau pembaruan sebelum melanjutkan.','Data changed in another tab. Your entries have not been saved. Review the update before continuing.'):errorBefore116(code)};
 const toastBefore116=toast;
@@ -23,6 +23,6 @@ const scenes116=[
  ['v116-catalogue-source','super','Sumber Paket & Kredit dari Sistem','Plans & Credits source from System','Tautan mengarah ke konfigurasi yang sama.','The link opens the existing shared configuration.']
 ];
 studioCatalog.unshift(...scenes116.map(([id,role,a,b,c,d])=>({version:'11.6',id,role,title:[a,b],description:[c,d]})));
-studioStart=async function(id){if(!id.startsWith('v116-')){const result=await studioBefore116(id);stampVersion116();return result;}if(id==='v116-export-view'){await studioBefore116('v107-details');role102('admin');state.user='adovi';user114().scope='selected';user114().labels=['awan'];Staff114.role(model114(),user114().role).permissions=Staff114.normalize(['royalty.view']);ui107.tab='details';royaltyRoute107('analytics');}else if(id==='v116-transaction-en'){await studioBefore116('v113-pending');document.querySelectorAll('dialog[open]').forEach(d=>d.close());role102('label','awan');ten.lang=state.lang='en';route113('transactions');}else if(id==='v116-standards'){await studioBefore116('standards');go('standards9','platform');}else{await studioBefore116('v115-content-draft');close115(true);route115('content');}studioSelected=id;save10();stampVersion116();};
+studioStart=async function(id){if(!id.startsWith('v116-')){const result=await studioBefore116(id);stampVersion116();return result;}if(id==='v116-export-view'){await studioBefore116('v107-details');role102('admin');state.user='cantika';user114().scope='selected';user114().labels=['awan'];Staff114.role(model114(),user114().role).permissions=Staff114.normalize(['royalty.view']);ui107.tab='details';royaltyRoute107('analytics');}else if(id==='v116-transaction-en'){await studioBefore116('v113-pending');document.querySelectorAll('dialog[open]').forEach(d=>d.close());role102('label','awan');ten.lang=state.lang='en';route113('transactions');}else if(id==='v116-standards'){await studioBefore116('standards');go('standards9','platform');}else{await studioBefore116('v115-content-draft');close115(true);route115('content');}studioSelected=id;save10();stampVersion116();};
 render();
 // V11.7 completes startup after persistence and legacy guards are installed.

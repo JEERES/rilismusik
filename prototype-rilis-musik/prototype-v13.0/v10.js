@@ -3,7 +3,7 @@ const V10KEY='rm-v11-1-journey';
 let ten=Persistence117.blocked?RM10.seed():(Persistence117.journey||RM10.seed());
 // Restore known staff before any legacy renderer resolves the signed-in identity.
 if(ten.staff114)for(const u of ten.staff114.users){let p=person(u.id);if(!p){p={id:u.id,name:u.name,email:u.email,super:u.super,joined:u.joined||'2026-10-01',initials:u.name.split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase(),color:'#a1aec1'};people.push(p);scores[u.id]??={'2026-07':[0,0,0],'2026-08':[0,0,0]};if(typeof sampleTime7!=='undefined')sampleTime7[u.id]??={active:[0,0,0,0,0],present:[0,0,0,0,0]};data.profiles[u.id]??={phone:'',location:'',contract:'Belum ditetapkan',legal:u.name};data.salaries[u.id]??=0;data.allowances[u.id]??=0;data.bonusRules[u.id]??=0;}Object.assign(p,{name:u.name,email:u.email,super:u.super});}
-if(ten.role!=='label')state.user=ten.staffUser116||(ten.role==='super'?'jeck':'adovi');
+if(ten.role!=='label')state.user=ten.staffUser116||(ten.role==='super'?'jeck':'cantika');
 const tenOldRender=render;let tenConfig=false,tenStep=1,tenDraftService='Standard',tenDetail=null;
 v8.loggedOut=false;
 const inheritedAction10=handleAction;
@@ -72,7 +72,7 @@ function releaseActions106(r){const id=r.id,staff=!isLabel10(),closed=r.status==
  if(isLabel10()){
   if(r.status==='draft')actions+=b10(T('Ubah draft','Edit draft'),'editrelease',id)+b10(T('Kirim rilisan','Submit release'),'submit',id,'primary');
   if(r.status==='revision')actions+=form10('resubmit',field10('title',T('Judul','Title'),r.title)+field10('artist',T('Artis','Artist'),r.artist)+`<label class="full">${T('Perbaikan atau tanggapan','Correction or response')}<textarea name="response" required></textarea></label>`,id)+(!r.pauseUsed?b10(T('Minta penjelasan','Ask for clarification'),'ask',id):'');
-  if(!['closed','live','cancel_requested'].includes(r.status))actions+=b10(T('Batalkan pengajuan','Cancel submission'),'cancel',id,'danger');
+  if(!['closed','live','cancel_requested','taken_down','partial','partial_closed'].includes(r.status))actions+=b10(T('Batalkan pengajuan','Cancel submission'),'cancel',id,'danger');
   if(closed)actions+=b10(T('Ajukan ulang','Submit again'),'reopen',id);
   if(r.offer)actions+=`<div class="ten-date"><small>${T('PILIHAN PENGGANTI','REVISED OPTION')}</small><strong>${r.offer.service} · ${date10(r.offer.date)}</strong>${b10(T('Setujui perubahan & pengembalian selisih','Accept change & credit difference'),'downgrade_accept',id)}</div>`;
  }else{
@@ -86,7 +86,7 @@ function releaseActions106(r){const id=r.id,staff=!isLabel10(),closed=r.status==
   }
   if(r.status==='live')actions+=b10(T('Koreksi penandaan Tayang','Correct Live marking'),'dateerror',id);
   if(r.status==='cancel_requested')actions+=form10('cancel_confirm',check10('checked',T('Proses sudah dihentikan; pembatalan ke Believe sudah dipastikan jika pernah dikirim.','Processing has stopped; Believe cancellation is confirmed if previously delivered.')),id);
-  if(!['draft','closed','live','cancel_requested'].includes(r.status))actions+=b10(T('Tolak pengajuan','Reject submission'),'rejectform',id,'danger');
+  if(!['draft','closed','live','cancel_requested','taken_down','partial','partial_closed'].includes(r.status))actions+=b10(T('Tolak pengajuan','Reject submission'),'rejectform',id,'danger');
  }
 return actions;}
 function releaseModal10(id){const r=RM10.getRelease(ten,id);if(!r||isLabel10()&&r.member!==ten.member)return;tenDetail=id;const staff=!isLabel10(),closed=r.status==='closed',alloc=r.allocation.reduce((a,x)=>a+x.amount,0);const actions=releaseActions106(r);
@@ -108,7 +108,7 @@ function scene10(key){const pref={lang:ten.lang,theme:ten.theme,layout:ten.layou
   if(key==='replacement'){ten.now+=24*RM10.H;RM10.act(ten,'reject',{id,note:T('Pengajuan ditolak setelah pergantian hari.','Submission rejected after the day changed.')});ten.role='label';ten.page='credits';}
   if(key!=='replacement')ten.page='releases';
  }
- if(ten.role!=='label')state.user=ten.role==='super'?'jeck':'adovi';RM10.tick(ten);save10();closeModal();render();
+ if(ten.role!=='label')state.user=ten.role==='super'?'jeck':'cantika';RM10.tick(ten);save10();closeModal();render();
 }
 function welcome10(){const m=member10();if(m.active&&!m.welcome){modal10('',`<div class="ten-welcome"><p>${T('Selamat datang di Rilis Musik','Welcome to Rilis Musik')}</p><h1>${E(m.name)}</h1><p>${T('Akun labelmu sudah aktif. Saatnya menghadirkan musikmu.','Your label account is active. It is time to share your music.')}</p>${b10(T('Buka Dashboard','Open Dashboard'),'welcome','','primary')}</div>`);}}
 function document10(){modal10(T('Foto identitas','Identity image'),`<p>${T('Gunakan gambar contoh untuk mencoba orientasi dan pemotongan.','Use the sample image to try rotation and cropping.')}</p><div id="ten-document" class="ten-id" style="transition:transform .2s"><small>IDENTITY · SAMPLE ONLY</small><strong>LARAS SENJA</strong><small>0000000000000000<br>Jl. Nada 8 · Indonesia</small></div><div class="ten-actions">${b10(T('Putar 90°','Rotate 90°'),'rotate')}${b10(T('Sesuaikan area','Adjust crop'),'crop')}${b10(T('Gunakan dokumen contoh','Use sample document'),'docsave','','primary')}</div>${info10('doc','Kontrol ini mendemonstrasikan penyesuaian tampilan, bukan OCR atau pengesahan dokumen. Tidak menerima unggahan KTP asli dalam prototype.','These controls demonstrate image framing, not OCR or identity approval. This prototype does not accept real identity uploads.')}`);}

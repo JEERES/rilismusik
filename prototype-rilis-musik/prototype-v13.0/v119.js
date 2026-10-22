@@ -58,7 +58,7 @@ studioStart=async function(id){
  await studioBefore119('overview');document.querySelectorAll('dialog[open]').forEach(d=>d.close());
  if(id==='v119-bonus'){
   role102('super');state.user='jeck';pendingUI.tab='bonuses';state.page='liability9';state.mode='platform';render();pendingUI.bonusDraft=null;bonusForm();
- }else{role102('admin');state.user='adovi';route11('standards119');}
+ }else{role102('admin');state.user='cantika';route11('standards119');}
  studioSelected=id;save10();stamp119();
 };
 if(!Persistence117.blocked){try{atomic10(()=>pendingInit());render();restoreBonus119();}catch(err){toast(error10(err.message));}}

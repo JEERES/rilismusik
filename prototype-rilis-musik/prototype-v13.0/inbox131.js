@@ -43,7 +43,7 @@ const kindName131=k=>L((kinds131.find(x=>x[0]===k)||kinds131[0])[1]);
    (tidak mengubah berkas data contoh). */
 function threadStore131(){
   if(!data.inbox131){data.inbox131={tickets:[
-    {id:'T-318',label:'Senja Records',subject:['Metadata · Kumari','Metadata · Kumari'],obj:'R-1048',status:'handling',chat:'label',notes:[{who:'adovi',text:['Believe belum membalas; jadwalkan tindak lanjut Jumat.','Believe has not replied; follow up on Friday.'],at:'09.12'}]},
+    {id:'T-318',label:'Senja Records',subject:['Metadata · Kumari','Metadata · Kumari'],obj:'R-1048',status:'handling',chat:'label',notes:[{who:'cantika',text:['Believe belum membalas; jadwalkan tindak lanjut Jumat.','Believe has not replied; follow up on Friday.'],at:'09.12'}]},
     {id:'T-322',label:'Awan Records',subject:['Takedown · Langit Biru','Takedown · Langit Biru'],obj:'R-1031',status:'awaiting_distributor',msgs:[{who:'Awan Records',text:['Mohon takedown rilisan Langit Biru di semua platform.','Please take down Langit Biru on all platforms.'],at:'Kem 14.20'},{who:'cantika',text:['Sudah kami teruskan ke distributor. Estimasi 3–5 hari kerja.','Forwarded to the distributor. Estimated 3–5 working days.'],at:'Kem 15.02'}],notes:[{who:'cantika',text:['Tiket distributor #88213.','Distributor ticket #88213.'],at:'Kem 15.03'}]},
     {id:'T-325',label:'Utara Music',subject:['Ubah metadata · Biru Kembali','Metadata change · Biru Kembali'],obj:'R-1061',status:'awaiting_label',msgs:[{who:'eka',text:['Mohon kirim surat persetujuan dari pemegang hak untuk perubahan nama artis.','Please send the rights-holder approval letter for the artist name change.'],at:'08.40'}],notes:[]},
   ]};}
@@ -91,7 +91,7 @@ function bubble131(m){
    Notification Center TIDAK jadi menu terpisah: pengalih "Percakapan | Notifikasi" di kepala daftar;
    popover lonceng "Buka Kotak Masuk" membuka mode Notifikasi; notifikasi yang terkait objek tiket
    juga tampil di panel konteks sebagai "Aktivitas terkait". */
-const ticketMeta131={'T-318':{cat:['Metadata','Metadata'],opened:'16 Sep · 09.02',owner:'adovi'},'T-322':{cat:['Takedown','Takedown'],opened:'17 Sep · 14.20',owner:'cantika'},'T-325':{cat:['Ubah metadata','Metadata change'],opened:'18 Sep · 08.31',owner:'eka'}};
+const ticketMeta131={'T-318':{cat:['Metadata','Metadata'],opened:'16 Sep · 09.02',owner:'cantika'},'T-322':{cat:['Takedown','Takedown'],opened:'17 Sep · 14.20',owner:'cantika'},'T-325':{cat:['Ubah metadata','Metadata change'],opened:'18 Sep · 08.31',owner:'eka'}};
 const quick131=[['Terima kasih, kami cek dulu.','Thanks, we will check.'],['Mohon lengkapi dokumen pendukung.','Please complete the supporting documents.'],['Sudah kami teruskan ke distributor.','We have forwarded it to the distributor.']];
 const modeOf131=()=>inbox131.view.startsWith('n:')?'notif':'chat';
 function inboxPage131(){

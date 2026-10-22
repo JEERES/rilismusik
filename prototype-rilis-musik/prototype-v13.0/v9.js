@@ -91,7 +91,7 @@ sidebar5=function(){const html=sidebarComplete9();if(me().super||state.mode!=='p
 const studioComplete9=studio8;
 studio8=function(){studioComplete9();$('#dialog .studio9-categories').insertAdjacentHTML('beforeend',`<h3>${t('Kondisi tambahan','More conditions')}</h3><div class="studio8-grid">${[['weekend','Aktivitas di hari libur','Activity on a day off'],['lowactivity','Durasi cukup, aktivitas sedikit','Full duration, little activity'],['newtask','Pekerjaan baru','New work'],['stale','Permintaan sudah ditangani','Request already handled'],['loading','Memuat data','Loading data'],['negative','Tren menurun','Declining trend']].map(([id,a,b])=>btn(t(a,b),'v8-extra',`data-id="${id}"`,'small')).join('')}${btn(t('Akhiri izin sementara','Expire temporary access'),'v8-expire','','small')}</div>`);};
 const actionComplete9=handleAction;
-handleAction=async function(b){await actionComplete9(b);if(b.dataset.action==='v8-extra'&&b.dataset.id==='weekend'&&!state.preview){v3.day='2026-09-19';v8.time='21:00';sampleTime7.adovi.active[5]=.4;render();}};
+handleAction=async function(b){await actionComplete9(b);if(b.dataset.action==='v8-extra'&&b.dataset.id==='weekend'&&!state.preview){v3.day='2026-09-19';v8.time='21:00';sampleTime7.cantika.active[5]=.4;render();}};
 setInterval(()=>{const target=$('.tracker7');if(target&&!document.hidden&&!v8.loggedOut){target.outerHTML=tracker7(me().id);}},60000);
 render=function(){if(!state.preview){for(const l of [...data.v9.labels.filter(l=>!l.master),...data.v9.labels.filter(l=>l.master)]){if(!l.earned&&verification9(l).status==='verified'){l.earned=true;l.awardedAt=day();l.awardStandard=copy8(data.v9.standards);}}}renderComplete9();};
 render();

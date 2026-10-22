@@ -929,3 +929,10 @@ html body .side-person{display:none!important}
 .l136 .top135{flex-wrap:nowrap}
 .l136 .focus135{flex:1;min-width:0}
 @media (max-width:1100px){.l136 .top135{flex-wrap:wrap}}
+/* dev.29: tooltip cincin Siklus di tepi kanan kartu — rata kanan agar tidak melewati layar (geser horizontal 5 px) */
+.d134 .cd134[data-tip131]::after{left:auto!important;right:0!important;transform:translate(0,4px)!important}
+.d134 .cd134[data-tip131]:hover::after,.d134 .cd134[data-tip131]:focus-visible::after{transform:translate(0,0)!important}
+.d134 .stack134[data-tip131]::after{left:auto!important;right:0!important;transform:translate(0,4px)!important}
+.d134 .stack134[data-tip131]:hover::after,.d134 .stack134[data-tip131]:focus-visible::after{transform:translate(0,0)!important}
+.d134 .team134 [data-tip131]::after{left:auto!important;right:0!important;transform:translate(0,4px)!important}
+.d134 .team134 [data-tip131]:hover::after,.d134 .team134 [data-tip131]:focus-visible::after{transform:translate(0,0)!important}

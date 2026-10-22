@@ -18,7 +18,7 @@
  const report={members:0,v9:0,releases:0,imports:0,withdrawals:0,tickets:0,errors:[]};
  const fail=(scope,id,e)=>report.errors.push(scope+' '+id+': '+(e&&e.message||e));
  const withNow=(t,fn)=>{const prev=ten.now;ten.now=Math.min(t,realNow);try{return fn()}finally{ten.now=prev}};
- const asRole=(role,member,fn)=>{const prev={role:ten.role,member:ten.member,user:state.user};ten.role=role;if(member)ten.member=member;if(role!=='label')state.user=role==='super'?'jeck':'adovi';try{return fn()}finally{ten.role=prev.role;ten.member=prev.member;state.user=prev.user}};
+ const asRole=(role,member,fn)=>{const prev={role:ten.role,member:ten.member,user:state.user};ten.role=role;if(member)ten.member=member;if(role!=='label')state.user=role==='super'?'jeck':'cantika';try{return fn()}finally{ten.role=prev.role;ten.member=prev.member;state.user=prev.user}};
  const byId=new Map(S.labels.map(l=>[l.id,l]));
  const money=n=>Math.max(0,Math.round(Number(n)||0));
 
@@ -177,7 +177,7 @@
      withNow(at(t.resolved||t.created)+H,()=>Tickets112.act(ten,staff,'finish',{id:tid,version:v(),checked:true,note:t.comments.filter(c=>!c.system).at(-1)?.body||'Permintaan selesai.'}));
     }
     const x=tk();
-    for(const c of t.comments.filter(c=>!c.system&&c.body))x.messages.push({at:at(c.at),actor:c.role==='label'?m.id:'adovi',note:c.body,files:[]});
+    for(const c of t.comments.filter(c=>!c.system&&c.body))x.messages.push({at:at(c.at),actor:c.role==='label'?m.id:'cantika',note:c.body,files:[]});
     x.sample131={no:t.no,source:true,subject:t.subject,reason:t.reason,comments:t.comments,status:t.status};
     report.tickets++;
    }catch(e){fail('ticket',t.no,e)}

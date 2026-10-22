@@ -1,5 +1,91 @@
 [
   {
+    "version": "1.1.0-dev.29",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Rilisan dirancang ulang dan tersambung ke data asli; Adovi dihapus, tim = Jeck Rotama, Eka Poetra, Cantika Dewi.",
+      "en": "Releases redesigned on real data; Adovi removed, team = Jeck Rotama, Eka Poetra, Cantika Dewi."
+    },
+    "entries": [
+      {
+        "id": "dev29-releases-redesign",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Rilisan",
+            "en": "Releases"
+          }
+        },
+        "title": {
+          "id": "Rilisan baru: Dalam proses · Katalog, rincian di samping",
+          "en": "New Releases: In progress · Catalogue, details beside the list"
+        },
+        "detail": {
+          "id": "Tampilan persis mock yang disetujui: pita alur 6 tahap (klik untuk menyaring), daftar per tahap, dan rincian di samping dengan satu langkah berikutnya per tahap (Mulai pemeriksaan, centang 5 butir, Setujui, Kirim ke Believe, kode UPC/ISRC, hasil di toko, Tolak). Semua tombol memakai fungsi rilisan yang asli, jadi label, Pekerjaan, dan notifikasi ikut berubah. Rencana & Kampanye tidak tampil untuk Super Admin.",
+          "en": "Matches the approved mock: a 6-stage flow band, a list per stage and a side panel with one next step per stage. Every button uses the original release actions, so labels, Work and notifications update too."
+        }
+      },
+      {
+        "id": "dev29-releases-deadlines",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Rilisan",
+            "en": "Releases"
+          }
+        },
+        "title": {
+          "id": "Tenggat dari Aturan waktu, sama di Pekerjaan & Dashboard",
+          "en": "Deadlines from the timing rules, shared with Work & Dashboard"
+        },
+        "detail": {
+          "id": "Tenggat dihitung dari Pengaturan › Prosedur: pemeriksaan 2 hari kerja, pengiriman 1, pemeriksaan Believe 3, perbaikan label 24 jam, mengikuti kalender kerja & libur. Pekerjaan dan Dashboard kini memakai tenggat yang sama (sebelumnya tanggal rilis), dan rilisan yang diturunkan tidak lagi muncul sebagai pekerjaan terlambat.",
+          "en": "Deadlines follow Settings › Procedures (review 2 working days, delivery 1, Believe check 3, label fixes 24 h). Work and Dashboard now use the same deadlines, and taken-down releases no longer show as overdue work."
+        }
+      },
+      {
+        "id": "dev29-releases-fixes",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Rilisan",
+            "en": "Releases"
+          }
+        },
+        "title": {
+          "id": "Perbaikan: Tolak pada rilisan diturunkan, petugas dari Pekerjaan",
+          "en": "Fixes: reject on taken-down releases, assignee from Work"
+        },
+        "detail": {
+          "id": "Tombol Tolak (staf) dan Batalkan (label) tidak lagi muncul untuk rilisan Diturunkan atau sebagian tayang. Ambil/Tugaskan di Pekerjaan kini tersimpan sebagai petugas rilisan dan tercatat di riwayat. Tanggal di judul Pekerjaan sama dengan menu lain.",
+          "en": "Reject (staff) and Cancel (label) no longer appear for taken-down or partially live releases. Take/Assign in Work now persists as the release assignee and is logged."
+        }
+      },
+      {
+        "id": "dev29-team",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard"
+        },
+        "title": {
+          "id": "Tim: Adovi dihapus dari semua data",
+          "en": "Team: Adovi removed from all data"
+        },
+        "detail": {
+          "id": "Tim prototipe kini 2 Super Admin (Jeck Rotama, Eka Poetra) dan 1 Staf (Cantika Dewi). Pekerjaan dan contoh milik Adovi dialihkan ke Cantika Dewi; contoh Studio \"Admin\" masuk sebagai Cantika Dewi. Error saat menekan Mode Staff diperbaiki.",
+          "en": "The prototype team is now 2 Super Admins (Jeck Rotama, Eka Poetra) and 1 Staff (Cantika Dewi). Adovi's work and examples moved to Cantika Dewi. The Staff mode toggle error is fixed."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.28",
     "date": "2026-10-21",
     "summary": {
