@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.31",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Layanan Tambahan dirancang ulang di atas data asli; Registrasi WAMI bergabung ke dalamnya.",
+      "en": "Add-on Services redesigned on real data; WAMI Registration merged in."
+    },
+    "entries": [
+      {
+        "id": "dev31-addons-redesign",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Layanan Tambahan",
+            "en": "Add-on Services"
+          }
+        },
+        "title": {
+          "id": "Layanan Tambahan baru: Dalam proses · Selesai, rincian di samping",
+          "en": "New Add-on Services: In progress · Done, details beside the list"
+        },
+        "detail": {
+          "id": "Tampilan persis mock yang disetujui: pita alur Perlu diperiksa → Menunggu bahan → Sedang dikerjakan → Menunggu tanggapan → Penyelesaian, pil per layanan + WAMI, dan satu langkah berikutnya per tahap: Mulai pengerjaan (menjadikanmu petugas), Minta kelengkapan, Catat kendala, simpan draf (tautan https), Kirim ke label, tinjau revisi (jatah / kesalahan petugas / di luar cakupan), dan Penyelesaian oleh Super Admin (usulan pengembalian atau jadwal baru; uang diproses di Transaksi). Semua tombol memakai fungsi layanan yang asli.",
+          "en": "Matches the approved mock; every action uses the original add-on model, so Transactions, packages and labels update too."
+        }
+      },
+      {
+        "id": "dev31-wami-merge",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Layanan Tambahan",
+            "en": "Add-on Services"
+          }
+        },
+        "title": {
+          "id": "Registrasi WAMI pindah ke Layanan Tambahan",
+          "en": "WAMI Registration moves into Add-on Services"
+        },
+        "detail": {
+          "id": "Menu Registrasi WAMI tidak lagi di sidebar Super Admin & Staf (label tetap bisa mengajukan). Pengajuan satu rilisan tampil satu baris berisi lagu-lagunya: periksa per lagu → Siap didaftarkan → dua langkah pengiriman → catat nomor WAMI per lagu, plus tindak lanjut ke WAMI. Tenggat mengikuti aturan WAMI di Pengaturan › Prosedur.",
+          "en": "The WAMI item leaves the staff sidebar; one submission shows as one row with its songs, with per-song WAMI numbers."
+        }
+      },
+      {
+        "id": "dev31-addons-entry",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Layanan Tambahan",
+            "en": "Add-on Services"
+          }
+        },
+        "title": {
+          "id": "Pintu masuk yang sama untuk pesanan & WAMI",
+          "en": "Consistent entry points for orders & WAMI"
+        },
+        "detail": {
+          "id": "Membuka pesanan atau pendaftaran WAMI dari Pekerjaan, notifikasi, Transaksi, atau Studio kini membuka halaman baru di item yang sama.",
+          "en": "Opening an order or WAMI registration from Work, notifications, Transactions or Studio lands on the new page."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.30",
     "date": "2026-10-22",
     "summary": {
