@@ -115,7 +115,7 @@
    for(const l of S.labels){
     const m=RM10.getMember(ten,l.id);if(!m)continue;
     const paid=S.withdrawals.filter(w=>w.label===l.id&&w.status!=='rejected').reduce((a,w)=>a+money(w.amount),0);
-    const need=paid+money(l.balance.requested)+money(l.balance.available)-(received.get(l.id)||0);
+    const need=paid+money(l.balance.available)-(received.get(l.id)||0); // dev.32: paid sudah memuat pengajuan terbuka — jangan dihitung dua kali
     if(need>0)rows.push({id:'legacy-'+l.id,member:l.id,track:'SALDO-AWAL',title:'Saldo awal migrasi',release:'',artist:'',isrc:'SALDO-'+l.id,upc:'',period:'2026-07',sales:l.lastWithdrawnPeriod||'2026-07',platform:'Gabungan platform',country:'Semua wilayah',kind:'Streaming',quantity:0,amount:need,matched:true});
    }
    if(rows.length){

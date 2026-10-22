@@ -6,7 +6,7 @@ const fail=message=>{throw new Error(message)};
 const checked=n=>{if(n>BigInt(Number.MAX_SAFE_INTEGER)||n<BigInt(Number.MIN_SAFE_INTEGER))fail('Total nominal melampaui batas perhitungan yang aman.');return Number(n)};
 const sum=rows=>checked(rows.reduce((n,r)=>{if(!Number.isSafeInteger(r.amount))fail('Nominal laporan tidak valid.');return n+BigInt(r.amount)},0n));
 const delta=(a,b)=>checked(BigInt(a)-BigInt(b));
-const now=()=>new Date().toISOString();
+const now=()=>new Date(typeof ten==='object'&&ten&&ten.now?ten.now:Date.now()).toISOString(); // dev.32: jam prototipe, bukan jam komputer
 const event=(s,kind,ref,actor,note='')=>s.history.push({kind,ref,actor,note,at:now()});
 function seed(members){const a=members.find(m=>m.id==='awan')||members[0],b=members.find(m=>m.id!==a.id)||a;
  const make=(id,member,title,amount,platform,country)=>({id,member:member.id,track:id.split('-')[0],title,release:title,artist:member.id===a.id?'Nara Senja':'Laras Pagi',isrc:'IDRM026'+id.replace(/\D/g,'').padStart(5,'0'),upc:'899100000001',period:'2026-09',sales:'2026-07',platform,country,kind:'Streaming',quantity:Math.round(amount/10),amount,matched:true});

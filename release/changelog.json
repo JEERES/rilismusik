@@ -1,5 +1,95 @@
 [
   {
+    "version": "1.1.0-dev.32",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Royalti dirancang ulang di atas data asli (Laporan · Saldo label · Analitik); saldo awal migrasi bukan pendapatan; saldo ganda diperbaiki.",
+      "en": "Royalties redesigned on real data; migration opening balance no longer counted as income; double-counted balances fixed."
+    },
+    "entries": [
+      {
+        "id": "dev32-royalty-reports",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Royalti",
+            "en": "Royalties"
+          }
+        },
+        "title": {
+          "id": "Tab Laporan: siklus laporan Believe",
+          "en": "Reports tab: the Believe report cycle"
+        },
+        "detail": {
+          "id": "Laporan & Impor yang dulu tersembunyi kini tab pertama. Pita biru Perlu diperiksa → Siap diterbitkan → Menunggu dana → Selesai, dengan tanda \"tertinggal\" (Juni 2026 belum terbit padahal Juli–Agustus sudah). Satu tombol utama per tahap: Terbitkan ke N label, lalu Catat dana diterima. Pemeriksaan otomatis menggantikan Audit Konsistensi. Impor, pencocokan baris, koreksi, dan ganti file memakai layar impor yang sudah ada.",
+          "en": "The hidden Imports module becomes the first tab with the report cycle, a lagging-period warning, Publish and Record funds received."
+        }
+      },
+      {
+        "id": "dev32-royalty-balances",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Royalti",
+            "en": "Royalties"
+          }
+        },
+        "title": {
+          "id": "Tab Saldo label: Kirim pengingat & Sesuaikan saldo",
+          "en": "Label balances tab: reminders & balance adjustments"
+        },
+        "detail": {
+          "id": "Saldo per akun pencairan (tersedia, menunggu dana, sedang dicairkan, sudah dibayar) dengan buku masuk/keluar. Kirim pengingat masuk ke notifikasi label (\"Saldo royaltimu sudah bisa dicairkan\"). Sesuaikan saldo (Super Admin) wajib alasan, tercatat di buku saldo dan riwayat, dan tidak boleh membuat saldo minus.",
+          "en": "Balances per payout account with in/out ledger, label reminders, and Super Admin adjustments with a mandatory reason."
+        }
+      },
+      {
+        "id": "dev32-royalty-analytics",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Royalti",
+            "en": "Royalties"
+          }
+        },
+        "title": {
+          "id": "Tab Analitik: per periode, platform, label, dan lagu",
+          "en": "Analytics tab: by period, platform, label and track"
+        },
+        "detail": {
+          "id": "Hanya laporan yang sudah terbit. Pencarian lagu/artis/label menggantikan Pendapatan Artis. Saldo awal migrasi (Rp 1,63 M) tidak lagi dihitung sebagai pendapatan Juli — di analitik, laporan label, maupun Pemantauan.",
+          "en": "Published reports only; artist search replaces Artist Revenue; the migration opening balance is excluded everywhere."
+        }
+      },
+      {
+        "id": "dev32-money-fixes",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Royalti",
+            "en": "Royalties"
+          }
+        },
+        "title": {
+          "id": "Perbaikan angka uang",
+          "en": "Money number fixes"
+        },
+        "detail": {
+          "id": "Saldo tersedia tiga label (Nusantara Records, Tepian Musik, Rimba Musik) tidak lagi dihitung dua kali dengan pengajuan penarikannya. Waktu impor & dana memakai jam prototipe, bukan jam komputer. Tombol di halaman Penarikan lama yang selalu gagal (\"reconcilePayoutAchievements116\") diperbaiki. Muat ulang data contoh untuk melihat angka baru.",
+          "en": "Three balances were double-counted; import times used the computer clock; the old Withdrawals buttons always failed. Reload sample data to see the new numbers."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.31",
     "date": "2026-10-22",
     "summary": {
