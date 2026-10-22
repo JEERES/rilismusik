@@ -2,7 +2,9 @@
    Tab Pembaruan fitur (butir yang dikelola: Draf · Ditahan · Usulan dari rilis · Terbit · Ditarik, audiens Semua label /
    Tim internal / Label paket lama) · Pengumuman (Berita dari Kotak Masuk pindah ke sini: draf, terjadwal, terbit, wajib baca
    dengan daftar yang sudah membaca; jadwal pemeliharaan ikut tampil). Halaman Pembaruan label membaca butir yang sama.
-   Data: ten.updates137 (butir & tanda "Baru" per label), tr132().news (pengumuman), system115 maintenance (jadwal). */
+   Data: ten.updates137 (butir & tanda "Baru" per label), tr132().news (pengumuman), system115 maintenance (jadwal).
+   v1.1.0-dev.43 — dua bahasa: teks UI lewat $t(); butir awal punya teks Inggris (TXT) yang dipakai selama kalimatnya belum
+   diubah Super Admin; pengumuman [id,en] dan usulan dari RM_CHANGELOG tampil sesuai bahasa. Data yang ditulis tetap seperti semula. */
 (function(){
 const STYLE=`.flow.f6{grid-template-columns:repeat(6,minmax(0,1fr))}
 .cv{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:#fff;flex:none;background:linear-gradient(135deg,hsl(var(--h) 46% 64%),hsl(calc(var(--h) + 40) 40% 38%))}
@@ -200,7 +202,9 @@ button.br:hover{background:var(--soft)}
  </div></main>`;
 /* butir awal (18 butir panduan lama, istilah dirapikan) & draf keputusan batch dari rancangan up1 */
 const GRP={start:'Mulai & aktivasi',claim:'Klaim label lama',plan:'Paket & kredit',money:'Penarikan & royalti',ticket:'Tiket & bantuan',team:'Di balik layar'};
+const GRPEN={start:'Getting started & activation',claim:'Legacy label claims',plan:'Plans & credits',money:'Withdrawals & royalties',ticket:'Tickets & support',team:'Behind the scenes'};
 const AUD={all:'Semua label',internal:'Tim internal',legacy:'Label paket lama'};
+const AUDEN={all:'All labels',internal:'Internal team',legacy:'Legacy-plan labels'};
 const FE=[
  {id:'U-01',kind:'baru',g:'start',st:'pub',aud:'all',ver:'v1.1',title:'Sambutan setelah masuk',text:'Popup sambutan setelah masuk: member baru memilih bahasa dan tema lalu menjelajah dashboard; member lama diarahkan ke klaim label.'},
  {id:'U-02',kind:'berubah',g:'start',st:'pub',aud:'all',ver:'v1.1',title:'Aktivasi tanpa menunggu pembayaran',text:'Aktivasi akun tidak lagi menunggu pembayaran — cukup identitas label, kontrak, pemeriksaan admin, dan rekening.'},
@@ -230,6 +234,65 @@ FE.find(x=>x.id==='D-01').note='Fiturnya sudah dipasang di Transaksi › Pengemb
 FE.find(x=>x.id==='D-02').note='Sudah dipasang (dev.31) — siap diterbitkan.';
 FE.find(x=>x.id==='D-03').note='Terbit setelah penggabungan otomatis pengajuan serupa dipasang.';
 {const u=FE.find(x=>x.id==='U-16');u.was=u.text;u.title='Tarif khusus di Manajemen Label';u.text='Tarif khusus per label diatur dari rincian label di Manajemen Label (Ubah tarif); Pemantauan Keuangan kini menampilkan posisi kas.';}
+/* teks Inggris butir awal, dicari dari kalimat Indonesia yang tersimpan: bila Super Admin sudah mengubah kalimatnya, yang tampil kalimat itu apa adanya */
+const TXT={
+ 'Sambutan setelah masuk':'Welcome after sign-in',
+ 'Popup sambutan setelah masuk: member baru memilih bahasa dan tema lalu menjelajah dashboard; member lama diarahkan ke klaim label.':'Welcome prompt after sign-in: new members pick language and theme then explore the dashboard; returning members are guided to label claims.',
+ 'Aktivasi tanpa menunggu pembayaran':'Activation without waiting for payment',
+ 'Aktivasi akun tidak lagi menunggu pembayaran — cukup identitas label, kontrak, pemeriksaan admin, dan rekening.':'Account activation no longer waits for payment — it needs label identity, the contract, admin review, and a bank account.',
+ 'Kontrak otomatis':'Automatic contract',
+ 'Kontrak dibuat otomatis, tanggal kesepakatan tercatat, dan dapat diunduh dari menu Kontrak.':'The contract is generated automatically, its acceptance date is recorded, and it can be downloaded from Contracts.',
+ 'Mode coba paket':'Plan trial mode',
+ 'Member baru dapat merasakan manfaat tiap paket (Basic, Studio, Pro, Business) dari dashboard tanpa mengubah langganan.':'New members can experience each plan’s benefits (Basic, Studio, Pro, Business) from the dashboard without changing their subscription.',
+ 'Klaim berbasis pernyataan':'Statement-based claims',
+ 'Klaim label berbasis kejujuran: pernyataan kepemilikan wajib dan bukti pendukung opsional — tanpa kode OTP.':'Label claims are honesty-based: a required ownership statement plus optional supporting evidence — no OTP code.',
+ 'Klaim disetujui Super Admin':'Claims approved by Super Admin',
+ 'Persetujuan klaim hanya oleh Super Admin; akses label yang bermasalah dapat dicabut kembali oleh Super Admin.':'Claim approval is Super Admin only; problematic label access can be revoked by Super Admin.',
+ 'Klaim ganda jadi sengketa':'Duplicate claims become disputes',
+ 'Klaim ganda pada satu label menjadi sengketa, dan saldo lama ditahan sampai Super Admin mengesahkan saldo awal.':'Duplicate claims on one label become a dispute, and the old balance is held until Super Admin approves the opening balance.',
+ 'Empat jenjang paket':'Four plan tiers',
+ 'Empat jenjang paket: Basic, Studio, Pro, dan Business.':'Four plan tiers: Basic, Studio, Pro, and Business.',
+ 'Empat jenjang paket: Basic, Studio, Pro, dan Business. Harga final ditentukan terakhir.':'Four plan tiers: Basic, Studio, Pro, and Business. Final pricing is decided last.',
+ 'Harga per layanan':'Price per service',
+ 'Harga layanan dipatok per layanan; penawaran kredit hanya tampil bila tidak lebih mahal dari harga satuan.':'Service pricing is fixed per service; credit offers appear only when they are not more expensive than the single price.',
+ 'Harga layanan dipatok per layanan; penawaran token hanya tampil bila lebih murah dari vonis.':'Service pricing is fixed per service; token offers appear only when cheaper than the stated price.',
+ 'Aturan pengembalian kredit':'Credit return rules',
+ 'Kredit hangus bila rilisan gagal di distributor, kembali bila ditolak sebelum pengiriman, dan kembali atau diganti bila terjadi kesalahan sistem.':'Credits are forfeited if a release fails at the distributor, returned if it is rejected before delivery, and returned or replaced if a system error occurs.',
+ 'Aturan token: gagal dari distributor = token hangus; ditolak sebelum pengiriman = kembali; kesalahan sistem = kembali atau masuk pool ganti.':'Token rules: distributor failure burns the token; rejection before delivery returns it; platform errors return it or go to the replacement pool.',
+ 'Standar & Penanda › Standar layanan › Kredit':'Standards & Indicators › Service standards › Credits',
+ 'Jadwal penarikan':'Withdrawal schedule',
+ 'Pengajuan penarikan tanggal 1–14, pencairan tanggal 15–20.':'Withdrawal requests on the 1st–14th, payouts on the 15th–20th.',
+ 'Standar & Penanda › Aturan waktu › Pencairan royalti':'Standards & Indicators › Time rules › Royalty payout',
+ 'Verifikasi rekening':'Bank account verification',
+ 'Verifikasi rekening hanya disetujui oleh Super Admin.':'Bank account verification is approved by Super Admin only.',
+ 'Tarif royalti per label':'Royalty rate per label',
+ 'Tarif royalti per label: label lama mempertahankan tarifnya, label baru menggunakan 60%.':'Per-label royalty rate: existing labels keep their rate, new labels use 60%.',
+ 'Bunyi kalimat ini terbaca semua label. Tetapkan dulu agar sama dengan Pasal 8 kontrak CT-1 (masih "[Diisi oleh Super Admin]") dan dengan tarif yang dibayar sistem.':'Every label reads this sentence. First make it match Article 8 of contract CT-1 (still "[Diisi oleh Super Admin]") and the rate the system pays.',
+ 'Kategori tiket baru':'New ticket categories',
+ 'Kategori tiket baru: "Masalah Royalti" dan "Permintaan Lainnya".':'New ticket categories: "Royalty Issue" and "Other Requests".',
+ 'Halaman Sistem':'System page',
+ 'Halaman Sistem untuk Super Admin: konten website, navigasi, dan jadwal pemeliharaan — dengan draf, tinjauan, dan riwayat versi. Prosedur & pengingat kini di Standar & Penanda.':'A System page for Super Admin: website content, navigation, and maintenance windows — with drafts, review, and version history. Procedures & reminders are now in Standards & Indicators.',
+ 'Halaman Sistem untuk Super Admin: konten website, navigasi, prosedur, dan jadwal pemeliharaan — dengan draf, tinjauan, dan riwayat versi.':'A System page for Super Admin: website content, navigation, procedures, and maintenance windows — with drafts, review, and version history.',
+ 'Tabel tarif khusus':'Special rate table',
+ 'Pemantauan Keuangan menampilkan tabel tarif khusus di luar tarif bawaan.':'Financial Monitoring includes a table of special rates outside the default rate.',
+ 'Tarif khusus di Manajemen Label':'Special rates in Label Management',
+ 'Tarif khusus per label diatur dari rincian label di Manajemen Label (Ubah tarif); Pemantauan Keuangan kini menampilkan posisi kas.':'Special per-label rates are set from the label details in Label Management (Change rate); Financial Monitoring now shows the cash position.',
+ 'Emblem & level dihapus':'Emblems & levels removed',
+ 'Emblem dan level pencapaian label dihapus.':'Label achievement emblems and levels were removed.',
+ 'Menu Pembaruan':'Updates menu',
+ 'Menu Pembaruan: panduan perubahan dan pengumuman dari tim Rilis Musik.':'Updates menu: a guide to changes and announcements from the Rilis Musik team.',
+ 'Pengembalian paket lama':'Legacy plan refund',
+ 'Paket lama Annual/VIP diganti paket baru gratis 1 tahun. Bila tidak berkenan, nilai pembelian dikembalikan penuh dalam 30 hari sejak pemberitahuan dibaca, lalu akun memakai paket Basic.':'Legacy Annual/VIP plans are replaced by a new plan free for 1 year. If you do not agree, the purchase value is refunded in full within 30 days of reading the notice, and the account then uses the Basic plan.',
+ 'Terbit setelah fitur pengembalian di Transaksi dipasang.':'Publish after the refund feature in Transactions is installed.',
+ 'Fiturnya sudah dipasang di Transaksi › Pengembalian (dev.34) — siap diterbitkan.':'The feature is installed in Transactions › Refunds (dev.34) — ready to publish.',
+ 'Layanan Tambahan & WAMI satu menu':'Add-on Services & WAMI in one menu',
+ 'Layanan Tambahan dan Registrasi WAMI kini satu menu. Perkembangan WAMI tetap dicatat per lagu.':'Add-on Services and WAMI Registration are now one menu. WAMI progress is still recorded per track.',
+ 'Terbit setelah batch menu dipasang.':'Publish after the menu batch is installed.',
+ 'Sudah dipasang (dev.31) — siap diterbitkan.':'Installed (dev.31) — ready to publish.',
+ 'Tiket serupa digabung':'Similar tickets merged',
+ 'Pengajuan serupa untuk rilisan yang masih punya tiket terbuka otomatis digabung ke tiket itu, agar penanganannya tidak terpecah.':'Similar requests for a release that still has an open ticket are merged into that ticket automatically, so handling is not split.',
+ 'Terbit setelah penggabungan otomatis pengajuan serupa dipasang.':'Publish after automatic merging of similar requests is installed.',
+ 'Draf dari catatan rilis · tulis ulang dengan bahasa label sebelum terbit.':'Draft from a release note · rewrite it in label-friendly language before publishing.'};
 let root=null,lroot=null,lastSig='',lastL='',F=[],A=[];
 const $=id=>root.getElementById(id);
 const E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -244,9 +307,32 @@ const msOf=v=>!v?0:typeof v==='number'?v:Date.parse(String(v).length===16?v+':00
 const pname=id=>people.find(p=>p.id===id)?.name||'Super Admin';
 const pini=id=>people.find(p=>p.id===id)?.initials||'SY';
 const SA=()=>!!me().super&&!state.preview;
-const KIND={baru:['Baru','c-gr'],berubah:['Berubah','c-or'],dihapus:['Dihapus','c-red']};
-const FST={pub:['Terbit','c-gr'],draft:['Draf','c-bl'],hold:['Ditahan · perlu keputusan','c-red'],suggest:['Usulan dari rilis','c-or'],off:['Ditarik','']};
-const AST={pub:['Terbit','c-gr'],sched:['Terjadwal','c-bl'],draft:['Draf',''],maint:['Pemeliharaan','c-or']};
+/* ---------- dua bahasa ---------- */
+const pl=(n,a,b)=>n===1?a:b;
+const grp=k=>$t(GRP[k],GRPEN[k]),aud=k=>$t(AUD[k],AUDEN[k]);
+const L2=a=>Array.isArray(a)?(en137()&&a[1]?a[1]:a[0])||'':String(a??'');
+/* usulan dari rilis: judul & ringkasan Inggris diambil dari RM_CHANGELOG (sisi en) */
+let CLM=null;
+const clm=()=>{if(CLM)return CLM;CLM={};try{for(const v of window.RM_CHANGELOG||[]){const e=v.entries?.[0]?.title,s=v.summary||{},ti=(e?.id||s.id||'').slice(0,90),te=e?.id?e.en:s.en;if(ti&&te)CLM[ti]=te;if(s.id&&s.en)CLM[s.id]=s.en;}}catch(err){}return CLM;};
+const tx=s=>en137()&&s?TXT[s]||clm()[s]||s:s;
+/* tanggal yang sudah tersimpan sebagai teks Indonesia ("23 Okt 2026 · 09.00") ditampilkan dengan bulan Inggris */
+const MID=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const dT=s=>en137()&&s?String(s).replace(/(\d{1,2}) (Jan|Feb|Mar|Apr|Mei|Jun|Jul|Agu|Sep|Okt|Nov|Des) (\d{4})(?: · (\d\d)\.(\d\d))?/g,(m,d,mo,y,h,mi)=>`${d} ${U.mon(MID.indexOf(mo))} ${y}`+(h?` · ${h}:${mi}`:'')):s;
+/* riwayat tetap ditulis seperti semula; saat ditampilkan dalam bahasa Inggris diterjemahkan */
+const HT={'Draf dibuat dari keputusan batch':'Draft created from a batch decision','Terbit bersama V1.1':'Published with V1.1','Istilah dirapikan':'Terms tidied up','Kalimat diubah':'Sentence edited','Diterbitkan':'Published','Diterbitkan · wajib baca':'Published · must-read','Ditarik dari tampilan label':'Withdrawn from the label view','Dijadikan draf untuk label':'Made a draft for labels','Dicatat untuk tim internal':'Recorded for the internal team','Draf dibuat':'Draft created','Jadwal dibatalkan':'Schedule cancelled'};
+const audName=t=>{const k=Object.keys(AUD).find(z=>AUD[z]===t);return k?AUDEN[k]:t;};
+const histT=s=>{if(!en137()||!s)return s;if(HT[s])return HT[s];let m;
+ if((m=/^Diusulkan dari rilis dev (\d+)$/.exec(s)))return `Suggested from release dev ${m[1]}`;
+ if((m=/^Dijadwalkan tampil (.+)$/.exec(s)))return 'Scheduled to show '+dT(m[1]);
+ if((m=/^Pengingat dikirim ke (.+)$/.exec(s)))return 'Reminder sent to '+m[1];
+ if((m=/^Audiens diubah: (.+)$/.exec(s)))return 'Audience changed: '+audName(m[1]);
+ if((m=/^Audiens: (.+)$/.exec(s)))return 'Audience: '+audName(m[1]);
+ if((m=/^Draf dibuat dari jadwal pemeliharaan (.+)$/.exec(s)))return 'Draft created from maintenance schedule '+m[1];
+ return s;};
+const KIND={baru:['Baru','c-gr','New'],berubah:['Berubah','c-or','Changed'],dihapus:['Dihapus','c-red','Removed']};
+const FST={pub:['Terbit','c-gr','Published'],draft:['Draf','c-bl','Draft'],hold:['Ditahan · perlu keputusan','c-red','On hold · needs a decision'],suggest:['Usulan dari rilis','c-or','Release suggestion'],off:['Ditarik','','Withdrawn']};
+const AST={pub:['Terbit','c-gr','Published'],sched:['Terjadwal','c-bl','Scheduled'],draft:['Draf','','Draft'],maint:['Pemeliharaan','c-or','Maintenance']};
+const lab=(M,k)=>$t(M[k][0],M[k][2]),cp=(M,k)=>chip(lab(M,k),M[k][1]),kd=k=>[lab(KIND,k),KIND[k][1]];
 const S={tab:'fe',filter:'all',q:'',sel:{},read:false,form:null,preview:false};
 const wide=()=>innerWidth>1240;
 /* ---------- data ---------- */
@@ -261,85 +347,86 @@ const live=n=>!n.st||n.st==='pub'||n.st==='sched'&&msOf(n.at)<=ten.now;
 const audOf=n=>n.audience==='lifetime'?'legacy':n.aud137==='internal'?'internal':'all';
 const recipients=n=>{try{return audience132(n);}catch(err){return [];}};
 const rname=k=>typeof memberName132==='function'?memberName132(k):k;
+/* title/body: sisi sesuai bahasa untuk dibaca; t0/b0: sisi Indonesia untuk formulir draf (yang disimpan tetap sama) */
 function load(){const s=store();F=s.items;
  A=newsAll().map(n=>{const st=!n.st||n.st==='pub'?'pub':n.st==='sched'&&msOf(n.at)<=ten.now?'pub':n.st;const rc=n.must?recipients(n):[];
-  return {id:n.id,n,st,aud:audOf(n),must:!!n.must,title:(n.title||[])[0]||'',body:(n.body||[])[0]||'',at:iso(n.at),reads:rc.map(k=>[k,rname(k),n.reads?.[k]?iso(n.reads[k]):'']),hist:n.hist137||[{at:n.at,text:n.must?'Diterbitkan · wajib baca':'Diterbitkan',by:n.by}]};});
+  return {id:n.id,n,st,aud:audOf(n),must:!!n.must,title:L2(n.title),body:L2(n.body),t0:(n.title||[])[0]||'',b0:(n.body||[])[0]||'',at:iso(n.at),reads:rc.map(k=>[k,rname(k),n.reads?.[k]?iso(n.reads[k]):'']),hist:n.hist137||[{at:n.at,text:n.must?'Diterbitkan · wajib baca':'Diterbitkan',by:n.by}]};});
  try{for(const w of (system115().areas.maintenance?.published?.windows||[])){const stt=maintState131(w);if(stt==='cancelled')continue;A.push({id:w.id,w,st:'maint',aud:'all',must:false,title:w.title,body:w.message||'',at:iso(w.startAt),end:iso(w.endAt),wst:stt,reads:[],hist:[]});}}catch(err){}}
-const match=x=>!S.q||[x.id,x.title,x.text||x.body,GRP[x.g]||'',AUD[x.aud]].join(' ').toLowerCase().includes(S.q);
+const match=x=>!S.q||[x.id,tx(x.title),tx(x.text)||x.body,x.g?grp(x.g):'',aud(x.aud)].join(' ').toLowerCase().includes(S.q);
 const unread=()=>A.filter(a=>a.st==='pub'&&a.must).reduce((n,a)=>n+a.reads.filter(r=>!r[2]).length,0);
 const WORK=['hold','suggest','draft'];
 function items(){if(S.tab==='fe'){let r=F.filter(match);if(S.filter==='work')r=r.filter(x=>WORK.includes(x.st));if(S.filter==='pub')r=r.filter(x=>x.st==='pub'&&x.aud!=='internal');if(S.filter==='internal')r=r.filter(x=>x.aud==='internal');const o=['hold','suggest','draft','pub','off'];return r.slice().sort((a,b)=>o.indexOf(a.st)-o.indexOf(b.st)||Object.keys(GRP).indexOf(a.g)-Object.keys(GRP).indexOf(b.g)||(a.st==='suggest'?b.id.localeCompare(a.id,'en',{numeric:true}):0));}
  const o=['draft','sched','maint','pub'];return A.filter(match).sort((a,b)=>o.indexOf(a.st)-o.indexOf(b.st)||(b.at||'').localeCompare(a.at||''));}
 const legacyN=()=>{try{return lifeIds132().length;}catch(err){return 0;}};
 const allN=()=>ten.members.filter(m=>m.active).length;
-function tabs(){$('tabs').innerHTML=[['fe','Pembaruan fitur',F.length],['an','Pengumuman',A.length]].map(([k,t,n])=>`<button data-tab="${k}" aria-pressed="${S.tab===k}">${t}<b>${n}</b></button>`).join('');}
+function tabs(){$('tabs').innerHTML=[['fe',$t('Pembaruan fitur','Feature updates'),F.length],['an',$t('Pengumuman','Announcements'),A.length]].map(([k,t,n])=>`<button data-tab="${k}" aria-pressed="${S.tab===k}">${t}<b>${n}</b></button>`).join('');}
 function band(){const c=s=>F.filter(x=>x.st===s).length,pub=c('pub'),sched=A.filter(a=>a.st==='sched').length,ad=A.filter(a=>a.st==='draft').length,need=c('hold')+c('suggest')+c('draft')+ad,br=A.find(a=>a.id==='BR-1');
- const nodes=[['suggest','Usulan dari rilis',c('suggest'),F.filter(x=>x.st==='suggest').length?`dev ${F.filter(x=>x.st==='suggest').map(x=>x.ver.replace('dev.','')).sort((a,b)=>a-b).filter((x,i,a)=>i===0||i===a.length-1).join('–')}`:'kosong'],['draft','Draf',c('draft')+c('hold')+ad,c('hold')?`termasuk ${c('hold')} ditahan`:'menunggu terbit'],['sched','Terjadwal',sched,sched?'tampil otomatis':'kosong'],['pub','Terbit',pub+A.filter(a=>a.st==='pub').length,'fitur & pengumuman'],['unread','Wajib baca, belum dibaca',unread(),'per label']];
- $('band').innerHTML=`<div class="top"><div class="focus"><div class="k"><i></i>Komunikasi ke label · hari ini ${E(U.todayLabel())}</div><h2>${need?`${need} butir menunggu keputusanmu`:'Semua butir sudah diputuskan'}</h2>
-  <p>${c('hold')?`${c('hold')} kalimat ditahan · `:''}${c('suggest')} usulan dari rilis dev${br?` · ${br.title} dibaca ${br.reads.filter(r=>r[2]).length} dari ${br.reads.length} label`:''}</p>
-  <div class="acts"><button class="wbtn" data-urgent>Buka yang berikutnya ${ARROW}</button><button class="gbtn" data-preview>${S.preview?'Tutup pratinjau':'Pratinjau sebagai label'}</button></div></div>
-  <div class="statg"><div class="sbox"><b class="n">${pub}</b><span>butir terbit</span></div><div class="sbox"><b class="n">${unread()}</b><span>belum membaca</span></div></div></div>
+ const nodes=[['suggest',$t('Usulan dari rilis','Release suggestions'),c('suggest'),F.filter(x=>x.st==='suggest').length?`dev ${F.filter(x=>x.st==='suggest').map(x=>x.ver.replace('dev.','')).sort((a,b)=>a-b).filter((x,i,a)=>i===0||i===a.length-1).join('–')}`:$t('kosong','empty')],['draft',$t('Draf','Drafts'),c('draft')+c('hold')+ad,c('hold')?$t(`termasuk ${c('hold')} ditahan`,`incl. ${c('hold')} on hold`):$t('menunggu terbit','awaiting publication')],['sched',$t('Terjadwal','Scheduled'),sched,sched?$t('tampil otomatis','shows automatically'):$t('kosong','empty')],['pub',$t('Terbit','Published'),pub+A.filter(a=>a.st==='pub').length,$t('fitur & pengumuman','features & announcements')],['unread',$t('Wajib baca, belum dibaca','Must-read, unread'),unread(),'per label']];
+ $('band').innerHTML=`<div class="top"><div class="focus"><div class="k"><i></i>${$t('Komunikasi ke label · hari ini','Communication to labels · today')} ${E(U.todayLabel())}</div><h2>${need?$t(`${need} butir menunggu keputusanmu`,`${need} ${pl(need,'item','items')} awaiting your decision`):$t('Semua butir sudah diputuskan','All items decided')}</h2>
+  <p>${c('hold')?$t(`${c('hold')} kalimat ditahan · `,`${c('hold')} ${pl(c('hold'),'sentence','sentences')} on hold · `):''}${$t(`${c('suggest')} usulan dari rilis dev`,`${c('suggest')} ${pl(c('suggest'),'suggestion','suggestions')} from dev releases`)}${br?$t(` · ${br.title} dibaca ${br.reads.filter(r=>r[2]).length} dari ${br.reads.length} label`,` · ${br.title} read by ${br.reads.filter(r=>r[2]).length} of ${br.reads.length} labels`):''}</p>
+  <div class="acts"><button class="wbtn" data-urgent>${$t('Buka yang berikutnya','Open the next one')} ${ARROW}</button><button class="gbtn" data-preview>${S.preview?$t('Tutup pratinjau','Close preview'):$t('Pratinjau sebagai label','Preview as label')}</button></div></div>
+  <div class="statg"><div class="sbox"><b class="n">${pub}</b><span>${$t('butir terbit','items published')}</span></div><div class="sbox"><b class="n">${unread()}</b><span>${$t('belum membaca','not yet read')}</span></div></div></div>
   <div class="flow">${nodes.map(([k,t,n,d])=>`<button class="fn${n&&(k==='unread'||k==='suggest')?' hot':''}${n?'':' zero'}" data-node="${k}"><span class="dot n">${n}</span><span class="t">${t}</span><span class="d">${E(d)}</span></button>`).join('')}</div>`;}
-const find=()=>`<label class="find"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" placeholder="Cari butir atau pengumuman" value="${E(S.q)}"></label>`;
+const find=()=>`<label class="find"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" placeholder="${$t('Cari butir atau pengumuman',S.tab==='fe'?'Search feature updates':'Search announcements')}" value="${E(S.q)}"></label>`;
 function list(){const r=items();let h='';
  if(S.tab==='fe'){const cnt=k=>({all:F.length,work:F.filter(x=>WORK.includes(x.st)).length,pub:F.filter(x=>x.st==='pub'&&x.aud!=='internal').length,internal:F.filter(x=>x.aud==='internal').length})[k];
-  h+=`<div class="ch"><h3>Pembaruan fitur <small class="n">${r.length}</small></h3>${find()}</div><div class="pills">${[['all','Semua'],['work','Perlu keputusan'],['pub','Terbaca label'],['internal','Tim internal']].map(([k,t])=>`<button data-filter="${k}" aria-pressed="${S.filter===k}">${t}<b class="n">${cnt(k)}</b></button>`).join('')}</div>`;
-  const grp=x=>WORK.includes(x.st)?'work':x.st==='pub'?'g:'+x.g:'off';let cur='';
-  r.forEach((x,i)=>{const g=grp(x);if(g!==cur){cur=g;h+=`<div class="gh"><i style="--c:var(--${g==='work'?'orange':g==='off'?'faint':'green'})"></i><b>${g==='work'?'Perlu keputusan':g==='off'?'Ditarik':GRP[x.g]}</b> · ${r.filter(y=>grp(y)===g).length}</div>`;}
-   h+=`<div class="it${S.sel.fe===x.id?' sel':''}" data-id="${x.id}" style="--i:${i}"><span class="ty">${SPARK}</span><div style="min-width:0"><div class="t1">${chip(...KIND[x.kind])} ${E(x.title)}</div><div class="t2">${AUD[x.aud]} · ${E(x.st==='suggest'?x.src:x.ver)}${x.ref?' · merujuk Standar & Penanda':''}</div></div><div class="rgt">${x.st==='pub'?'':chip(...FST[x.st])}</div></div>`;});}
- else{h+=`<div class="ch"><h3>Pengumuman <small class="n">${r.length}</small></h3>${find()}</div>${SA()?`<div class="hrow" style="margin:0 0 10px">${btn('Tulis pengumuman','data-do="an-new"','pri')}</div>`:''}`;let cur='';
-  r.forEach((a,i)=>{if(a.st!==cur){cur=a.st;h+=`<div class="gh"><i style="--c:var(--${{draft:'faint',sched:'blue',pub:'green',maint:'orange'}[cur]})"></i><b>${AST[cur][0]}</b> · ${r.filter(y=>y.st===cur).length}</div>`;}
-   const rd=a.reads.length?`${a.reads.filter(z=>z[2]).length}/${a.reads.length} dibaca`:'';
-   h+=`<div class="it${S.sel.an===a.id?' sel':''}" data-id="${a.id}" style="--i:${i}"><span class="ty">${a.st==='maint'?TOOL:MEGA}</span><div style="min-width:0"><div class="t1">${E(a.title)} ${a.must?chip('Wajib baca','c-or'):''}</div><div class="t2">${a.st==='maint'?`${fd(a.at)} – ${a.end.slice(11,16).replace(':','.')} · ${{scheduled:'terjadwal',active:'sedang berlangsung',completed:'selesai'}[a.wst]||a.wst}`:`${AUD[a.aud]} · ${a.at?(a.st==='sched'?'tampil ':'')+fd(a.at):'belum dijadwalkan'}`}</div></div><div class="rgt">${rd?`<span class="duet">${rd}</span>`:chip(...AST[a.st])}</div></div>`;});}
- if(!r.length)h+=`<div class="empty"><b>Tidak ada butir</b>Coba ubah pencarian atau pil.</div>`;
+  h+=`<div class="ch"><h3>${$t('Pembaruan fitur','Feature updates')} <small class="n">${r.length}</small></h3>${find()}</div><div class="pills">${[['all',$t('Semua','All')],['work',$t('Perlu keputusan','Needs a decision')],['pub',$t('Terbaca label','Visible to labels')],['internal',$t('Tim internal','Internal team')]].map(([k,t])=>`<button data-filter="${k}" aria-pressed="${S.filter===k}">${t}<b class="n">${cnt(k)}</b></button>`).join('')}</div>`;
+  const grpOf=x=>WORK.includes(x.st)?'work':x.st==='pub'?'g:'+x.g:'off';let cur='';
+  r.forEach((x,i)=>{const g=grpOf(x);if(g!==cur){cur=g;h+=`<div class="gh"><i style="--c:var(--${g==='work'?'orange':g==='off'?'faint':'green'})"></i><b>${g==='work'?$t('Perlu keputusan','Needs a decision'):g==='off'?$t('Ditarik','Withdrawn'):grp(x.g)}</b> · ${r.filter(y=>grpOf(y)===g).length}</div>`;}
+   h+=`<div class="it${S.sel.fe===x.id?' sel':''}" data-id="${x.id}" style="--i:${i}"><span class="ty">${SPARK}</span><div style="min-width:0"><div class="t1">${chip(...kd(x.kind))} ${E(tx(x.title))}</div><div class="t2">${aud(x.aud)} · ${E(x.st==='suggest'?dT(x.src):x.ver)}${x.ref?$t(' · merujuk Standar & Penanda',' · refers to Standards & Indicators'):''}</div></div><div class="rgt">${x.st==='pub'?'':cp(FST,x.st)}</div></div>`;});}
+ else{h+=`<div class="ch"><h3>${$t('Pengumuman','Announcements')} <small class="n">${r.length}</small></h3>${find()}</div>${SA()?`<div class="hrow" style="margin:0 0 10px">${btn($t('Tulis pengumuman','Write announcement'),'data-do="an-new"','pri')}</div>`:''}`;let cur='';
+  r.forEach((a,i)=>{if(a.st!==cur){cur=a.st;h+=`<div class="gh"><i style="--c:var(--${{draft:'faint',sched:'blue',pub:'green',maint:'orange'}[cur]})"></i><b>${lab(AST,cur)}</b> · ${r.filter(y=>y.st===cur).length}</div>`;}
+   const rd=a.reads.length?`${a.reads.filter(z=>z[2]).length}/${a.reads.length} ${$t('dibaca','read')}`:'';
+   h+=`<div class="it${S.sel.an===a.id?' sel':''}" data-id="${a.id}" style="--i:${i}"><span class="ty">${a.st==='maint'?TOOL:MEGA}</span><div style="min-width:0"><div class="t1">${E(a.title)} ${a.must?chip($t('Wajib baca','Must-read'),'c-or'):''}</div><div class="t2">${a.st==='maint'?`${fd(a.at)} – ${U.hm(a.end.slice(11,16))} · ${{scheduled:$t('terjadwal','scheduled'),active:$t('sedang berlangsung','in progress'),completed:$t('selesai','done')}[a.wst]||a.wst}`:`${aud(a.aud)} · ${a.at?(a.st==='sched'?$t('tampil ','shows '):'')+fd(a.at):$t('belum dijadwalkan','not scheduled yet')}`}</div></div><div class="rgt">${rd?`<span class="duet">${rd}</span>`:cp(AST,a.st)}</div></div>`;});}
+ if(!r.length)h+=`<div class="empty"><b>${$t('Tidak ada butir','No items')}</b>${$t('Coba ubah pencarian atau pil.','Try changing the search or filter.')}</div>`;
  $('list').innerHTML=h;}
 /* ---------- tampilan label (dipakai halaman label dan Pratinjau) ---------- */
 function labelView(member,{mark=false}={}){const key=typeof key132==='function'?key132(member):member,legacy=(()=>{try{return lifeIds132().includes(key);}catch(err){return false;}})();
  const seen=store().seen[member]||((store().since||1)-1),vis=F.filter(x=>x.st==='pub'&&(x.aud==='all'||x.aud==='legacy'&&legacy)),isNew=x=>msOf(x.pubAt)>seen;
  const ann=newsAll().filter(n=>live(n)&&(n.audience==='lifetime'?legacy:n.aud137!=='internal')).slice().reverse();
- const out=`${ann.length?sec(0,'Pengumuman',ann.map(n=>`<div class="lprev"><div class="lph">${n.must?chip('Wajib dibaca','c-or'):chip('Pengumuman','c-bl')}<small>${fd(iso(n.at))}${n.reads?.[n.audience==='lifetime'?key:member]?' · sudah dibaca':''}</small></div><b>${E((n.title||[])[0])}</b><p>${E((n.body||[])[0])}</p></div>`).join('')):''}
-  ${Object.keys(GRP).filter(g=>vis.some(x=>x.g===g)).map((g,i)=>sec(i+1,GRP[g],vis.filter(x=>x.g===g).map(x=>`<div class="lrow">${isNew(x)?'<span class="ldot" title="Baru"></span>':''}${chip(...KIND[x.kind])}<span>${E(x.text)}${x.ref?` <button class="lnk" data-go="standards">Lihat aturan</button>`:''}</span></div>`).join(''))).join('')}
-  ${!vis.length&&!ann.length?'<div class="empty"><b>Belum ada pembaruan</b>Perubahan fitur dan pengumuman dari tim Rilis Musik tampil di sini.</div>':''}`;
+ const out=`${ann.length?sec(0,$t('Pengumuman','Announcements'),ann.map(n=>`<div class="lprev"><div class="lph">${n.must?chip($t('Wajib dibaca','Must-read'),'c-or'):chip($t('Pengumuman','Announcement'),'c-bl')}<small>${fd(iso(n.at))}${n.reads?.[n.audience==='lifetime'?key:member]?$t(' · sudah dibaca',' · read'):''}</small></div><b>${E(L2(n.title))}</b><p>${E(L2(n.body))}</p></div>`).join('')):''}
+  ${Object.keys(GRP).filter(g=>vis.some(x=>x.g===g)).map((g,i)=>sec(i+1,grp(g),vis.filter(x=>x.g===g).map(x=>`<div class="lrow">${isNew(x)?`<span class="ldot" title="${$t('Baru','New')}"></span>`:''}${chip(...kd(x.kind))}<span>${E(tx(x.text))}${x.ref?` <button class="lnk" data-go="standards">${$t('Lihat aturan','See the rule')}</button>`:''}</span></div>`).join(''))).join('')}
+  ${!vis.length&&!ann.length?`<div class="empty"><b>${$t('Belum ada pembaruan','No updates yet')}</b>${$t('Perubahan fitur dan pengumuman dari tim Rilis Musik tampil di sini.','Feature changes and announcements from the Rilis Musik team appear here.')}</div>`:''}`;
  if(mark&&vis.some(isNew)){store().seen[member]=ten.now;try{save10();}catch(err){}}
  return {html:out,count:vis.length,fresh:vis.filter(isNew).length};}
 /* ---------- rincian ---------- */
-const audPick=(x,lock)=>`<div class="seg2 aud">${Object.entries(AUD).map(([k,t])=>`<button data-aud="${k}" aria-pressed="${x.aud===k}"${lock?' disabled':''}>${t}</button>`).join('')}</div>`;
-const audNote=a=>a==='all'?`Terlihat oleh ${allN()} label aktif.`:a==='legacy'?`Hanya ${legacyN()} label paket lama (Annual/VIP).`:'Hanya Super Admin dan staf.';
-function labelCard(x){if(x.aud==='internal')return `<div class="lprev off"><p class="where">Tidak terlihat oleh label · hanya tim internal.</p></div>`;
- return `<div class="lprev"><div class="lph"><span class="ldot"></span>${chip(...KIND[x.kind])}<small>${GRP[x.g]}${x.aud==='legacy'?' · hanya label paket lama':''}</small></div><p>${E(x.text)}</p>${x.ref?`<button class="lnk" data-go="standards">Lihat aturannya</button>`:''}</div>`;}
-function nextFe(x){const sa=SA(),edit=S.form==='edit'?`<div class="reveal"><label class="fld">Judul<input id="f-title" value="${E(x.title)}"></label><label class="fld">Kalimat untuk label · bahasa sederhana<textarea id="f-text">${E(x.text)}</textarea></label><div class="hrow">${btn('Simpan','data-do="save"','pri')}${btn('Batal','data-form=""')}</div></div>`:'';
- if(!sa)return `<div class="nextc mute"><p>${FST[x.st][0]}${x.pubAt?' · sejak '+fd(x.pubAt):''}.</p><p class="where">Hanya Super Admin yang menulis dan menerbitkan.</p></div>`;
- if(x.st==='hold')return `<div class="nextc"><p class="quote">${E(x.hold)}</p>${S.form==='edit'?edit:`<div class="hrow">${btn('Tulis bunyi final','data-form="edit"','pri')}${btn('Tetap tahan','data-do="keep"')}</div>`}<div class="hrow">${btn('Terbitkan','data-do="publish"','',!x.decided)}</div>${x.decided?'':'<p class="where">Terbitkan aktif setelah bunyi final ditulis.</p>'}</div>`;
- if(x.st==='suggest')return `<div class="nextc"><p>Catatan rilis <b>${E(x.src)}</b> (bahasa tim):</p><p class="quote">${E(x.text)}</p><p class="where">Bila perubahannya hanya di tampilan Super Admin dan staf, cukup dicatat untuk tim internal.</p><div class="hrow">${btn('Jadikan draf untuk label','data-do="to-draft"')}${btn('Catat untuk tim internal','data-do="internal"','pri')}</div></div>`;
- if(x.st==='draft')return `<div class="nextc"><p>${E(x.note||'Draf')}</p>${edit||`<div class="hrow">${btn('Terbitkan sekarang','data-do="publish"','pri')}${btn('Ubah kalimat','data-form="edit"')}</div>`}<p class="where">Terbitkan bersama pemasangan fiturnya, supaya label tidak membaca fitur yang belum ada.</p></div>`;
- if(x.st==='off')return `<div class="nextc mute"><p>Ditarik dari tampilan label.</p><div class="hrow">${btn('Terbitkan lagi','data-do="publish"')}</div></div>`;
- return `<div class="nextc ok"><p>Terbit · terlihat oleh <b>${AUD[x.aud].toLowerCase()}</b> sejak ${fd(x.pubAt||'2026-09-01T09:00')}.</p>${edit||`<div class="hrow">${btn('Ubah kalimat','data-form="edit"')}${btn('Tarik dari tampilan','data-do="unpublish"','ghost dng')}</div>`}</div>`;}
-const histH=h=>`<div class="hist">${h.slice().reverse().map(z=>`<div><span class="mini">${E(z.by?pini(z.by):'SY')}</span><span>${E(z.text)}<small style="display:block">${E(z.by?pname(z.by):'Sistem')} · ${fd(iso(z.at))}</small></span></div>`).join('')}</div>`;
-function paneFe(x){let i=0;return `<div class="hd"><button class="back" data-back>${BACK}Pembaruan fitur</button><div class="k"><span class="ty">${SPARK}</span>${GRP[x.g]} · <span class="mono">${x.id}</span></div><h2>${E(x.title)}</h2><div class="meta">${chip(...KIND[x.kind])}<span class="sep"></span>${chip(...FST[x.st])}<span class="sep"></span>${E(x.st==='suggest'?x.src:x.ver)}</div></div>
- <div class="pb">${sec(i++,x.st==='pub'?'Keadaan':'Langkah berikutnya',nextFe(x))}
- ${sec(i++,'Pratinjau sebagai label',labelCard(x))}
- ${sec(i++,'Audiens',audPick(x,!SA())+`<p class="where" style="margin-top:8px">${audNote(x.aud)}</p>`)}
- ${x.was?sec(i++,'Dirapikan dari versi lama',`<div class="cmpw"><table class="cmpt"><tbody><tr><th>Sebelumnya</th><td class="old">${E(x.was)}</td></tr><tr><th>Sekarang</th><td><span class="new">${E(x.text)}</span></td></tr></tbody></table></div>`):''}
- ${x.ref?sec(i++,'Rujukan',`<div class="uses"><div data-go="standards" style="cursor:pointer">${SPARK}<span>${E(x.ref)}<small>angka aturan selalu diambil dari sini</small></span></div></div>`):''}
- ${sec(i++,'Riwayat',histH(x.hist||[]))}</div>`;}
+const audPick=(x,lock)=>`<div class="seg2 aud">${Object.keys(AUD).map(k=>`<button data-aud="${k}" aria-pressed="${x.aud===k}"${lock?' disabled':''}>${aud(k)}</button>`).join('')}</div>`;
+const audNote=a=>a==='all'?$t(`Terlihat oleh ${allN()} label aktif.`,`Visible to ${allN()} active labels.`):a==='legacy'?$t(`Hanya ${legacyN()} label paket lama (Annual/VIP).`,`Only ${legacyN()} legacy-plan labels (Annual/VIP).`):$t('Hanya Super Admin dan staf.','Super Admin and staff only.');
+function labelCard(x){if(x.aud==='internal')return `<div class="lprev off"><p class="where">${$t('Tidak terlihat oleh label · hanya tim internal.','Not visible to labels · internal team only.')}</p></div>`;
+ return `<div class="lprev"><div class="lph"><span class="ldot"></span>${chip(...kd(x.kind))}<small>${grp(x.g)}${x.aud==='legacy'?$t(' · hanya label paket lama',' · legacy-plan labels only'):''}</small></div><p>${E(tx(x.text))}</p>${x.ref?`<button class="lnk" data-go="standards">${$t('Lihat aturannya','See the rule')}</button>`:''}</div>`;}
+function nextFe(x){const sa=SA(),edit=S.form==='edit'?`<div class="reveal"><label class="fld">${$t('Judul','Title')}<input id="f-title" value="${E(x.title)}"></label><label class="fld">${$t('Kalimat untuk label · bahasa sederhana','Sentence for labels · plain language')}<textarea id="f-text">${E(x.text)}</textarea></label>${en137()&&tx(x.text)!==x.text?'<p class="where">This sentence is stored in Indonesian; labels reading in English see the English version until you change it. After a change, every label sees your new wording.</p>':''}<div class="hrow">${btn($t('Simpan','Save'),'data-do="save"','pri')}${btn($t('Batal','Cancel'),'data-form=""')}</div></div>`:'';
+ if(!sa)return `<div class="nextc mute"><p>${lab(FST,x.st)}${x.pubAt?$t(' · sejak ',' · since ')+fd(x.pubAt):''}.</p><p class="where">${$t('Hanya Super Admin yang menulis dan menerbitkan.','Only Super Admin writes and publishes.')}</p></div>`;
+ if(x.st==='hold')return `<div class="nextc"><p class="quote">${E(tx(x.hold))}</p>${S.form==='edit'?edit:`<div class="hrow">${btn($t('Tulis bunyi final','Write the final wording'),'data-form="edit"','pri')}${btn($t('Tetap tahan','Keep on hold'),'data-do="keep"')}</div>`}<div class="hrow">${btn($t('Terbitkan','Publish'),'data-do="publish"','',!x.decided)}</div>${x.decided?'':`<p class="where">${$t('Terbitkan aktif setelah bunyi final ditulis.','Publish becomes available once the final wording is written.')}</p>`}</div>`;
+ if(x.st==='suggest')return `<div class="nextc"><p>${$t('Catatan rilis','Release note')} <b>${E(dT(x.src))}</b> ${$t('(bahasa tim):','(team wording):')}</p><p class="quote">${E(tx(x.text))}</p><p class="where">${$t('Bila perubahannya hanya di tampilan Super Admin dan staf, cukup dicatat untuk tim internal.','If the change only affects what Super Admin and staff see, recording it for the internal team is enough.')}</p><div class="hrow">${btn($t('Jadikan draf untuk label','Make a draft for labels'),'data-do="to-draft"')}${btn($t('Catat untuk tim internal','Record for the internal team'),'data-do="internal"','pri')}</div></div>`;
+ if(x.st==='draft')return `<div class="nextc"><p>${E(tx(x.note)||$t('Draf','Draft'))}</p>${edit||`<div class="hrow">${btn($t('Terbitkan sekarang','Publish now'),'data-do="publish"','pri')}${btn($t('Ubah kalimat','Edit sentence'),'data-form="edit"')}</div>`}<p class="where">${$t('Terbitkan bersama pemasangan fiturnya, supaya label tidak membaca fitur yang belum ada.','Publish together with the feature itself, so labels never read about a feature that is not there yet.')}</p></div>`;
+ if(x.st==='off')return `<div class="nextc mute"><p>${$t('Ditarik dari tampilan label.','Withdrawn from the label view.')}</p><div class="hrow">${btn($t('Terbitkan lagi','Publish again'),'data-do="publish"')}</div></div>`;
+ return `<div class="nextc ok"><p>${$t('Terbit · terlihat oleh','Published · visible to')} <b>${aud(x.aud).toLowerCase()}</b> ${$t('sejak','since')} ${fd(x.pubAt||'2026-09-01T09:00')}.</p>${edit||`<div class="hrow">${btn($t('Ubah kalimat','Edit sentence'),'data-form="edit"')}${btn($t('Tarik dari tampilan','Withdraw from view'),'data-do="unpublish"','ghost dng')}</div>`}</div>`;}
+const histH=h=>`<div class="hist">${h.slice().reverse().map(z=>`<div><span class="mini">${E(z.by?pini(z.by):'SY')}</span><span>${E(histT(z.text))}<small style="display:block">${E(z.by?pname(z.by):$t('Sistem','System'))} · ${fd(iso(z.at))}</small></span></div>`).join('')}</div>`;
+function paneFe(x){let i=0;return `<div class="hd"><button class="back" data-back>${BACK}${$t('Pembaruan fitur','Feature updates')}</button><div class="k"><span class="ty">${SPARK}</span>${grp(x.g)} · <span class="mono">${x.id}</span></div><h2>${E(tx(x.title))}</h2><div class="meta">${chip(...kd(x.kind))}<span class="sep"></span>${cp(FST,x.st)}<span class="sep"></span>${E(x.st==='suggest'?dT(x.src):x.ver)}</div></div>
+ <div class="pb">${sec(i++,x.st==='pub'?$t('Keadaan','Status'):$t('Langkah berikutnya','Next step'),nextFe(x))}
+ ${sec(i++,$t('Pratinjau sebagai label','Preview as label'),labelCard(x))}
+ ${sec(i++,$t('Audiens','Audience'),audPick(x,!SA())+`<p class="where" style="margin-top:8px">${audNote(x.aud)}</p>`)}
+ ${x.was?sec(i++,$t('Dirapikan dari versi lama','Tidied up from the old version'),`<div class="cmpw"><table class="cmpt"><tbody><tr><th>${$t('Sebelumnya','Before')}</th><td class="old">${E(tx(x.was))}</td></tr><tr><th>${$t('Sekarang','Now')}</th><td><span class="new">${E(tx(x.text))}</span></td></tr></tbody></table></div>`):''}
+ ${x.ref?sec(i++,$t('Rujukan','Reference'),`<div class="uses"><div data-go="standards" style="cursor:pointer">${SPARK}<span>${E(tx(x.ref))}<small>${$t('angka aturan selalu diambil dari sini','rule numbers always come from here')}</small></span></div></div>`):''}
+ ${sec(i++,$t('Riwayat','History'),histH(x.hist||[]))}</div>`;}
 function nextAn(a){const sa=SA();
- if(a.st==='maint')return `<div class="nextc"><p>${E(a.body)}</p><p class="where">${fd(a.at)} – ${fd(a.end)} · tampil otomatis sebagai pita di halaman terdampak, untuk semua pengguna.</p>${sa?`<div class="hrow">${btn(`Atur di Pengaturan Platform ${ARROW}`,'data-do="maint"')}</div>`:''}</div>`;
- if(a.st==='pub'){if(!a.must)return `<div class="nextc ok"><p>Terbit ${fd(a.at)} untuk ${AUD[a.aud].toLowerCase()} · tampil di Pembaruan label.</p></div>`;const n=a.reads.filter(r=>r[2]).length;
-  return `<div class="nextc"><p>Terbit ${fd(a.at)} · <b>wajib baca</b>. ${n} dari ${a.reads.length} sudah membaca.</p><div class="meter" style="max-width:none"><i style="width:${a.reads.length?n/a.reads.length*100:0}%"></i></div><div class="parts">${a.reads.map(([k,l,t])=>`<div class="pt"><b class="pb2 ${t?'ok':''}">${t?'✓':''}</b><span><span class="pn">${E(l)}</span><small>${t?'dibaca '+fd(t):'belum membaca · tampil saat masuk aplikasi'}</small></span>${!t&&sa?`<span class="pa">${btn('Ingatkan',`data-resend="${E(k)}"`,'sm')}</span>`:''}</div>`).join('')}</div>${a.n.kind==='transition'?`<p class="where">Batas 30 hari pengembalian dihitung sejak tanggal dibaca · kasus berjalan ada di <button class="lnk" data-go="transactions">Transaksi › Pengembalian</button>.</p>`:''}</div>`;}
- if(!sa)return `<div class="nextc mute"><p>${AST[a.st][0]}.</p></div>`;
- if(a.st==='sched')return `<div class="nextc"><p>Tampil otomatis <b>${fd(a.at)}</b> untuk ${AUD[a.aud].toLowerCase()}.</p><div class="hrow">${btn('Terbitkan sekarang','data-do="an-publish"','pri')}${btn('Batalkan jadwal','data-do="an-unsched"','ghost')}</div></div>`;
+ if(a.st==='maint')return `<div class="nextc"><p>${E(a.body)}</p><p class="where">${fd(a.at)} – ${fd(a.end)} · ${$t('tampil otomatis sebagai pita di halaman terdampak, untuk semua pengguna.','shows automatically as a banner on affected pages, for all users.')}</p>${sa?`<div class="hrow">${btn(`${$t('Atur di Pengaturan Platform','Manage in Platform Settings')} ${ARROW}`,'data-do="maint"')}</div>`:''}</div>`;
+ if(a.st==='pub'){if(!a.must)return `<div class="nextc ok"><p>${$t(`Terbit ${fd(a.at)} untuk ${aud(a.aud).toLowerCase()} · tampil di Pembaruan label.`,`Published ${fd(a.at)} for ${aud(a.aud).toLowerCase()} · shown on the label Updates page.`)}</p></div>`;const n=a.reads.filter(r=>r[2]).length;
+  return `<div class="nextc"><p>${$t('Terbit','Published')} ${fd(a.at)} · <b>${$t('wajib baca','must-read')}</b>. ${$t(`${n} dari ${a.reads.length} sudah membaca.`,`${n} of ${a.reads.length} have read it.`)}</p><div class="meter" style="max-width:none"><i style="width:${a.reads.length?n/a.reads.length*100:0}%"></i></div><div class="parts">${a.reads.map(([k,l,t])=>`<div class="pt"><b class="pb2 ${t?'ok':''}">${t?'✓':''}</b><span><span class="pn">${E(l)}</span><small>${t?$t('dibaca ','read ')+fd(t):$t('belum membaca · tampil saat masuk aplikasi','not read yet · shows at the next sign-in')}</small></span>${!t&&sa?`<span class="pa">${btn($t('Ingatkan','Remind'),`data-resend="${E(k)}"`,'sm')}</span>`:''}</div>`).join('')}</div>${a.n.kind==='transition'?`<p class="where">${$t('Batas 30 hari pengembalian dihitung sejak tanggal dibaca · kasus berjalan ada di','The 30-day refund window counts from the read date · open cases are in')} <button class="lnk" data-go="transactions">${$t('Transaksi › Pengembalian','Transactions › Refunds')}</button>.</p>`:''}</div>`;}
+ if(!sa)return `<div class="nextc mute"><p>${lab(AST,a.st)}.</p></div>`;
+ if(a.st==='sched')return `<div class="nextc"><p>${$t('Tampil otomatis','Shows automatically')} <b>${fd(a.at)}</b> ${$t('untuk','for')} ${aud(a.aud).toLowerCase()}.</p><div class="hrow">${btn($t('Terbitkan sekarang','Publish now'),'data-do="an-publish"','pri')}${btn($t('Batalkan jadwal','Cancel schedule'),'data-do="an-unsched"','ghost')}</div></div>`;
  const def=U.iso16(ten.now+864e5).slice(0,10)+'T09:00';
- return `<div class="nextc"><p>Draf pengumuman.</p><label class="fld">Judul<input id="f-title" maxlength="90" value="${E(a.title)}"></label><label class="fld">Isi<textarea id="f-body" maxlength="1200">${E(a.body)}</textarea></label><label class="tg"><input type="checkbox" id="f-must" ${a.must?'checked':''}> Wajib baca · tampil sekali dengan tombol "Saya sudah membaca"</label><label class="fld">Jadwal tampil · WIB<input id="f-at" type="datetime-local" value="${def}"></label><div class="hrow">${btn('Terbitkan sekarang','data-do="an-publish"','pri')}${btn('Jadwalkan','data-do="an-sched"')}${btn('Hapus draf','data-do="an-delete"','ghost dng')}</div></div>`;}
-function paneAn(a){let i=0;return `<div class="hd"><button class="back" data-back>${BACK}Pengumuman</button><div class="k"><span class="ty">${a.st==='maint'?TOOL:MEGA}</span>${a.st==='maint'?'Pemeliharaan':'Pengumuman'} · <span class="mono">${E(a.id)}</span></div><h2>${E(a.title)}</h2><div class="meta">${chip(...AST[a.st])}${a.must?'<span class="sep"></span>'+chip('Wajib baca','c-or'):''}<span class="sep"></span>${AUD[a.aud]}</div></div>
- <div class="pb">${sec(i++,a.st==='pub'||a.st==='maint'?'Keadaan':'Langkah berikutnya',nextAn(a))}
- ${a.st!=='maint'?sec(i++,'Pratinjau sebagai label',`<div class="modalprev"><div class="mp"><small>${a.must?'Wajib dibaca':'Pengumuman'} · Rilis Musik</small><b>${E(a.title||'(judul)')}</b><p>${E(a.body||'(isi)')}</p>${a.must?`<span class="btn pri sm" style="justify-self:start">Saya sudah membaca</span>`:''}</div></div>`):''}
- ${a.st!=='maint'?sec(i++,'Audiens',(a.st==='draft'?audPick({aud:a.aud==='internal'?'all':a.aud},!SA()):`<p class="para">${AUD[a.aud]}</p>`)+`<p class="where" style="margin-top:8px">${audNote(a.aud)}</p>`):''}
- ${a.hist.length?sec(i++,'Riwayat',histH(a.hist)):''}</div>`;}
+ return `<div class="nextc"><p>${$t('Draf pengumuman.','Announcement draft.')}</p><label class="fld">${$t('Judul','Title')}<input id="f-title" maxlength="90" value="${E(a.t0)}"></label><label class="fld">${$t('Isi','Message')}<textarea id="f-body" maxlength="1200">${E(a.b0)}</textarea></label><label class="tg"><input type="checkbox" id="f-must" ${a.must?'checked':''}> ${$t('Wajib baca · tampil sekali dengan tombol "Saya sudah membaca"','Must-read · shown once with an "I have read this" button')}</label><label class="fld">${$t('Jadwal tampil · WIB','Show at · WIB')}<input id="f-at" type="datetime-local" value="${def}"></label><div class="hrow">${btn($t('Terbitkan sekarang','Publish now'),'data-do="an-publish"','pri')}${btn($t('Jadwalkan','Schedule'),'data-do="an-sched"')}${btn($t('Hapus draf','Delete draft'),'data-do="an-delete"','ghost dng')}</div></div>`;}
+function paneAn(a){let i=0;return `<div class="hd"><button class="back" data-back>${BACK}${$t('Pengumuman','Announcements')}</button><div class="k"><span class="ty">${a.st==='maint'?TOOL:MEGA}</span>${a.st==='maint'?$t('Pemeliharaan','Maintenance'):$t('Pengumuman','Announcement')} · <span class="mono">${E(a.id)}</span></div><h2>${E(a.title)}</h2><div class="meta">${cp(AST,a.st)}${a.must?'<span class="sep"></span>'+chip($t('Wajib baca','Must-read'),'c-or'):''}<span class="sep"></span>${aud(a.aud)}</div></div>
+ <div class="pb">${sec(i++,a.st==='pub'||a.st==='maint'?$t('Keadaan','Status'):$t('Langkah berikutnya','Next step'),nextAn(a))}
+ ${a.st!=='maint'?sec(i++,$t('Pratinjau sebagai label','Preview as label'),`<div class="modalprev"><div class="mp"><small>${a.must?$t('Wajib dibaca','Must-read'):$t('Pengumuman','Announcement')} · Rilis Musik</small><b>${E(a.title||$t('(judul)','(title)'))}</b><p>${E(a.body||$t('(isi)','(message)'))}</p>${a.must?`<span class="btn pri sm" style="justify-self:start">${$t('Saya sudah membaca','I have read this')}</span>`:''}</div></div>`):''}
+ ${a.st!=='maint'?sec(i++,$t('Audiens','Audience'),(a.st==='draft'?audPick({aud:a.aud==='internal'?'all':a.aud},!SA()):`<p class="para">${aud(a.aud)}</p>`)+`<p class="where" style="margin-top:8px">${audNote(a.aud)}</p>`):''}
+ ${a.hist.length?sec(i++,$t('Riwayat','History'),histH(a.hist)):''}</div>`;}
 function panePreview(){const m=ten.members.find(x=>x.active)||{},v=labelView(m.id);
- return `<div class="hd"><button class="back" data-preview>${BACK}Tutup pratinjau</button><div class="k"><span class="ty">${EYE}</span>Pratinjau sebagai label · contoh: ${E(m.name)}</div><h2>Pembaruan</h2><div class="meta">${v.count} butir · ${v.fresh} baru sejak kunjungan terakhir</div></div>
- <div class="pb">${v.html}<p class="where">Butir "Di balik layar", draf, usulan, dan kalimat yang ditahan tidak terlihat oleh label.</p></div>`;}
+ return `<div class="hd"><button class="back" data-preview>${BACK}${$t('Tutup pratinjau','Close preview')}</button><div class="k"><span class="ty">${EYE}</span>${$t('Pratinjau sebagai label · contoh:','Preview as label · example:')} ${E(m.name)}</div><h2>${$t('Pembaruan','Updates')}</h2><div class="meta">${$t(`${v.count} butir · ${v.fresh} baru sejak kunjungan terakhir`,`${v.count} ${pl(v.count,'item','items')} · ${v.fresh} new since the last visit`)}</div></div>
+ <div class="pb">${v.html}<p class="where">${$t('Butir "Di balik layar", draf, usulan, dan kalimat yang ditahan tidak terlihat oleh label.','"Behind the scenes" items, drafts, suggestions and sentences on hold are not visible to labels.')}</p></div>`;}
 let lastPane='';
-function pane(){if(S.preview){$('pin').innerHTML=panePreview();return;}const x=items().find(z=>z.id===S.sel[S.tab]);$('pin').innerHTML=x?(S.tab==='fe'?paneFe(x):paneAn(x)):`<div class="empty" style="padding:60px 20px"><b>Pilih butir</b>Rinciannya tampil di sini.</div>`;
+function pane(){if(S.preview){$('pin').innerHTML=panePreview();return;}const x=items().find(z=>z.id===S.sel[S.tab]);$('pin').innerHTML=x?(S.tab==='fe'?paneFe(x):paneAn(x)):`<div class="empty" style="padding:60px 20px"><b>${$t('Pilih butir','Select an item')}</b>${$t('Rinciannya tampil di sini.','Its details appear here.')}</div>`;
  const key=S.tab+S.sel[S.tab]+S.preview,p=$('pane');if(key!==lastPane){p.classList.remove('swap','play');void p.offsetWidth;p.classList.add('swap','play');lastPane=key;}}
 function stick(){const p=$('pane');p.classList.toggle('stick',wide()&&p.offsetHeight<=innerHeight-110);}
 function keep(fn){const a=root.activeElement,vals={};root.querySelectorAll('#pin input:not([type=checkbox]),#pin textarea').forEach(el=>{if(el.id)vals[el.id]=el.value;});const id=a?.id,pos=a&&'selectionStart' in a?a.selectionStart:null;
@@ -349,39 +436,39 @@ function toast(t){toast137(DEF,t);}
 function open(id){S.preview=false;S.sel[S.tab]=id;S.form=null;S.read=true;paint();if(!wide()||$('pane').getBoundingClientRect().top<70)$('wk').scrollIntoView({behavior:'smooth',block:'start'});}
 const val=id=>($(id)?.value||'').trim();
 function commit(fn){if(typeof atomic10==='function')atomic10(fn);else{fn();save10();}}
-function act(a,arg){if(!SA()){toast('Hanya Super Admin');return;}let msg='';
+function act(a,arg){if(!SA()){toast($t('Hanya Super Admin','Super Admin only'));return;}let msg='';
  try{
  if(S.tab==='fe'){const x=F.find(z=>z.id===S.sel.fe);if(!x)return;const log=t=>(x.hist||(x.hist=[])).push({at:ten.now,text:t,by:state.user});
-  if(a==='save'){const t=val('f-text'),ti=val('f-title');if(!t){toast('Kalimat tidak boleh kosong');return;}commit(()=>{x.text=t;if(ti)x.title=ti;if(x.st==='hold')x.decided=true;log('Kalimat diubah');});msg='Tersimpan';}
-  else if(a==='keep'){msg='Tetap ditahan · tidak terbaca label';}
-  else if(a==='publish'){commit(()=>{x.st='pub';x.pubAt=U.iso16(ten.now);log('Diterbitkan');});msg=x.aud==='internal'?'Terbit untuk tim internal':`Terbit · ${x.aud==='legacy'?legacyN()+' label paket lama':allN()+' label'} melihat tanda "Baru"`;}
-  else if(a==='unpublish'){commit(()=>{x.st='off';log('Ditarik dari tampilan label');});msg='Ditarik · tidak terlihat label';}
-  else if(a==='to-draft'){commit(()=>{x.st='draft';x.aud='all';x.ver='v1.1';x.g=x.g==='team'?'start':x.g;x.note='Draf dari catatan rilis · tulis ulang dengan bahasa label sebelum terbit.';log('Dijadikan draf untuk label');});msg='Jadi draf · tulis ulang sebelum terbit';}
-  else if(a==='internal'){commit(()=>{x.st='pub';x.aud='internal';x.pubAt=U.iso16(ten.now);log('Dicatat untuk tim internal');});msg='Tercatat untuk tim internal · tidak terlihat label';}}
- else{if(a==='an-new'){const s=tr132();let id;commit(()=>{let k=s.news.length+1;while(s.news.some(n=>n.id==='BR-'+k))k++;id='BR-'+k;s.news.push({id,kind:'news',audience:'all',must:false,at:ten.now,by:state.user,reads:{},title:['',''],body:['',''],st:'draft',hist137:[{at:ten.now,text:'Draf dibuat',by:state.user}]});});S.tab='an';S.sel.an=id;S.read=true;lastSig='';load();paint();toast('Draf pengumuman dibuat');return;}
+  if(a==='save'){const t=val('f-text'),ti=val('f-title');if(!t){toast($t('Kalimat tidak boleh kosong','The sentence cannot be empty'));return;}commit(()=>{x.text=t;if(ti)x.title=ti;if(x.st==='hold')x.decided=true;log('Kalimat diubah');});msg=$t('Tersimpan','Saved');}
+  else if(a==='keep'){msg=$t('Tetap ditahan · tidak terbaca label','Still on hold · not visible to labels');}
+  else if(a==='publish'){commit(()=>{x.st='pub';x.pubAt=U.iso16(ten.now);log('Diterbitkan');});msg=x.aud==='internal'?$t('Terbit untuk tim internal','Published for the internal team'):$t(`Terbit · ${x.aud==='legacy'?legacyN()+' label paket lama':allN()+' label'} melihat tanda "Baru"`,`Published · ${x.aud==='legacy'?legacyN()+' legacy-plan labels':allN()+' labels'} see the "New" mark`);}
+  else if(a==='unpublish'){commit(()=>{x.st='off';log('Ditarik dari tampilan label');});msg=$t('Ditarik · tidak terlihat label','Withdrawn · not visible to labels');}
+  else if(a==='to-draft'){commit(()=>{x.st='draft';x.aud='all';x.ver='v1.1';x.g=x.g==='team'?'start':x.g;x.note='Draf dari catatan rilis · tulis ulang dengan bahasa label sebelum terbit.';log('Dijadikan draf untuk label');});msg=$t('Jadi draf · tulis ulang sebelum terbit','Now a draft · rewrite before publishing');}
+  else if(a==='internal'){commit(()=>{x.st='pub';x.aud='internal';x.pubAt=U.iso16(ten.now);log('Dicatat untuk tim internal');});msg=$t('Tercatat untuk tim internal · tidak terlihat label','Recorded for the internal team · not visible to labels');}}
+ else{if(a==='an-new'){const s=tr132();let id;commit(()=>{let k=s.news.length+1;while(s.news.some(n=>n.id==='BR-'+k))k++;id='BR-'+k;s.news.push({id,kind:'news',audience:'all',must:false,at:ten.now,by:state.user,reads:{},title:['',''],body:['',''],st:'draft',hist137:[{at:ten.now,text:'Draf dibuat',by:state.user}]});});S.tab='an';S.sel.an=id;S.read=true;lastSig='';load();paint();toast($t('Draf pengumuman dibuat','Announcement draft created'));return;}
   const x=A.find(z=>z.id===S.sel.an);if(!x)return;const n=x.n,log=t=>(n.hist137||(n.hist137=[{at:n.at,text:n.must?'Diterbitkan · wajib baca':'Diterbitkan',by:n.by}])).push({at:ten.now,text:t,by:state.user});
-  const fill=()=>{const ti=val('f-title'),bo=val('f-body');if(!ti||!bo){toast('Isi judul dan isi pengumuman');return false;}n.title=[ti,ti];n.body=[bo,bo];n.must=!!$('f-must')?.checked;return true;};
-  if(a==='maint'){try{window.psSel137='mw';goControl126('settings');}catch(err){toast('Buka Pengaturan Platform › Pemeliharaan');}return;}
-  if(a==='an-publish'){if(n.st==='draft'&&!fill())return;commit(()=>{n.st='pub';n.at=ten.now;n.by=state.user;log('Diterbitkan'+(n.must?' · wajib baca':''));});msg=`Terbit untuk ${AUD[audOf(n)].toLowerCase()}${n.must?' · tampil sekali saat label masuk':''}`;}
-  else if(a==='an-sched'){if(!fill())return;const at=$('f-at')?.value;const ms=at?Date.parse(at+':00+07:00'):0;if(!ms||ms<=ten.now){toast('Pilih waktu tampil setelah sekarang');return;}commit(()=>{n.st='sched';n.at=ms;log('Dijadwalkan tampil '+fd(U.iso16(ms)));});msg=`Dijadwalkan · tampil otomatis ${fd(U.iso16(ms))}`;}
-  else if(a==='an-unsched'){commit(()=>{n.st='draft';log('Jadwal dibatalkan');});msg='Kembali menjadi draf';}
-  else if(a==='an-delete'){commit(()=>{const s=tr132();s.news=s.news.filter(z=>z!==n);});S.sel.an=null;msg='Draf dihapus';}
-  else if(a==='resend'){const k=arg,m=typeof mem132==='function'?mem132(k):RM10.getMember(ten,k);if(!m){toast('Label tidak ditemukan');return;}commit(()=>{ten.notifications.unshift({id:++ten.serial,member:m.id,key:'news137',ref:n.id,at:ten.now});log('Pengingat dikirim ke '+m.name);});msg=`Pengingat dikirim ke ${m.name}`;}
-  else if(a==='aud'){commit(()=>{n.audience=arg==='legacy'?'lifetime':'all';log('Audiens: '+AUD[arg]);});msg='Audiens: '+AUD[arg];}}
+  const fill=()=>{const ti=val('f-title'),bo=val('f-body');if(!ti||!bo){toast($t('Isi judul dan isi pengumuman','Fill in the announcement title and message'));return false;}n.title=[ti,ti];n.body=[bo,bo];n.must=!!$('f-must')?.checked;return true;};
+  if(a==='maint'){try{window.psSel137='mw';goControl126('settings');}catch(err){toast($t('Buka Pengaturan Platform › Pemeliharaan','Open Platform Settings › Maintenance'));}return;}
+  if(a==='an-publish'){if(n.st==='draft'&&!fill())return;commit(()=>{n.st='pub';n.at=ten.now;n.by=state.user;log('Diterbitkan'+(n.must?' · wajib baca':''));});msg=$t(`Terbit untuk ${AUD[audOf(n)].toLowerCase()}${n.must?' · tampil sekali saat label masuk':''}`,`Published for ${AUDEN[audOf(n)].toLowerCase()}${n.must?' · shown once when labels sign in':''}`);}
+  else if(a==='an-sched'){if(!fill())return;const at=$('f-at')?.value;const ms=at?Date.parse(at+':00+07:00'):0;if(!ms||ms<=ten.now){toast($t('Pilih waktu tampil setelah sekarang','Pick a show time later than now'));return;}commit(()=>{n.st='sched';n.at=ms;log('Dijadwalkan tampil '+fd(U.iso16(ms)));});msg=$t(`Dijadwalkan · tampil otomatis ${fd(U.iso16(ms))}`,`Scheduled · shows automatically ${fd(U.iso16(ms))}`);}
+  else if(a==='an-unsched'){commit(()=>{n.st='draft';log('Jadwal dibatalkan');});msg=$t('Kembali menjadi draf','Back to draft');}
+  else if(a==='an-delete'){commit(()=>{const s=tr132();s.news=s.news.filter(z=>z!==n);});S.sel.an=null;msg=$t('Draf dihapus','Draft deleted');}
+  else if(a==='resend'){const k=arg,m=typeof mem132==='function'?mem132(k):RM10.getMember(ten,k);if(!m){toast($t('Label tidak ditemukan','Label not found'));return;}commit(()=>{ten.notifications.unshift({id:++ten.serial,member:m.id,key:'news137',ref:n.id,at:ten.now});log('Pengingat dikirim ke '+m.name);});msg=$t(`Pengingat dikirim ke ${m.name}`,`Reminder sent to ${m.name}`);}
+  else if(a==='aud'){commit(()=>{n.audience=arg==='legacy'?'lifetime':'all';log('Audiens: '+AUD[arg]);});msg=$t('Audiens: '+AUD[arg],'Audience: '+AUDEN[arg]);}}
  }catch(err){toast(String(err?.message||err));return;}
  S.form=null;lastSig='';load();paint();if(msg)toast(msg);}
 function bind(){
  root.addEventListener('click',e=>{const t=e.target;
   const tb=t.closest('[data-tab]');if(tb){S.tab=tb.dataset.tab;S.q='';S.filter='all';S.read=false;S.form=null;S.preview=false;paint();return;}
   const nd=t.closest('[data-node]');if(nd){const k=nd.dataset.node;S.preview=false;S.q='';if(k==='suggest'||k==='draft'){S.tab='fe';S.filter='work';}else if(k==='pub'){S.tab='fe';S.filter='pub';}else{S.tab='an';S.filter='all';}paint();const r=items();const pick=k==='suggest'?r.find(x=>x.st==='suggest'):k==='sched'?r.find(x=>x.st==='sched'):k==='unread'?r.find(x=>x.must&&x.st==='pub'&&x.reads.some(z=>!z[2])):r[0];if(pick)open(pick.id);return;}
-  if(t.closest('[data-urgent]')){S.tab='fe';S.filter='work';S.q='';const r=items();if(r[0])open(r[0].id);else{S.tab='an';const d=items().find(x=>x.st==='draft');if(d)open(d.id);else toast('Semua butir sudah diputuskan');}return;}
+  if(t.closest('[data-urgent]')){S.tab='fe';S.filter='work';S.q='';const r=items();if(r[0])open(r[0].id);else{S.tab='an';const d=items().find(x=>x.st==='draft');if(d)open(d.id);else toast($t('Semua butir sudah diputuskan','All items decided'));}return;}
   if(t.closest('[data-preview]')){S.preview=!S.preview;S.read=S.preview;lastPane='';paint();if(S.preview)$('wk').scrollIntoView({behavior:'smooth',block:'start'});return;}
   const fl=t.closest('[data-filter]');if(fl){S.filter=fl.dataset.filter;paint();return;}
-  const au=t.closest('[data-aud]');if(au&&!au.disabled){if(!SA())return;if(S.tab==='fe'){const x=F.find(z=>z.id===S.sel.fe);commit(()=>{x.aud=au.dataset.aud;(x.hist||(x.hist=[])).push({at:ten.now,text:'Audiens diubah: '+AUD[x.aud],by:state.user});});lastSig='';load();paint();toast('Audiens: '+AUD[x.aud]);}else act('aud',au.dataset.aud);return;}
+  const au=t.closest('[data-aud]');if(au&&!au.disabled){if(!SA())return;if(S.tab==='fe'){const x=F.find(z=>z.id===S.sel.fe);commit(()=>{x.aud=au.dataset.aud;(x.hist||(x.hist=[])).push({at:ten.now,text:'Audiens diubah: '+AUD[x.aud],by:state.user});});lastSig='';load();paint();toast($t('Audiens: '+AUD[x.aud],'Audience: '+AUDEN[x.aud]));}else act('aud',au.dataset.aud);return;}
   const rs=t.closest('[data-resend]');if(rs){act('resend',rs.dataset.resend);return;}
   const fm=t.closest('[data-form]');if(fm){S.form=fm.dataset.form||null;paint();$('f-text')?.focus();return;}
   const dd=t.closest('[data-do]');if(dd&&!dd.disabled){act(dd.dataset.do);return;}
-  const go=t.closest('[data-go]');if(go){if(go.dataset.go==='standards')window.stdTab137='waktu';if(!go137(go.dataset.go))toast('Buka menu terkait');return;}
+  const go=t.closest('[data-go]');if(go){if(go.dataset.go==='standards')window.stdTab137='waktu';if(!go137(go.dataset.go))toast($t('Buka menu terkait','Open the related menu'));return;}
   if(t.closest('[data-back]')){S.read=false;paint();$('wk').scrollIntoView({block:'start'});return;}
   const it=t.closest('.it[data-id]');if(it){open(it.dataset.id);return;}
  });
@@ -389,8 +476,9 @@ function bind(){
  let wasWide=wide();addEventListener('resize',()=>{if(!DEF.host?.isConnected)return;if(wide()!==wasWide){wasWide=wide();paint();}stick();});
  const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:0,rootMargin:'0px 0px -60px 0px'}):null;
  root.querySelectorAll('.rv').forEach(el=>io?io.observe(el):el.classList.add('in'));}
-const sig=()=>F.map(x=>x.id+x.st+x.aud+(x.hist||[]).length).join('|')+'#'+A.map(a=>a.id+a.st+a.reads.filter(r=>r[2]).length+a.title+a.must+a.aud).join('|')+'#'+U.today()+ten.role+state.user;
+const sig=()=>F.map(x=>x.id+x.st+x.aud+(x.hist||[]).length).join('|')+'#'+A.map(a=>a.id+a.st+a.reads.filter(r=>r[2]).length+a.title+a.must+a.aud).join('|')+'#'+U.today()+ten.role+state.user+state.lang;
 const DEF={id:'updates',css:STYLE,html:HTML,
+ i18n:{'Pembaruan':'Updates','Satu tempat berbicara ke semua label: perubahan fitur yang menetap sebagai panduan, dan pengumuman yang bisa diwajibkan untuk dibaca.':'One place to talk to every label: feature changes that stay as a guide, and announcements that can be made must-read.'},
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='updates'&&!state.preview,
  init(r){root=r;bind();},
  draw(){load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
@@ -398,24 +486,25 @@ const DEF={id:'updates',css:STYLE,html:HTML,
 DEF.sum=function(){load();const c=s=>F.filter(x=>x.st===s).length,ad=A.filter(a=>a.st==='draft').length,need=c('hold')+c('suggest')+c('draft')+ad,br=A.find(a=>a.id==='BR-1'),brr=br?{t:br.title,r:br.reads.filter(r=>r[2]).length,n:br.reads.length}:null;
  const sug=F.filter(x=>x.st==='suggest').map(x=>+String(x.ver).replace('dev.','')).filter(Boolean).sort((a,b)=>a-b);
  return {need,hold:c('hold'),suggest:c('suggest'),sugRange:sug.length?(sug[0]===sug.at(-1)?`${sug[0]}`:`${sug[0]}–${sug.at(-1)}`):'',draft:c('draft')+ad,br:brr,
-  internal:F.filter(x=>x.st==='pub'&&x.aud==='internal').sort((a,b)=>String(b.pubAt).localeCompare(String(a.pubAt))).map(x=>({id:x.id,t:x.title||x.text,d:x.title?x.text:'',at:x.pubAt||'',ver:x.ver||''})),
+  internal:F.filter(x=>x.st==='pub'&&x.aud==='internal').sort((a,b)=>String(b.pubAt).localeCompare(String(a.pubAt))).map(x=>({id:x.id,t:x.title?tx(x.title):tx(x.text),d:x.title?tx(x.text):'',at:x.pubAt||'',ver:x.ver||''})),
   maint:A.filter(a=>a.st==='maint'&&['scheduled','active'].includes(a.wst)).map(a=>({id:a.id,t:a.title,d:a.body,at:a.at,end:a.end,wst:a.wst})),
-  line:`${need?`${need} butir menunggu keputusan`:'Semua butir sudah diputuskan'}${brr?` · ${brr.t} dibaca ${brr.r} dari ${brr.n} label`:''}`,tone:c('hold')?'r':need?'o':'g'};};
+  line:$t(`${need?`${need} butir menunggu keputusan`:'Semua butir sudah diputuskan'}${brr?` · ${brr.t} dibaca ${brr.r} dari ${brr.n} label`:''}`,`${need?`${need} ${pl(need,'item','items')} awaiting a decision`:'All items decided'}${brr?` · ${brr.t} read by ${brr.r} of ${brr.n} labels`:''}`),tone:c('hold')?'r':need?'o':'g'};};
 page137(DEF);
 /* halaman Pembaruan label: butir terbit + pengumuman, tanda "Baru" sejak kunjungan terakhir */
 const LHTML='<main><div class="ph rl"><div><h1>Pembaruan</h1><div class="sub">Perubahan fitur dan pengumuman dari tim Rilis Musik.</div></div></div><section class="card rl" id="lbody" style="padding:22px 24px"></section><div class="toast" id="toast"></div></main>';
 let lvisit='';
 const LDEF={id:'updates-label',css:STYLE,html:LHTML,
+ i18n:{'Pembaruan':'Updates','Perubahan fitur dan pengumuman dari tim Rilis Musik.':'Feature changes and announcements from the Rilis Musik team.'},
  when:()=>isLabel10()&&state.page==='module'&&typeof v4==='object'&&v4.module==='updates',
  init(r){lroot=r;r.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){window.stdTab137='waktu';go137('standards');}});},
  draw(){F=store().items;const key=ten.member+':'+ten.now;const first=lvisit!==ten.member;const v=labelView(ten.member,{mark:false});const s=v.html+ten.member;if(s===lastL&&!first)return;lastL=s;lroot.getElementById('lbody').innerHTML=v.html;if(first){lvisit=ten.member;setTimeout(()=>{if(LDEF.host?.isConnected){labelView(ten.member,{mark:true});}},1500);}}};
 /*sum137 — ringkasan untuk Dashboard label: pengumuman & pembaruan yang sama dengan halaman Pembaruan label */
 LDEF.sum=function(member){F=store().items;const key=typeof key132==='function'?key132(member):member,legacy=(()=>{try{return lifeIds132().includes(key);}catch(err){return false;}})();
  const v=labelView(member,{mark:false}),seen=store().seen[member]||((store().since||1)-1);
- const ann=newsAll().filter(n=>live(n)&&(n.audience==='lifetime'?legacy:n.aud137!=='internal')).slice().reverse().map(n=>({id:n.id,t:(n.title||[])[0]||'',b:(n.body||[])[0]||'',must:!!n.must,life:n.audience==='lifetime',read:!!n.reads?.[n.audience==='lifetime'?key:member],at:iso(n.at)}));
+ const ann=newsAll().filter(n=>live(n)&&(n.audience==='lifetime'?legacy:n.aud137!=='internal')).slice().reverse().map(n=>({id:n.id,t:L2(n.title),b:L2(n.body),must:!!n.must,life:n.audience==='lifetime',read:!!n.reads?.[n.audience==='lifetime'?key:member],at:iso(n.at)}));
  const vis=F.filter(x=>x.st==='pub'&&(x.aud==='all'||x.aud==='legacy'&&legacy)).sort((a,b)=>String(b.pubAt).localeCompare(String(a.pubAt)));
  let maint=[];try{maint=(system115().areas.maintenance?.published?.windows||[]).filter(w=>['scheduled','active'].includes(maintState131(w))).map(w=>({id:w.id,t:w.title,b:w.message||'',at:iso(w.startAt),end:iso(w.endAt)}));}catch(err){}
- return {fresh:v.fresh,count:v.count,ann,maint,feat:vis.slice(0,3).map(x=>({id:x.id,g:GRP[x.g]||'',t:x.text,isNew:msOf(x.pubAt)>seen}))};};
+ return {fresh:v.fresh,count:v.count,ann,maint,feat:vis.slice(0,3).map(x=>({id:x.id,g:grp(x.g)||'',t:tx(x.text),isNew:msOf(x.pubAt)>seen}))};};
 page137(LDEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when()||LDEF.when())return '';return modBefore.apply(this,arguments);};
 /* pengumuman: hanya yang terbit / sudah waktunya tampil yang sampai ke label */

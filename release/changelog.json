@@ -1,5 +1,55 @@
 [
   {
+    "version": "1.1.0-dev.43",
+    "date": "2026-10-23",
+    "summary": {
+      "id": "Semua halaman baru kini dua bahasa: tombol ID/EN mengganti seluruh teks, tanggal, dan angka.",
+      "en": "All redesigned pages are now bilingual: the ID/EN switch changes every text, date and number."
+    },
+    "entries": [
+      {
+        "id": "dev43-i18n-pages",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Semua menu baru",
+            "en": "All new menus"
+          }
+        },
+        "title": {
+          "id": "Dua bahasa di 14 halaman baru",
+          "en": "Two languages on 14 redesigned pages"
+        },
+        "detail": {
+          "id": "Dashboard, Rilisan, Tiket Bantuan, Layanan Tambahan, Royalti, Penarikan, Transaksi, Pemantauan Keuangan, Kontrak Label, Standar & Penanda, Pembaruan, Kotak Masuk, Staff & Akses, dan Pengaturan Platform kini mengikuti tombol ID/EN: judul, tombol, status, pesan, ringkasan Dashboard, tanggal (\"Friday, 25 Sep 2026 · 09:00\"), dan rupiah (\"Rp 1,162,829\", \"Rp 10M\"). Teks Indonesia tidak berubah. Isi buatan pengguna (nama label, judul lagu, catatan, pesan) tetap seperti ditulis. Naskah kontrak CT-1 tetap bahasa Indonesia sebagai bahasa yang mengikat, dengan catatan dalam bahasa Inggris.",
+          "en": "Titles, buttons, statuses, messages, dashboard summaries, dates and rupiah follow the ID/EN switch. User content stays as written; the CT-1 contract body stays in Indonesian (binding language) with an English notice."
+        }
+      },
+      {
+        "id": "dev43-i18n-labels",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Label membaca Dashboard dan Pembaruan dalam bahasa Inggris",
+          "en": "Labels read the Dashboard and Updates in English"
+        },
+        "detail": {
+          "id": "Butir pembaruan fitur, pengumuman, dan usulan dari rilis tampil dalam bahasa yang dipilih label. Pengingat dari Super Admin ke staf disimpan dua bahasa supaya tampil sesuai bahasa penerima.",
+          "en": "Feature updates, announcements and release suggestions show in the label’s language; reminders to staff are stored in both languages."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.42",
     "date": "2026-10-23",
     "summary": {

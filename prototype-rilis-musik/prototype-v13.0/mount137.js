@@ -3,6 +3,10 @@
    terisolasi di Shadow DOM, sedangkan data dan tindakan memakai model prototipe yang asli.
    Setiap menu mendaftar lewat page137({id, when, css, html, init, draw, stub}). */
 const M137={defs:[],hosts:{},base:null};
+/* v1.1.0-dev.43 — dua bahasa: $t('teks Indonesia','English text') mengikuti tombol ID/EN (state.lang).
+   Teks tetap di HTML rancangan diterjemahkan lewat def.i18n {'teks Indonesia':'English'} saat bahasa berganti. */
+function $t(id,en){return state.lang==='en'&&en!=null?en:id;}
+const en137=()=>state.lang==='en';
 const BASE137=`:host{--bg:#f0f0f0;--card:#f8f8f8;--white:#fdfdfd;--text:#1b1d21;--muted:#6b7079;--faint:#9a9ea6;--line:#e4e4e6;--soft:#ececee;--green:#1eaa36;--blue:#2e689e;--orange:#cc6419;--red:#c83255;--ink:#1b1d21;--onink:#fff;
 --g-top:#fefefe;--g-bot:#f8f8f8;--g-lens:#0000000b;--g-rimtop:#fff;--g-rimbot:#fff;--g-rimside:#00000012;--g-sh1:#0000000a;--g-sh2:#00000016;--tint:34%;--tint-r:9%}
 :host([data-theme=dark]){--bg:#0a0a0b;--card:#141415;--white:#1c1c1e;--text:#ededef;--muted:#8e8e94;--faint:#6a6a70;--line:#ffffff14;--soft:#ffffff0d;--green:#3cc458;--blue:#5b9be0;--orange:#e88a3c;--red:#e5577a;--ink:#ededef;--onink:#0a0a0b;
@@ -301,7 +305,10 @@ function host137(def){
     const base=M137.base||(M137.base=sheet137(BASE137)),own=sheet137(def.css||'');
     if(base&&own&&'adoptedStyleSheets' in root)root.adoptedStyleSheets=[base,own];
     else root.innerHTML=`<style>${BASE137}\n${def.css||''}</style>`;
-    const box=document.createElement('div');box.className='m137';box.innerHTML=def.html;const tst=document.createElement('div');tst.className='toast';tst.id='toast';tst.setAttribute('role','status');tst.setAttribute('aria-live','polite');root.append(box,tst);
+    const box=document.createElement('div');box.className='m137';box.innerHTML=def.html;
+    /* simpan teks tetap (asli bahasa Indonesia) untuk diterjemahkan saat bahasa berganti */
+    def._static=[];const tw=document.createTreeWalker(box,NodeFilter.SHOW_TEXT);for(let n=tw.nextNode();n;n=tw.nextNode())if(n.nodeValue.trim())def._static.push([n,null,n.nodeValue]);
+    box.querySelectorAll('[placeholder],[title],[aria-label]').forEach(el=>['placeholder','title','aria-label'].forEach(k=>{if(el.hasAttribute(k))def._static.push([el,k,el.getAttribute(k)]);}));const tst=document.createElement('div');tst.className='toast';tst.id='toast';tst.setAttribute('role','status');tst.setAttribute('aria-live','polite');root.append(box,tst);
     // Ketikan di kolom isian halaman baru tidak boleh memicu pintasan global prototipe.
     h.addEventListener('keydown',e=>{const t=e.composedPath()[0];if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))e.stopPropagation();});
     M137.hosts[def.id]=h;def.root=root;def.host=h;
@@ -317,6 +324,9 @@ function go137(id,then){
   if(el){el.click();if(then)requestAnimationFrame(()=>then());return true;}
   return false;
 }
+function lang137(def){const l=en137()?'en':'id';if(def._lang===l)return;def._lang=l;const map=def.i18n||{};
+  for(const [n,attr,id] of def._static||[]){const k=id.trim(),v=l==='en'&&map[k]?id.replace(k,map[k]):id;if(attr)n.setAttribute(attr,v);else if(n.nodeValue!==v)n.nodeValue=v;}
+  def.host?.setAttribute('lang',l);}
 function toast137(def,text){const el=def.root?.getElementById('toast');if(!el)return;el.textContent=text;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2800);}
 const renderBefore137=render;
 render=function(){
@@ -333,6 +343,7 @@ render=function(){
       // Banner pemeliharaan biasanya menempel pada judul halaman lama; di halaman baru taruh di atas isi.
       document.querySelectorAll('.maint-banner131').forEach(b=>{if(!main.contains(b))main.insertBefore(b,h);});
       main.classList.add('m137-main');
+      lang137(def);
       def.draw();
       if(keep&&def===before){
         if(Math.abs(scrollY-keep.y)>2)scrollTo({top:keep.y,behavior:'instant'});
@@ -353,10 +364,22 @@ const U137=(()=>{const H=3600000;
   const addDay=(d,n)=>{const t=new Date(d+'T00:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10);};
   const addWork=(d,n,c=cal())=>{let x=d,k=n;while(k>0){x=addDay(x,1);if(isWork(x,c))k--;}return x;};
   const workDiff=(from,to,c=cal())=>{if(from===to)return 0;const dir=to>from?1:-1;let d=from,k=0;while(d!==to){d=addDay(d,dir);if(isWork(d,c))k++;}return dir*Math.max(1,k);};
-  const rule=(id,fb)=>{const r=(policy()?.rules||[]).find(x=>x.id===id);return {name:r?(Array.isArray(r.name)?r.name[0]:r.name):fb[0],mode:r?.mode||fb[1],value:Number(r?.value??fb[2])};};
-  const MON=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],DAY=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-  const dlabel=iso=>{const t=new Date(iso+'T00:00:00Z');return `${DAY[t.getUTCDay()]}, ${t.getUTCDate()} ${MON[t.getUTCMonth()]}`;};
+  const en=()=>state.lang==='en';
+  const rule=(id,fb)=>{const r=(policy()?.rules||[]).find(x=>x.id===id),fn=Array.isArray(fb[0])?fb[0][en()?1:0]:fb[0];return {name:r?(Array.isArray(r.name)?(r.name[en()?1:0]||r.name[0]):r.name):fn,mode:r?.mode||fb[1],value:Number(r?.value??fb[2])};};
+  /* nama bulan & hari, angka, rupiah — selalu baca bahasa saat dipanggil (jangan disalin ke konstanta modul) */
+  const MS={id:['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']};
+  const MF={id:['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'],en:['January','February','March','April','May','June','July','August','September','October','November','December']};
+  const DY={id:['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'],en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']};
+  const L=()=>en()?'en':'id';
+  const mon=i=>MS[L()][i],month=i=>MF[L()][i],dayName=i=>DY[L()][i];
+  const monthP=p=>{if(!p)return '';const [y,m]=String(p).split('-').map(Number);return `${MF[L()][m-1]} ${y}`;};
+  const hm=s=>en()?String(s).slice(0,5):String(s).slice(0,5).replace(':','.');
+  const dlabel=iso=>{const t=new Date(String(iso).slice(0,10)+'T00:00:00Z');return `${dayName(t.getUTCDay())}, ${t.getUTCDate()} ${mon(t.getUTCMonth())}`;};
   const today=()=>day();
-  const todayLabel=()=>{const t=new Date(day()+'T00:00:00Z');return `${DAY[t.getUTCDay()]}, ${t.getUTCDate()} ${MON[t.getUTCMonth()]} ${t.getUTCFullYear()}`;};
-  const fd=s=>{if(!s)return 'Baru saja';const [y,m,d]=s.slice(0,10).split('-').map(Number);return `${d} ${MON[m-1]} ${y}`+(s.length>10?` · ${s.slice(11,16).replace(':','.')}`:'');};
-  return {iso16,isoDay,policy,cal,isWork,addDay,addWork,workDiff,rule,MON,DAY,dlabel,today,todayLabel,fd};})();
+  const todayLabel=()=>{const t=new Date(day()+'T00:00:00Z');return `${dayName(t.getUTCDay())}, ${t.getUTCDate()} ${mon(t.getUTCMonth())} ${t.getUTCFullYear()}`;};
+  const fd=s=>{if(!s)return en()?'Just now':'Baru saja';const [y,m,d]=s.slice(0,10).split('-').map(Number);return `${d} ${mon(m-1)} ${y}`+(s.length>10?` · ${hm(s.slice(11,16))}`:'');};
+  const loc=()=>en()?'en-US':'id-ID';
+  const num=(n,d=0)=>Number(n||0).toLocaleString(loc(),{maximumFractionDigits:d});
+  const rp=n=>(n<0?'−':'')+'Rp '+Math.round(Math.abs(n||0)).toLocaleString(loc());
+  const rps=n=>{const a=Math.abs(n||0),s=n<0?'−':'';return a>=1e9?`${s}Rp ${num(a/1e9,2)}${en()?'B':' M'}`:a>=1e6?`${s}Rp ${num(a/1e6,1)}${en()?'M':' jt'}`:s+rp(a);};
+  return {iso16,isoDay,policy,cal,isWork,addDay,addWork,workDiff,rule,get MON(){return MS[L()];},get DAY(){return DY[L()];},get MONTHS(){return MF[L()];},mon,month,dayName,monthP,hm,dlabel,today,todayLabel,fd,loc,num,rp,rps,en};})();
