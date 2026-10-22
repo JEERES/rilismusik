@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.33",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Penarikan dirancang ulang di atas data asli; pengajuan contoh tidak lagi terblokir rekening.",
+      "en": "Withdrawals redesigned on real data; sample requests no longer blocked by bank checks."
+    },
+    "entries": [
+      {
+        "id": "dev33-withdraw-redesign",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Penarikan",
+            "en": "Withdrawals"
+          }
+        },
+        "title": {
+          "id": "Penarikan baru: Dalam proses · Riwayat, siklus 1–14 / bayar s.d. 20",
+          "en": "New Withdrawals: In progress · History, the 1–14 / pay-by-20 cycle"
+        },
+        "detail": {
+          "id": "Tampilan persis mock yang disetujui: pita siklus Menunggu pemeriksaan → Siap dibayar → Sedang ditransfer → Ditunda → Koreksi (41 kartu lama hilang), 6 pemeriksaan sebelum menyetujui, data salin untuk transfer hanya di Siap dibayar, hasil transfer Berhasil (nomor referensi bank wajib) / Belum pasti / Gagal, Tunda dengan alasan, Pakai rekening terbaru, Koreksi pembayaran, dan Unduh daftar transfer (CSV). Semua tombol memakai fungsi penarikan yang asli.",
+          "en": "Matches the approved mock with checks, copy-ready transfer data, transfer results with mandatory bank reference, delays, corrections and a transfer list CSV."
+        }
+      },
+      {
+        "id": "dev33-withdraw-cycle",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Penarikan",
+            "en": "Withdrawals"
+          }
+        },
+        "title": {
+          "id": "Pengajuan di luar tanggal 1–14 ikut siklus berikutnya",
+          "en": "Requests outside the 1st–14th roll into the next cycle"
+        },
+        "detail": {
+          "id": "Pengajuan 25 Sep (WD-0039–0041) kini bertenggat 20 Okt, bukan \"lewat tenggat\". Keterangan transfer baru ROYALTI OKT 2026 WD-xxxx; pembayaran lama tetap dengan keterangan yang tercatat. Nama bank (BCA, BRI, BNI, BSI) dan kota dirapikan di tampilan.",
+          "en": "Late requests now fall due on the 20th of the next month; new transfer memo; bank and city names tidied."
+        }
+      },
+      {
+        "id": "dev33-withdraw-bankfix",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Penarikan",
+            "en": "Withdrawals"
+          }
+        },
+        "title": {
+          "id": "Perbaikan: rekening yang sama tidak lagi dianggap berubah",
+          "en": "Fix: the same bank account is no longer treated as changed"
+        },
+        "detail": {
+          "id": "Rekening pada pengajuan dibandingkan menurut bank, nomor, dan penerima — bukan seluruh catatan (yang memuat versi & status) — sehingga tiga pengajuan contoh bisa disetujui dan dibayar.",
+          "en": "Bank accounts are compared by bank, number and holder, so the three sample requests can be approved and paid."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.32",
     "date": "2026-10-22",
     "summary": {
