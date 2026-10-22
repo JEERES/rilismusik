@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.36",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Kontrak Label: status per label, naskah CT-1 16 pasal, dan penandatangan dalam satu halaman.",
+      "en": "Label Contracts: per-label status, the 16-article CT-1 text and the company signer on one page."
+    },
+    "entries": [
+      {
+        "id": "dev36-contracts-status",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Kontrak Label",
+            "en": "Label Contracts"
+          }
+        },
+        "title": {
+          "id": "Status kontrak per label: Berlaku · Belum disetujui · Diakhiri",
+          "en": "Per-label contract status: Active · Not accepted · Ended"
+        },
+        "detail": {
+          "id": "Kartu \"Persetujuan label\" yang hilang sejak v10.7 kembali sebagai tab Status kontrak: 21 label berlaku dengan CT-1, 4 calon member belum menyetujui. Rincian berisi versi yang disetujui, bukti persetujuan (waktu, cara, versi identitas), tarif royalti yang tercatat di akun, riwayat, Ingatkan (notifikasi ke label), Unduh salinan persetujuan, dan Akhiri kontrak dengan alasan (pengiriman rilisan baru langsung tertahan; bisa dibatalkan). Kontrak berlaku selama akun aktif, tanpa tanggal berakhir.",
+          "en": "The label consent list returns as a status tab with proof of consent, reminders, a consent copy download and termination with a reason."
+        }
+      },
+      {
+        "id": "dev36-contracts-text",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Kontrak Label",
+            "en": "Label Contracts"
+          }
+        },
+        "title": {
+          "id": "Naskah CT-1 16 pasal; Pasal 8 diisi Super Admin",
+          "en": "16-article CT-1 text; article 8 filled in by the Super Admin"
+        },
+        "detail": {
+          "id": "Naskah lama 3 kalimat diganti Perjanjian Distribusi Musik 16 pasal (draf, perlu tinjauan hukum sebelum produksi) dengan daftar pasal, pokok isi, dan unduh naskah. Label membaca naskah yang sama di aplikasinya. Pasal 8 (royalti) ditulis Super Admin lewat tombol Isi Pasal 8. Tombol \"Buat revisi kontrak\" dihapus.",
+          "en": "The old 3-sentence text is replaced by the 16-article agreement; labels read the same text; article 8 is written by the Super Admin; the revision button is removed."
+        }
+      },
+      {
+        "id": "dev36-contracts-signer",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Kontrak Label",
+            "en": "Label Contracts"
+          }
+        },
+        "title": {
+          "id": "Penandatangan: badan hukum, penanggung jawab, tanda tangan & stempel",
+          "en": "Signer: legal entity, signatory, signature & stamp"
+        },
+        "detail": {
+          "id": "Satu sumber identitas untuk dokumen hukum: nama badan hukum, kedudukan, alamat, NIB, kontak, penanggung jawab dan jabatan, serta unggah tanda tangan & stempel (diperkecil otomatis, hanya Super Admin). Isiannya langsung dipakai di Pasal 1 naskah dan blok tanda tangan. Yang belum diisi tampil \"belum diisi\" — identitas perusahaan masih menunggu keputusan.",
+          "en": "One identity source for legal documents, used in article 1 and the signature block; empty fields show \"not filled in\" pending the company identity decision."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.35",
     "date": "2026-10-22",
     "summary": {
