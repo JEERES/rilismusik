@@ -1,5 +1,71 @@
 [
   {
+    "version": "1.1.0-dev.39",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Kotak Masuk menjadi aliran \"untukmu\" dan semua percakapan label menjadi tiket.",
+      "en": "The Inbox becomes a \"for you\" stream and every label conversation becomes a ticket."
+    },
+    "entries": [
+      {
+        "id": "dev39-inbox-stream",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Kotak Masuk",
+            "en": "Inbox"
+          }
+        },
+        "title": {
+          "id": "Satu aliran \"untukmu\": Perlu jawaban · Disebut & ditugaskan · Notifikasi",
+          "en": "One \"for you\" stream: Needs reply · Mentions & assignments · Notifications"
+        },
+        "detail": {
+          "id": "Hanya yang menunggumu: tiket yang pesan terakhirnya dari label, eskalasi dan penyelesaian layanan yang perlu keputusan Super Admin, penugasan, sebutan @nama, dan notifikasi — dibagi Belum/Sudah dibaca. Tiket selesai tidak lagi memenuhi daftar. Balasan dan catatan internal tersimpan di tiketnya; keputusan diambil di menu asal lewat \"Buka & putuskan\". Notifikasi hilang sendiri saat pekerjaannya selesai. Halaman tanpa sidebar. Tab Berita sudah pindah ke Pembaruan › Pengumuman.",
+          "en": "Only what waits for you, split read/unread; replies and notes are saved on the ticket; decisions stay in their menus; notifications clear themselves."
+        }
+      },
+      {
+        "id": "dev39-inbox-tickets",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Kotak Masuk",
+            "en": "Inbox"
+          }
+        },
+        "title": {
+          "id": "Satu sistem percakapan: obrolan lama menjadi tiket",
+          "en": "One conversation system: old chats become tickets"
+        },
+        "detail": {
+          "id": "Percakapan T-318, T-322, T-325, dan pengajuan pengembalian Kopi Senja (TKT-0901) kini tiket \"Permintaan lainnya\" (TKT-0036–0039) lengkap dengan pesan, catatan internal, petugas, dan statusnya. Sebelumnya balasan tim di obrolan lama tidak pernah sampai ke label; kini label membacanya di Pesan. Pengajuan RF-1 menunjuk ke tiket barunya.",
+          "en": "Old chats T-318/T-322/T-325 and the TKT-0901 refund chat become tickets so replies reach labels in Messages."
+        }
+      },
+      {
+        "id": "dev39-inbox-header",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard"
+        },
+        "title": {
+          "id": "Satu pintu di header",
+          "en": "One door in the header"
+        },
+        "detail": {
+          "id": "Lonceng dan chat simulasi dilebur ke ikon Kotak Masuk dengan satu angka belum dibaca.",
+          "en": "The bell and simulated chat merge into the Inbox icon with one unread count."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.38",
     "date": "2026-10-22",
     "summary": {
