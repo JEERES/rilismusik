@@ -335,7 +335,7 @@ function bind(){
 let pending=null,lastMod='';
 function intake(){if(!pending)return;const id=pending;pending=null;load();const o=O.find(x=>x.id===id||(x.songs||[]).some(s=>s.id===id));if(!o)return;
  S.tab=isOpen(o)?'proc':'done';S.stage=null;S.q='';S.svc='all';S.sel[S.tab]=o.id;S.read=true;S.form=null;lastSig='';}
-const sig=()=>O.map(o=>[o.id,o.st,o.ver,o.h,o.dueDate,o.payment||''].join(':')).join('|')+'|'+U.today();
+const sig=()=>O.map(o=>[o.id,o.st,o.ver,o.h,o.dueDate,o.payment||''].join(':')).join('|')+'|'+U.today()+'|r:'+ten.role+state.user;
 const DEF={id:'addons',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&['addons','wami'].includes(v4.module)&&!state.preview,
  init(r){root=r;bind();},

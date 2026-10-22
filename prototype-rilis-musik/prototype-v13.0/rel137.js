@@ -202,7 +202,7 @@ function bind(){
   if(t.closest('[data-edit]')){S.edit=true;repane();return;}
   const dd=t.closest('[data-do]');if(dd&&r&&!dd.disabled){act(r,dd.dataset.do);return;}
   const lb=t.closest('[data-label]');if(lb){openLabel(lb.dataset.label);return;}
-  if(t.closest('[data-std]')){if(!go137('standards'))toast('Buka Standar & Penanda › Aturan waktu');return;}
+  if(t.closest('[data-std]')){window.stdTab137='waktu';if(!go137('standards'))toast('Buka Standar & Penanda › Aturan waktu');return;}
   if(t.closest('[data-work]')){if(!go137('work'))toast('Buka Pekerjaan untuk mengatur petugas');return;}
   if(t.closest('[data-back]')){S.read=false;paint();$('wk').scrollIntoView({block:'start'});return;}
   const it=t.closest('.it[data-id]');if(it){open(it.dataset.id);return;}
@@ -327,7 +327,7 @@ function openLabel(member){try{if(typeof l136==='object'){l136.tab='all';l136.se
 /* Masuk dari Pekerjaan / Dashboard / notifikasi: buka rilisan yang diminta (ui105.view='detail'). */
 function intake(){if(typeof ui105!=='object'||ui105.view!=='detail'||!ui105.id)return;const id=ui105.id;ui105.view='list';ui105.id=null;load();const r=R.find(x=>x.id===id);if(!r)return;
  S.tab=PROC.has(r.s)?'proc':'cat';S.stage=null;S.q='';S.sel[S.tab]=id;S.read=true;S.form=null;S.pick=null;lastSig='';}
-const sig=()=>R.map(r=>[r.id,r.raw,r.ver,r.h,r.due,r.upc,r.hist.length].join(':')).join('|')+'|'+day();
+const sig=()=>R.map(r=>[r.id,r.raw,r.ver,r.h,r.due,r.upc,r.hist.length].join(':')).join('|')+'|'+day()+'|r:'+ten.role+state.user;
 const DEF={id:'releases',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='releases'&&!state.preview,
  init(r){root=r;bind();},

@@ -311,7 +311,7 @@ function host137(def){
   return h;
 }
 /* Navigasi ke menu lain lewat tombol menu asli, supaya semua efek samping prototipe tetap berlaku. */
-const NAV137={home:'[data-control126=home]',inbox:'[data-control126=inbox]',finance:'[data-control126=finance]',staff:'[data-control126=access]',settings:'[data-control126=settings]',work:'.side-scroll [data-page="mywork9"]',labels:'.side-scroll [data-page="labels9"]',standards:'.side-scroll [data-page="standards9"]',royalty:'.side-scroll [data-id="analytics"]',transactions:'.side-scroll [data-id="payments"]'};
+const NAV137={home:'[data-control126=home]',inbox:'[data-control126=inbox]',finance:'[data-control126=finance]',staff:'[data-control126=access]',settings:'[data-control126=settings]',work:'.side-scroll [data-page="mywork9"]',labels:'.side-scroll [data-page="labels9"]',standards:'.side-scroll [data-page="standards9"],[data-u11="standards"]',royalty:'.side-scroll [data-id="analytics"]',transactions:'.side-scroll [data-id="payments"]'};
 function go137(id,then){
   const el=document.querySelector(NAV137[id]||`.side-scroll [data-id="${id}"]`);
   if(el){el.click();if(then)requestAnimationFrame(()=>then());return true;}

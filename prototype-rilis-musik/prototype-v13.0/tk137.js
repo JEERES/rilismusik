@@ -324,7 +324,7 @@ function bind(){
   const dd=t.closest('[data-do]');if(dd&&!dd.disabled){act(dd.dataset.do);return;}
   const rl=t.closest('[data-rel]');if(rl){openRelease(rl.dataset.rel);return;}
   const go=t.closest('[data-go]');if(go){if(!go137(go.dataset.go))toast('Buka menu '+go.dataset.go);return;}
-  if(t.closest('[data-std]')){if(!go137('standards'))toast('Buka Standar & Penanda');return;}
+  if(t.closest('[data-std]')){window.stdTab137='layanan';if(!go137('standards'))toast('Buka Standar & Penanda');return;}
   if(t.closest('[data-back]')){S.read=false;paint();$('wk').scrollIntoView({block:'start'});return;}
   const it=t.closest('.it[data-id]');if(it){open(it.dataset.id,true);return;}
  });
@@ -337,7 +337,7 @@ function openRelease(id){try{if(typeof ui105==='object'){ui105.view='detail';ui1
 let pending=null;
 function intake(){if(!pending)return;const id=pending;pending=null;load();const merged=T.find(x=>x.id===id||x.mergedIds.includes(id));if(!merged)return;
  S.tab=isOpen(merged)?'proc':'done';S.stage=null;S.q='';S.fam='all';S.sel[S.tab]=merged.id;S.read=true;S.form=null;lastSig='';}
-const sig=()=>T.map(t=>[t.id,t.raw,t.ver,t.h,t.due,t.items.map(i=>i.s).join('')].join(':')).join('|')+'|'+U.today();
+const sig=()=>T.map(t=>[t.id,t.raw,t.ver,t.h,t.due,t.items.map(i=>i.s).join('')].join(':')).join('|')+'|'+U.today()+'|r:'+ten.role+state.user;
 const DEF={id:'tickets',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='tickets'&&!state.preview&&(typeof allowed112!=='function'||allowed112()),
  init(r){root=r;bind();},

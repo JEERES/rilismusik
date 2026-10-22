@@ -1,5 +1,91 @@
 [
   {
+    "version": "1.1.0-dev.37",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Standar & Penanda menjadi buku aturan: kamus status, aturan waktu, syarat lencana, standar layanan, dan riwayat versi.",
+      "en": "Standards & Indicators becomes the rulebook: status dictionary, timing rules, badge requirements, service standards and version history."
+    },
+    "entries": [
+      {
+        "id": "dev37-standards-kamus",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "standards9",
+          "menu": {
+            "id": "Standar & Penanda",
+            "en": "Standards & Indicators"
+          }
+        },
+        "title": {
+          "id": "Kamus status semua menu dengan jumlah dari data asli",
+          "en": "Status dictionary for every menu with live counts"
+        },
+        "detail": {
+          "id": "61 status dari Pekerjaan, Rilisan, Penarikan, Akses & Aktivitas label, Royalti, WAMI, Layanan Tambahan, Tiket Bantuan, dan Transaksi dalam satu kamus: arti, kapan muncul dan hilang, warna, urutan, dan \"Lihat N di menu\". Jumlahnya dihitung dari data menu masing-masing (tidak lagi salinan teks yang bisa berbeda). Pita biru menampilkan status merah/oranye yang paling banyak.",
+          "en": "One dictionary of 61 statuses with meaning, when they appear/clear, colour, order and live counts from each menu."
+        }
+      },
+      {
+        "id": "dev37-standards-rules",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "standards9",
+          "menu": {
+            "id": "Standar & Penanda",
+            "en": "Standards & Indicators"
+          }
+        },
+        "title": {
+          "id": "Aturan waktu pindah ke sini dan terbit sebagai versi baru",
+          "en": "Timing rules move here and publish as new versions"
+        },
+        "detail": {
+          "id": "Prosedur & Pengingat (11 tenggat tahap, 6 aturan tindak lanjut, kalender operasional) kini diubah dari Standar & Penanda. Setiap perubahan menampilkan dampak nyata ke pekerjaan berjalan (berapa yang tenggatnya berubah atau menjadi terlambat) lalu terbit sebagai versi berikutnya lewat fungsi Prosedur yang asli. Aturan tindak lanjut bernilai contoh bisa ditandai sudah diverifikasi. Staf membaca tanpa tombol ubah.",
+          "en": "Procedures & reminders now edit here with real impact on ongoing work and publish as the next version; staff read only."
+        }
+      },
+      {
+        "id": "dev37-standards-badges",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "standards9",
+          "menu": {
+            "id": "Standar & Penanda",
+            "en": "Standards & Indicators"
+          }
+        },
+        "title": {
+          "id": "Syarat lencana dengan pratinjau siapa mendapat atau kehilangan centang",
+          "en": "Badge requirements with a gain/lose preview"
+        },
+        "detail": {
+          "id": "Ambang Verifikasi Label dan Master Multi-label diubah dengan tombol −/+; sebelum terbit tampil nama label yang akan mendapat atau kehilangan centang (pencapaian lama dipertahankan). Standar layanan (Layanan tambahan, Tiket bantuan, Transaksi, WAMI) dan Riwayat versi sungguhan melengkapi halaman. Panduan desain internal tidak lagi tampil di aplikasi.",
+          "en": "Badge thresholds with a named gain/lose preview; service standards and real version history; internal design guides leave the app."
+        }
+      },
+      {
+        "id": "dev37-role-repaint",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module"
+        },
+        "title": {
+          "id": "Perbaikan: ganti peran di Studio langsung memperbarui tombol",
+          "en": "Fix: switching roles in Studio refreshes the buttons immediately"
+        },
+        "detail": {
+          "id": "Rilisan, Tiket Bantuan, Layanan Tambahan, Royalti, dan Penarikan kini menggambar ulang saat peran berganti, sehingga tombol khusus Super Admin tidak tersisa di tampilan Staf.",
+          "en": "Pages now repaint on role switch so Super Admin-only buttons do not linger for staff."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.36",
     "date": "2026-10-22",
     "summary": {

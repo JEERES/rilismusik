@@ -276,7 +276,7 @@ function bind(){
  root.querySelectorAll('.rv').forEach(el=>io?io.observe(el):el.classList.add('in'));}
 /* Masuk dari Pekerjaan / notifikasi / Manajemen Label: route108(id) memilih penarikan di halaman baru. */
 function intake(){try{if(typeof ui108==='object'&&ui108.detail){const id=ui108.detail;ui108.detail=null;const w=W.find(x=>x.id===id);if(w){S.tab=w.status==='paid'?'paid':'proc';S.stage=null;S.q='';S.sel[S.tab]=id;S.read=true;S.form=null;S.pick=null;lastSig='';}}}catch(err){}}
-const sig=()=>W.map(w=>[w.id,w.status,w.uncertain?1:0,w.handler,w.bankOk?1:0].join(':')).join('|')+'|'+U.today();
+const sig=()=>W.map(w=>[w.id,w.status,w.uncertain?1:0,w.handler,w.bankOk?1:0].join(':')).join('|')+'|'+U.today()+'|r:'+ten.role+state.user;
 const allowed=()=>{try{return isSA()||(typeof can108==='function'&&can108());}catch(err){return false;}};
 const DEF={id:'withdraw',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='withdraw'&&!state.preview&&allowed(),
