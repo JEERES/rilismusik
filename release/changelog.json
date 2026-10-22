@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.38",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Pembaruan menjadi tempat berbicara ke label: butir fitur yang dikelola dan pengumuman yang bisa dijadwalkan.",
+      "en": "Updates becomes the place to talk to labels: managed feature notes and schedulable announcements."
+    },
+    "entries": [
+      {
+        "id": "dev38-updates-features",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Pembaruan",
+            "en": "Updates"
+          }
+        },
+        "title": {
+          "id": "Butir pembaruan fitur dikelola: draf, ditahan, terbit, ditarik",
+          "en": "Managed feature notes: draft, held, published, withdrawn"
+        },
+        "detail": {
+          "id": "18 butir panduan lama kini data yang dikelola Super Admin dengan istilah yang dirapikan (kredit; Basic · Studio · Pro · Business), audiens Semua label / Tim internal / Label paket lama, dan Pratinjau sebagai label. Kalimat tarif 60% ditahan sampai bunyinya ditetapkan. \"Di balik layar\" hanya untuk tim internal. Setiap dev release menjadi usulan: jadikan draf untuk label atau catat untuk tim internal.",
+          "en": "The 18 old guide items become managed notes with audiences and a label preview; the rate sentence is held; each dev release becomes a suggestion."
+        }
+      },
+      {
+        "id": "dev38-updates-announcements",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Pembaruan",
+            "en": "Updates"
+          }
+        },
+        "title": {
+          "id": "Pengumuman pindah dari Kotak Masuk › Berita",
+          "en": "Announcements move from Inbox › News"
+        },
+        "detail": {
+          "id": "Tulis pengumuman sebagai draf, terbitkan sekarang atau jadwalkan, pilih audiens, dan jadikan wajib baca. Daftar penerima menunjukkan siapa yang sudah membaca, dengan tombol Ingatkan. Jadwal pemeliharaan ikut tampil. Draf dan jadwal yang belum tiba tidak sampai ke label.",
+          "en": "Draft, publish or schedule announcements with audiences and must-read tracking plus reminders; maintenance windows are listed."
+        }
+      },
+      {
+        "id": "dev38-updates-label",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "module",
+          "menu": {
+            "id": "Pembaruan",
+            "en": "Updates"
+          }
+        },
+        "title": {
+          "id": "Halaman Pembaruan label membaca butir yang sama",
+          "en": "The label Updates page reads the same notes"
+        },
+        "detail": {
+          "id": "Label melihat pengumuman dan butir yang terbit untuknya, dikelompokkan per topik, dengan tanda \"Baru\" sejak kunjungan terakhir. Butir internal, draf, usulan, dan kalimat yang ditahan tidak terlihat.",
+          "en": "Labels see the announcements and published notes meant for them, grouped by topic with \"New\" markers."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.37",
     "date": "2026-10-22",
     "summary": {
