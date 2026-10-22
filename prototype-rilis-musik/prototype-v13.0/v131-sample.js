@@ -190,13 +190,13 @@
   if(Array.isArray(v9l)){
    S.labels.forEach((l,i)=>{
     const m=RM10.getMember(ten,l.id);if(!m)return;
-    const id='S'+String(i+1).padStart(2,'0');
+    const id='S'+String(i+1).padStart(2,'0'); // dev.35: balance.available sudah tanpa pengajuan terbuka; credit memuatnya agar ledger9 tidak mengurangkan dua kali (saldo minus)
     if(!v9l.some(x=>x.id===id)){
      const paid=S.withdrawals.filter(w=>w.label===l.id&&w.status==='paid').reduce((a,w)=>a+money(w.amount),0);
      const rels=(releasesByLabel.get(l.id)||[]).map((r,n)=>({id:id+'-R'+n,date:r.date||r.created||'2026-01-01',valid:true}));
      const last=[...S.withdrawals.filter(w=>w.label===l.id).map(w=>w.requested),...(releasesByLabel.get(l.id)||[]).map(r=>r.created)].filter(Boolean).sort().at(-1)||null;
      const income=S.royalty.summary.filter(x=>x.label===l.id&&x.period==='2026-08').reduce((a,x)=>a+money(x.idr),0);
-     v9l.push({id,name:l.name,plan:l.plan,joined:l.joined,last,paid,credit:paid+money(l.balance.available),adjustment:0,processing:money(l.balance.requested),held:0,periodIncome:income,report:'2026-08',expiry:l.subscriptionEnd||(m.active?'2027-03-01':'2026-01-01'),complete:!!(l.pic&&l.email),contact:!!(l.email||l.whatsapp),issue:false,restriction:l.blacklisted?'blocked':null,suspended:null,earned:false,review:l.kyc==='pending_review',master:!!l.multi,managedSince:null,children:[],releases:rels,lastPayment:S.withdrawals.filter(w=>w.label===l.id&&w.status==='paid').map(w=>w.paid).filter(Boolean).sort().at(-1)||null,sample131:true});
+     v9l.push({id,name:l.name,plan:l.plan,joined:l.joined,last,paid,credit:paid+money(l.balance.available)+money(l.balance.requested),adjustment:0,processing:money(l.balance.requested),held:0,periodIncome:income,report:'2026-08',expiry:l.subscriptionEnd||(m.active?'2027-03-01':'2026-01-01'),complete:!!(l.pic&&l.email),contact:!!(l.email||l.whatsapp),issue:false,restriction:l.blacklisted?'blocked':null,suspended:null,earned:false,review:l.kyc==='pending_review',master:!!l.multi,managedSince:null,children:[],releases:rels,lastPayment:S.withdrawals.filter(w=>w.label===l.id&&w.status==='paid').map(w=>w.paid).filter(Boolean).sort().at(-1)||null,sample131:true});
      report.v9++;
     }
     m.source9=id;

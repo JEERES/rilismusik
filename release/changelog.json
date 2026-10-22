@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.35",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Pemantauan Keuangan menjadi satu halaman \"Posisi keuangan\" di atas data asli; saldo lama tidak minus lagi.",
+      "en": "Finance Monitor becomes a single \"Financial position\" page on real data; legacy balances are no longer negative."
+    },
+    "entries": [
+      {
+        "id": "dev35-finance-position",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "liability9",
+          "menu": {
+            "id": "Pemantauan Keuangan",
+            "en": "Finance Monitor"
+          }
+        },
+        "title": {
+          "id": "Posisi keuangan: kas − kewajiban ke label = cadangan",
+          "en": "Financial position: cash − label liabilities = reserve"
+        },
+        "detail": {
+          "id": "Tampilan persis mock yang disetujui: pita biru dengan status Aman / Perlu perhatian / Kas tidak cukup, empat blok (Kas & rekonsiliasi, Kewajiban ke label, Akan masuk, Pendapatan layanan) yang menautkan ke Royalti, Penarikan, dan Transaksi, serta kalender kas rekening royalti sampai akhir bulan pencairan dengan dua skenario (dana Believe masuk, semua label siap ikut menarik). Angka dari sumber yang sama dengan menu asalnya: kewajiban ke label Rp 41.992.053 (tersedia + sedang dicairkan), 6 label siap cair Rp 29.894.879, laporan Believe Juni & September yang belum menerima dana.",
+          "en": "Matches the approved mock: status band, four linked blocks and a cash calendar with two scenarios, all from the same sources as their home menus."
+        }
+      },
+      {
+        "id": "dev35-finance-cash",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "liability9",
+          "menu": {
+            "id": "Pemantauan Keuangan",
+            "en": "Finance Monitor"
+          }
+        },
+        "title": {
+          "id": "Rekonsiliasi kas per rekening, selisih wajib dijelaskan",
+          "en": "Per-account cash reconciliation with mandatory difference notes"
+        },
+        "detail": {
+          "id": "Rekening royalti (dana Believe masuk, pencairan keluar) dan rekening operasional (pembayaran layanan masuk, pengembalian keluar). Saldo seharusnya dihitung dari catatan kas terakhir + mutasi buku; saat mencatat saldo dari mutasi bank, selisih tampil langsung dan wajib dijelaskan. Lampiran mutasi dicatat namanya. Catatan memakai fungsi kas yang asli (hanya Super Admin). Belum ada saldo contoh: halaman jujur menampilkan \"Kas belum dicatat\" sampai catatan pertama dibuat.",
+          "en": "Royalty and operational accounts; expected balance from the last record plus book movements; differences must be explained; uses the real cash function (Super Admin only)."
+        }
+      },
+      {
+        "id": "dev35-finance-moved",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "liability9",
+          "menu": {
+            "id": "Pemantauan Keuangan",
+            "en": "Finance Monitor"
+          }
+        },
+        "title": {
+          "id": "Tab lama dipindah; perbaikan saldo minus",
+          "en": "Old tabs moved; negative balance fix"
+        },
+        "detail": {
+          "id": "Pemantauan Dana & Kewajiban Royalti → Royalti › Saldo label, Perkembangan Katalog → Royalti › Analitik (tautan langsung membuka tabnya), Kredit & Tarif Khusus → Manajemen Label. Bonus Kredit sementara tetap membuka alat lama sampai pindah ke Manajemen Label. Perbaikan: saldo awal label lama tidak lagi minus (Nusantara −Rp 6,6 jt, Rimba, Tepian) karena pengajuan terbuka tidak dikurangkan dua kali.",
+          "en": "Old tabs now live in Royalty and Label Management (bonus credits keep the old tool for now). Fix: legacy opening balances are no longer negative."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.34",
     "date": "2026-10-22",
     "summary": {

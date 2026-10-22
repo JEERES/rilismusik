@@ -305,7 +305,7 @@ function bind(){
  let wasWide=wide();addEventListener('resize',()=>{if(!DEF.host?.isConnected)return;if(wide()!==wasWide){wasWide=wide();paint();}stick();});
  const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:0,rootMargin:'0px 0px -60px 0px'}):null;
  root.querySelectorAll('.rv').forEach(el=>io?io.observe(el):el.classList.add('in'));}
-function intake(){try{if(typeof ui107==='object'&&ui107.batch&&B.some(b=>b.id===ui107.batch)){S.tab='rep';S.stage=null;S.sel.rep=ui107.batch;S.read=true;ui107.batch=null;lastSig='';}}catch(err){}}
+function intake(){try{if(window.royTab137){S.tab=window.royTab137;S.stage=null;S.q='';S.read=false;window.royTab137=null;lastSig='';}}catch(err){}try{if(typeof ui107==='object'&&ui107.batch&&B.some(b=>b.id===ui107.batch)){S.tab='rep';S.stage=null;S.sel.rep=ui107.batch;S.read=true;ui107.batch=null;lastSig='';}}catch(err){}}
 const sig=()=>B.map(b=>[b.id,b.st,b.version,b.pending].join(':')).join('|')+'#'+L.map(l=>[l.id,l.av,l.pr,l.paid,l.cr.length].join(':')).join('|')+'#'+U.today();
 const allowed=()=>{try{return isSA()||(typeof may114==='function'&&may114('royalty'));}catch(err){return false;}};
 const DEF={id:'royalty',css:STYLE,html:HTML,
