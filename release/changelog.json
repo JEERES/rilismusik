@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.34",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Transaksi dirancang ulang di atas data asli, termasuk antrean pengembalian paket lama.",
+      "en": "Transactions redesigned on real data, including the legacy-plan refund queue."
+    },
+    "entries": [
+      {
+        "id": "dev34-transactions-redesign",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Transaksi",
+            "en": "Transactions"
+          }
+        },
+        "title": {
+          "id": "Transaksi baru: Transaksi · Pengembalian, satu langkah per kasus",
+          "en": "New Transactions: Transactions · Refunds, one step per case"
+        },
+        "detail": {
+          "id": "Tampilan persis mock yang disetujui: pita biru hanya menghitung yang perlu ditangani (Belum dipenuhi · Tidak cocok penyedia · Dana tanpa transaksi · Menunggu info label · Pengembalian berjalan), pil jenis Paket · Kredit · Layanan, satu status per transaksi, tabel Rilis Musik vs penyedia, dan langkah berikutnya di panel kanan: Penuhi pembelian, Terima pembayaran penyedia, Perbarui & penuhi, Buka pengembalian, Hubungkan dana tanpa transaksi. Pita \"Pratinjau V11.3\", Panduan, dan tombol simulasi pengembang tidak tampil lagi. Semua tombol memakai fungsi transaksi yang asli.",
+          "en": "Matches the approved mock: a blue band counting only what needs handling, kind pills, one status per transaction, a Rilis Musik vs provider table and one next step per case, all on the real transaction functions."
+        }
+      },
+      {
+        "id": "dev34-transactions-refunds",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Transaksi",
+            "en": "Transactions"
+          }
+        },
+        "title": {
+          "id": "Pengembalian: paket lama dan transaksi dalam satu antrean",
+          "en": "Refunds: legacy plans and transactions in one queue"
+        },
+        "detail": {
+          "id": "Pengembalian paket lama (Annual/VIP) mengikuti keputusan 19 Okt: refund penuh, batas 30 hari sejak pemberitahuan dibaca, hanya Super Admin yang memutuskan, nomor referensi wajib saat dibayar, lalu label pindah ke Basic. Label yang berhak tetapi belum mengajukan ikut terlihat beserta paparannya. Pengembalian transaksi: nominal (maks sisa dana), jalur asal atau transfer ke rekening yang dikonfirmasi label, hasil pemeriksaan wajib, dan Catat dibayar dengan referensi. Keputusan di Dashboard dan notifikasi RF-… kini membuka halaman ini.",
+          "en": "Legacy refunds follow the 19 Oct decision (full refund, 30 days from reading, Super Admin only, reference required, then Basic); eligible labels are listed. Transaction refunds: amount, route, mandatory review result and reference. Dashboard decisions and RF notifications open this page."
+        }
+      },
+      {
+        "id": "dev34-transactions-fixes",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Transaksi",
+            "en": "Transactions"
+          }
+        },
+        "title": {
+          "id": "Perbaikan: pengajuan paket lama contoh tidak lagi yatim",
+          "en": "Fix: the sample legacy refund request is no longer orphaned"
+        },
+        "detail": {
+          "id": "Label contoh memakai id baru (mis. kopi-senja-records) dengan kode lama S01/S02, sehingga pengajuan RF-1 Kopi Senja Records tidak muncul di antrean keputusan dan pembayaran refund tidak memindahkan label ke Basic. Kode lama kini dicocokkan lewat source9. Ditambahkan juga: menerima pembayaran penyedia yang lebih besar dari harga (selisih otomatis jadi pengembalian), menutup kasus \"informasi diminta\" bila tidak ada pembayaran, dan penyelesaian dana tanpa transaksi (hubungkan, kembalikan ke pengirim, tandai ditangani).",
+          "en": "Sample labels use new ids with legacy codes S01/S02, which orphaned RF-1; legacy codes now match via source9. Also added: accept a larger provider amount (difference becomes a refund), close info cases with no payment, and resolve unmatched funds."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.33",
     "date": "2026-10-22",
     "summary": {

@@ -17,7 +17,11 @@ const steps132=[['submitted',['Diajukan','Submitted']],['checking',['Bukti diper
 const shown132=new Set();
 const rp132=n=>'Rp '+Math.round(n||0).toLocaleString('id-ID');
 const day132=s=>typeof s==='number'?s:Date.parse(s+'T09:00:00+07:00');
-const memberName132=id=>(RM10.getMember(ten,id)||{}).name||id;
+/* dev.34: label contoh memakai id slug dengan source9 (S01, S02); kunci layanan lama dicocokkan lewat source9 */
+const mem132=id=>RM10.getMember(ten,id)||(ten.members||[]).find(m=>m.source9===id)||null;
+const key132=id=>{const L=(ten.transition132||{}).lifetime||LEGACY132;if(L[id])return id;const m=RM10.getMember(ten,id);return m&&m.source9&&L[m.source9]?m.source9:id;};
+const rk132=(n,id)=>n.audience==='lifetime'?key132(id):id;
+const memberName132=id=>(mem132(id)||{}).name||id;
 
 function tr132(){
   if(!ten.transition132){
@@ -31,16 +35,16 @@ function tr132(){
   return ten.transition132;
 }
 /* hanya label yang ada di ruang kerja ini (data sampel dimuat setelah seed) */
-const life132=(id=ten.member)=>RM10.getMember(ten,id)&&tr132().lifetime[id]||null;
-const lifeIds132=()=>Object.keys(tr132().lifetime).filter(id=>RM10.getMember(ten,id));
+const life132=(id=ten.member)=>{const k=key132(id);return mem132(k)&&tr132().lifetime[k]||null;};
+const lifeIds132=()=>Object.keys(tr132().lifetime).filter(id=>mem132(id));
 const transitionNews132=()=>tr132().news.find(n=>n.kind==='transition');
-const readAt132=id=>(transitionNews132()?.reads||{})[id]||null;
+const readAt132=id=>(transitionNews132()?.reads||{})[key132(id)]||null;
 const deadline132=id=>readAt132(id)?readAt132(id)+30*DAY132:null;
 const daysLeft132=id=>{const d=deadline132(id);return d?Math.ceil((d-ten.now)/DAY132):30;};
-const request132=id=>tr132().requests.filter(r=>r.member===id).slice(-1)[0]||null;
+const request132=id=>tr132().requests.filter(r=>r.member===key132(id)).slice(-1)[0]||null;
 const stepName132=s=>s==='rejected'?T('Ditolak','Declined'):L((steps132.find(x=>x[0]===s)||steps132[0])[1]);
 function audience132(n){return n.audience==='lifetime'?lifeIds132():ten.members.filter(m=>m.active).map(m=>m.id);}
-function pendingNews132(id){return tr132().news.filter(n=>n.must&&audience132(n).includes(id)&&!n.reads[id]);}
+function pendingNews132(id){return tr132().news.filter(n=>n.must&&audience132(n).includes(rk132(n,id))&&!n.reads[rk132(n,id)]);}
 
 /* ---------- data staf: antrean keputusan, notifikasi, percakapan ---------- */
 function staffSeed132(r){
@@ -56,7 +60,7 @@ function staffSeed132(r){
 function ensure132(){tr132().requests.forEach(staffSeed132);}
 
 /* ---------- label: pemberitahuan ---------- */
-function markRead132(n,id){if(!n.reads[id]){n.reads[id]=ten.now;save10();}}
+function markRead132(n,id){const k=rk132(n,id);if(!n.reads[k]){n.reads[k]=ten.now;save10();}}
 function noticeBody132(){
   const m=member10(),l=life132(m.id);if(!l)return '';
   const n=transitionNews132();markRead132(n,m.id);
@@ -103,7 +107,7 @@ const run112Before132=run112;
 run112=function(action,p){
   const id=run112Before132(action,p);
   if(action==='create'&&p&&p.refund132&&isLabel10()){
-    const s=tr132(),m=ten.member,at=ten.now,r={id:'RF-'+(++s.serial),member:m,ticket:id,status:'submitted',at,note:String(p.note||'').split('\n').slice(0,3).join(' '),bank:T('lihat percakapan','see conversation'),history:[{status:'submitted',at,actor:m}]};
+    const s=tr132(),m=key132(ten.member),at=ten.now,r={id:'RF-'+(++s.serial),member:m,ticket:id,status:'submitted',at,note:String(p.note||'').split('\n').slice(0,3).join(' '),bank:T('lihat percakapan','see conversation'),history:[{status:'submitted',at,actor:m}]};
     if(!readAt132(m))transitionNews132().reads[m]=at;
     s.requests.push(r);staffSeed132(r);
     s.notices.unshift({member:m,key:'refund_submitted132',ref:r.id,at});save10();
@@ -124,10 +128,10 @@ labelAttention102=function(){
 const notificationBefore132=notification10;
 notification10=function(){
   const base=notificationBefore132();if(!isLabel10())return base;
-  const m=ten.member,news=tr132().news.filter(n=>audience132(n).includes(m));
+  const m=ten.member,news=tr132().news.filter(n=>audience132(n).includes(rk132(n,m)));
   const keys={refund_submitted132:['Pengajuan pengembalian dana terkirim.','Refund request sent.'],refund_checking132:['Bukti pembelian sedang diperiksa.','Proof of purchase is being checked.'],refund_approved132:['Pengembalian dana disetujui.','Refund approved.'],refund_paid132:['Pengembalian dana dibayar; paket berubah ke Basic.','Refund paid; plan changed to Basic.'],refund_rejected132:['Pengajuan pengembalian dana ditolak.','Refund request declined.']};
-  const own=(tr132().notices||[]).filter(n=>n.member===m&&keys[n.key]).slice(0,3).map(n=>`<div class="ten-item"><div><strong>${L(keys[n.key])}</strong><p>${E(n.ref)} · ${date10(n.at,true)}</p></div></div>`);
-  const items=news.slice(-2).reverse().map(n=>`<div class="ten-item"><div><strong>${E(L(n.title))}${n.reads[m]?'':` <span class="tr-new132">${T('Baru','New')}</span>`}</strong><p>${T('Berita','News')} · ${date10(n.at)}</p></div><button type="button" class="btn small" data-tr132="news" data-id="${E(n.id)}">${T('Buka','Open')}</button></div>`);
+  const own=(tr132().notices||[]).filter(n=>n.member===key132(m)&&keys[n.key]).slice(0,3).map(n=>`<div class="ten-item"><div><strong>${L(keys[n.key])}</strong><p>${E(n.ref)} · ${date10(n.at,true)}</p></div></div>`);
+  const items=news.slice(-2).reverse().map(n=>`<div class="ten-item"><div><strong>${E(L(n.title))}${n.reads[rk132(n,m)]?'':` <span class="tr-new132">${T('Baru','New')}</span>`}</strong><p>${T('Berita','News')} · ${date10(n.at)}</p></div><button type="button" class="btn small" data-tr132="news" data-id="${E(n.id)}">${T('Buka','Open')}</button></div>`);
   return own.join('')+items.join('')+base;
 };
 
@@ -148,15 +152,15 @@ function refundModal132(id){
     <div id="tr-rej132"></div><div class="tr-acts132">${act}</div>
     <p class="scope-note">${t('Tindakan demo lokal. Tidak ada transfer nyata.','Local demo action. No real transfer.')}</p></div>`);
 }
-function stepRefund132(id,to,reason=''){
+function stepRefund132(id,to,reason='',opt={}){
   if(!me().super)return;const r=tr132().requests.find(x=>x.id===id);if(!r)return;
-  r.status=to;if(reason)r.reason=reason;r.history.push({status:to,at:ten.now,actor:me().id,note:reason});
+  r.status=to;if(reason)r.reason=reason;if(opt.reference)r.reference=opt.reference;r.history.push({status:to,at:ten.now,actor:me().id,note:reason||(opt.reference?'Referensi '+opt.reference:'')});
   tr132().notices.unshift({member:r.member,key:'refund_'+to+'132',ref:r.id,at:ten.now});
   const op=data.ops.find(x=>x.id===r.id);if(op&&['paid','rejected'].includes(to)){op.status=to==='paid'?'approved-done':'rejected';op.decidedBy=me().id;op.decidedAt=new Date().toISOString();}
-  if(to==='paid'){const m=RM10.getMember(ten,r.member);if(m){m.plan='Flex';delete m.previewPlan121;(ten.packages122?.subscriptions||[]).filter(s=>s.member===m.id&&s.status==='active').forEach(s=>s.status='ended');}}
+  if(to==='paid'){const m=mem132(r.member);if(m){m.plan='Flex';delete m.previewPlan121;(ten.packages122?.subscriptions||[]).filter(s=>s.member===m.id&&s.status==='active').forEach(s=>s.status='ended');}}
   const tk=typeof threadStore131==='function'&&threadStore131().tickets.find(x=>x.id===r.ticket);
   if(tk){tk.notes.push({who:me().id,text:[`Pengembalian dana: ${stepName132(to)}${reason?' — '+reason:''}.`,`Refund: ${stepName132(to)}${reason?' — '+reason:''}.`],at:t('baru saja','just now'),ts:Date.now()});if(['paid','rejected'].includes(to))tk.status='completed';else if(to!=='submitted')tk.status='handling';}
-  save10();render();refundModal132(id);toast(t('Status pengembalian dana diperbarui (simulasi).','Refund status updated (simulation).'));
+  save10();if(opt.quiet)return r;render();refundModal132(id);toast(t('Status pengembalian dana diperbarui (simulasi).','Refund status updated (simulation).'));
 }
 
 /* ---------- Super Admin: Berita (broadcast) di Kotak Masuk ---------- */
