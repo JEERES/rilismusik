@@ -61,7 +61,7 @@ function act(s,a,k,p={},jobs=[],at=Date.now()){
  }
  if(k==='archive-role'){need(r&&!r.archived,'Peran tidak tersedia.');expected();note();need(!s.users.some(u=>u.role===r.id),'Pindahkan seluruh akun pengguna peran ini terlebih dahulu.');const before=copy(r);r.archived=true;r.version++;audit(s,a,k,r.id,before,r,p.note,at);return {id:r.id}}
  if(k==='disable'){
-  need(u?.status==='active','Akun tidak aktif.');expected();note();need(!u.super||s.users.filter(u=>u.super&&u.status==='active').length>1,'Super Admin aktif terakhir tidak dapat dinonaktifkan.');
+  need(u?.status==='active','Akun tidak aktif.');need(u.id!==a.id,'Kamu tidak bisa menonaktifkan akunmu sendiri.');expected();note();need(!u.super||s.users.filter(u=>u.super&&u.status==='active').length>1,'Super Admin aktif terakhir tidak dapat dinonaktifkan.');
   const affected=jobs.filter(j=>j.handler===u.id&&!j.closed),moves=move(affected,!!p.emergency),before=copy(u);u.status='inactive';u.session++;u.version++;audit(s,a,k,u.id,before,u,p.note,at);return {id:u.id,moves};
  }
  if(k==='reactivate'){need(u?.status==='inactive','Akun bukan akun nonaktif.');expected();note();if(!u.super){need(r&&!r.archived,'Tinjau peran aktif sebelum mengaktifkan akun.');need(p.scope==='all'||p.labels?.length,'Pilih cakupan label.')}const before=copy(u);if(!u.super){u.role=r.id;u.scope=p.scope;u.labels=p.labels||[]}u.status='active';u.session++;u.version++;audit(s,a,k,u.id,before,u,p.note,at);return {id:u.id}}

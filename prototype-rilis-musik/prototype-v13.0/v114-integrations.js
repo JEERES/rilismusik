@@ -10,10 +10,10 @@ const moduleGroup114={releases:'releases',work:'releases',labels:'labels',migrat
 const allowedModuleBefore114=allowedModule;allowedModule=function(m){if(!m)return false;if(isLabel10())return allowedModuleBefore114(m);const g=moduleGroup114[m.id];if(g)return may114(g);return allowedModuleBefore114(m)};
 function jobs114(){const list=[];function add(source,arr,field,group,permission,closed,title,member){for(const x of arr||[])if(x[field])list.push({key:source+':'+x.id,source,id:x.id,handler:x[field],field,permission:group+'.'+permission,member:member(x),title:title(x),stage:x.status||x.stage,closed:closed(x)})}
  const labelId=x=>x.member||ten.members.find(m=>m.name===x.label)?.id||null;
- add('task',data.tasks.filter(x=>!x.linked102),'handler','releases','review',x=>x.stage==='done',x=>x.title,labelId);
+ add('task',data.tasks.filter(x=>!x.linked102&&!(ten.inbox137?.moved||{})[x.id]),'handler','releases','review',x=>x.stage==='done',x=>x.title,labelId);
  for(const j of list){const x=data.tasks.find(x=>x.id===j.id);if(x.kind==='support')j.permission='tickets.handle';if(x.kind==='claim')j.permission='claims.handle'}
  add('release',ten.releases,'handler102','releases','review',x=>['live','closed','taken_down','partial_closed'].includes(x.status),x=>x.title,x=>x.member);
- add('ticket',ten.tickets112?.tickets,'handler','tickets','handle',x=>x.status==='done',x=>names112[x.category]+' · '+x.releaseTitle,x=>x.member);
+ add('ticket',ten.tickets112?.tickets,'handler','tickets','handle',x=>x.status==='done',x=>x.request?.subject133||((names112[x.category]||'Tiket')+' · '+(x.source?.title||x.release||'')),x=>x.member);
  add('service',ten.addons111?.orders,'handler','services','handle',x=>['done','closed'].includes(x.status),x=>x.service.name+' · '+x.title,x=>x.member);
  add('wami',ten.wami11?.orders,'handler','wami','handle',x=>x.status==='done',x=>'WAMI · '+x.title,x=>x.member);
  add('transaction',ten.commerce113?.orders,'handler','transactions','handle',x=>!Transactions113.issue(ten,x),x=>x.title,x=>x.member||x.account);

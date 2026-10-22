@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.40",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Staff & Akses dirancang ulang: orang, pekerjaannya, dan izinnya dalam satu halaman.",
+      "en": "Staff & Access redesigned: people, their work and their permissions on one page."
+    },
+    "entries": [
+      {
+        "id": "dev40-staff-team",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "access",
+          "menu": {
+            "id": "Staff & Akses",
+            "en": "Staff & Access"
+          }
+        },
+        "title": {
+          "id": "Tim: akses, pekerjaan aktif, kinerja, kehadiran, dan riwayat per orang",
+          "en": "Team: access, active work, performance, attendance and history per person"
+        },
+        "detail": {
+          "id": "Pita \"Tim hari ini\" menghitung orang aktif, pekerjaan berjalan, kehadiran staf, peran yang belum ditinjau, dan izin sensitif. Rincian orang: Ubah akses (peran & cakupan label) dengan dampak dan pengalihan pekerjaan yang keluar dari cakupan, Pekerjaan aktif dari semua menu, cincin tepat waktu bulan berjalan, kehadiran hari ini, riwayat akses, Pratinjau akses, Undang staf, dan Nonaktifkan dengan pengalihan pekerjaan per orang + alasan (bukan akun sendiri, bukan Super Admin terakhir). Semua lewat fungsi akses yang asli.",
+          "en": "Team band and person detail with change access (impact + handover), active work, on-time ring, attendance, history, preview, invite and deactivate with per-job handover."
+        }
+      },
+      {
+        "id": "dev40-staff-roles",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "access",
+          "menu": {
+            "id": "Staff & Akses",
+            "en": "Staff & Access"
+          }
+        },
+        "title": {
+          "id": "Peran & Izin: matriks Lihat · Kerjakan · Putuskan, izin sensitif, tandai ditinjau",
+          "en": "Roles: View · Do · Decide matrix, sensitive permissions, mark reviewed"
+        },
+        "detail": {
+          "id": "Super Admin peran tetap; peran staf diatur lewat matriks per menu baru (keputusan khusus Super Admin terkunci 🔒), rincian izin satu per satu, dan sakelar izin sensitif (Lihat rekening lengkap, Ekspor data) yang wajib beralasan saat dinyalakan. Perubahan yang membuat pekerjaan tidak bisa ditangani lagi meminta pengganti. Peran yang berubah tampil \"Belum ditinjau\" sampai ditandai sudah ditinjau.",
+          "en": "Fixed Super Admin role; staff role matrix with locked Super Admin decisions, sensitive toggles needing a reason, handover on impact, and review marking."
+        }
+      },
+      {
+        "id": "dev40-staff-fixes",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "access",
+          "menu": {
+            "id": "Staff & Akses",
+            "en": "Staff & Access"
+          }
+        },
+        "title": {
+          "id": "Perbaikan: tidak bisa menonaktifkan diri sendiri, judul tiket, hitung ganda, istilah",
+          "en": "Fixes: no self-deactivation, ticket titles, double counting, wording"
+        },
+        "detail": {
+          "id": "Super Admin tidak lagi bisa menonaktifkan akunnya sendiri. Judul pekerjaan tiket tidak lagi \"undefined\". Pekerjaan T-318 yang sudah menjadi tiket tidak dihitung dua kali. Kartu \"Tim hari ini\" di Dashboard menyebut Super Admin, bukan istilah lama.",
+          "en": "Super Admins can no longer deactivate themselves; ticket job titles fixed; migrated T-318 no longer double counted; dashboard team card says Super Admin."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.39",
     "date": "2026-10-22",
     "summary": {
