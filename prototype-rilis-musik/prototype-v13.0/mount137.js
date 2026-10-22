@@ -329,7 +329,9 @@ render=function(){
     document.body.classList.toggle('m137-on',!!def);
     if(def&&main){
       const h=host137(def);
-      if(main.firstElementChild!==h||main.childElementCount!==1)main.replaceChildren(h);
+      if(main.lastElementChild!==h||[...main.children].some(c=>c!==h&&!c.classList.contains('maint-banner131')))main.replaceChildren(h);
+      // Banner pemeliharaan biasanya menempel pada judul halaman lama; di halaman baru taruh di atas isi.
+      document.querySelectorAll('.maint-banner131').forEach(b=>{if(!main.contains(b))main.insertBefore(b,h);});
       main.classList.add('m137-main');
       def.draw();
       if(keep&&def===before){
@@ -341,3 +343,20 @@ render=function(){
   return out;
 };
 new MutationObserver(()=>{const t=document.documentElement.dataset.theme==='dark'?'dark':'light';Object.values(M137.hosts).forEach(h=>h.dataset.theme=t);}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+/* Alat bersama untuk halaman baru: waktu WIB, kalender kerja & aturan waktu dari Pengaturan › Prosedur. */
+const U137=(()=>{const H=3600000;
+  const iso16=ms=>ms?new Date(Number(ms)+7*H).toISOString().slice(0,16):'';
+  const isoDay=ms=>iso16(ms).slice(0,10);
+  const policy=()=>{try{return typeof policy115==='function'?policy115():null;}catch(err){return null;}};
+  const cal=()=>{const c=policy()?.calendar||{};return {days:c.days||[1,2,3,4,5],holidays:c.holidays||[]};};
+  const isWork=(d,c)=>c.days.includes(new Date(d+'T00:00:00Z').getUTCDay())&&!c.holidays.includes(d);
+  const addDay=(d,n)=>{const t=new Date(d+'T00:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10);};
+  const addWork=(d,n,c=cal())=>{let x=d,k=n;while(k>0){x=addDay(x,1);if(isWork(x,c))k--;}return x;};
+  const workDiff=(from,to,c=cal())=>{if(from===to)return 0;const dir=to>from?1:-1;let d=from,k=0;while(d!==to){d=addDay(d,dir);if(isWork(d,c))k++;}return dir*Math.max(1,k);};
+  const rule=(id,fb)=>{const r=(policy()?.rules||[]).find(x=>x.id===id);return {name:r?(Array.isArray(r.name)?r.name[0]:r.name):fb[0],mode:r?.mode||fb[1],value:Number(r?.value??fb[2])};};
+  const MON=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],DAY=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const dlabel=iso=>{const t=new Date(iso+'T00:00:00Z');return `${DAY[t.getUTCDay()]}, ${t.getUTCDate()} ${MON[t.getUTCMonth()]}`;};
+  const today=()=>day();
+  const todayLabel=()=>{const t=new Date(day()+'T00:00:00Z');return `${DAY[t.getUTCDay()]}, ${t.getUTCDate()} ${MON[t.getUTCMonth()]} ${t.getUTCFullYear()}`;};
+  const fd=s=>{if(!s)return 'Baru saja';const [y,m,d]=s.slice(0,10).split('-').map(Number);return `${d} ${MON[m-1]} ${y}`+(s.length>10?` · ${s.slice(11,16).replace(':','.')}`:'');};
+  return {iso16,isoDay,policy,cal,isWork,addDay,addWork,workDiff,rule,MON,DAY,dlabel,today,todayLabel,fd};})();

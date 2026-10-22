@@ -241,7 +241,8 @@ function history(x,eventsByTarget){const h=[];
  for(const e of x.history||[]){const kind=e.kind||e.action;if(!kind||kind==='draft')continue;const txt=kind==='ticket-result112'?(e.note||'Hasil tiket dicatat'):EVT[kind];if(!txt)continue;h.push([iso16(e.at),txt+(NOTED.has(kind)&&e.note&&kind!=='ticket-result112'?' · '+String(e.note).slice(0,90):''),who(e.actor,e.actorId102,kind)]);}
  for(const e of eventsByTarget[x.id]||[]){if(e.kind==='draft'||!EVT[e.kind])continue;let txt=EVT[e.kind];if(e.kind==='assign'&&e.note)txt=`Ditugaskan ke ${people.find(p=>p.id===e.note)?.name||e.note}`;else if(NOTED.has(e.kind)&&e.note)txt+=' · '+String(e.note).slice(0,90);h.push([iso16(e.at),txt,who(e.actor,e.actorId102,e.kind)]);}
  h.sort((a,b)=>a[0].localeCompare(b[0]));
- return h.filter((v,i)=>!h.slice(0,i).some(w=>w[1]===v[1]&&w[0]===v[0]));}
+ const out=[];for(const v of h){const last=out[out.length-1];if(last&&last[1].replace(/ · ×\d+$/,'')===v[1]){const n=(Number((last[1].match(/ · ×(\d+)$/)||[])[1])||1)+1;last[1]=v[1]+' · ×'+n;last[0]=v[0];}else out.push(v.slice());}
+ return out;}
 function clockStart(x,kinds,eventsByTarget){let at=0;for(const e of eventsByTarget[x.id]||[])if(kinds.includes(e.kind)&&e.at>at)at=e.at;
  for(const e of x.history||[]){const k=e.kind||e.action;if(kinds.includes(k)&&e.at>at)at=e.at;}
  if(!at&&x.systemStage115?.stage===x.status)at=x.systemStage115.started;

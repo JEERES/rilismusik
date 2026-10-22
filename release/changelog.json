@@ -1,5 +1,95 @@
 [
   {
+    "version": "1.1.0-dev.30",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Tiket Bantuan dirancang ulang dan tersambung ke data asli; pengajuan ganda digabung.",
+      "en": "Support Tickets redesigned on real data; duplicate requests merged."
+    },
+    "entries": [
+      {
+        "id": "dev30-tickets-redesign",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Tiket Bantuan",
+            "en": "Support Tickets"
+          }
+        },
+        "title": {
+          "id": "Tiket Bantuan baru: Dalam proses · Selesai, rincian di samping",
+          "en": "New Support Tickets: In progress · Done, details beside the list"
+        },
+        "detail": {
+          "id": "Tampilan persis mock yang disetujui: pita alur Baru → Ditangani → Menunggu label → Menunggu distributor → Perlu peninjauan, tiga kelompok kategori (Rilisan · YouTube & Content ID · Lainnya), dan rincian dengan satu langkah berikutnya per tahap: Mulai penanganan, Teruskan ke distributor (dengan nomor referensi), hasil per bagian, tindak lanjut, Tandai selesai, eskalasi & peninjauan Super Admin, Alihkan. Balas ke label dan Catatan internal ada di percakapan. Semua tombol memakai fungsi tiket asli, jadi Pesan label, Kotak Masuk, dan rilisan terkait ikut berubah.",
+          "en": "Matches the approved mock. Every action uses the original ticket model, so the label chat, Inbox and linked releases update too."
+        }
+      },
+      {
+        "id": "dev30-tickets-duplicates",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Tiket Bantuan",
+            "en": "Support Tickets"
+          }
+        },
+        "title": {
+          "id": "35 tiket penurunan ganda tampil sebagai 3 baris",
+          "en": "35 duplicate takedown tickets shown as 3 rows"
+        },
+        "detail": {
+          "id": "Tiket selesai untuk rilisan & kategori yang sama digabung di tampilan (\"28 pengajuan digabung\"), datanya tidak diubah. Riwayat rilisan yang berulang (mis. 28 hasil penurunan yang sama) kini satu baris \"×N\".",
+          "en": "Done tickets for the same release and category are grouped in the view; data is unchanged. Repeated release history lines collapse into one \"×N\" line."
+        }
+      },
+      {
+        "id": "dev30-tickets-flow",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Tiket Bantuan",
+            "en": "Support Tickets"
+          }
+        },
+        "title": {
+          "id": "Tenggat tiket & pintu masuk yang sama",
+          "en": "Ticket deadlines & consistent entry points"
+        },
+        "detail": {
+          "id": "Tiket baru jatuh tempo menurut Respons awal tiket (1 hari kerja), tiket di distributor menurut jadwal tindak lanjut dari Pengaturan › Prosedur. Membuka tiket dari Pekerjaan, Kotak Masuk, atau Studio kini membuka halaman baru di tiket yang sama.",
+          "en": "New tickets follow the first-response rule; tickets at the distributor follow the follow-up schedule. Opening a ticket from Work, Inbox or Studio lands on the new page."
+        }
+      },
+      {
+        "id": "dev30-maint-banner",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Tiket Bantuan",
+            "en": "Support Tickets"
+          }
+        },
+        "title": {
+          "id": "Banner pemeliharaan rapi di halaman baru",
+          "en": "Maintenance banner fits the new pages"
+        },
+        "detail": {
+          "id": "Saat ada jadwal pemeliharaan, banner kini tampil di atas isi halaman Rilisan dan Tiket Bantuan (sebelumnya mendorong sidebar ke tengah).",
+          "en": "During maintenance the banner now sits above the new pages instead of pushing the sidebar."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.29",
     "date": "2026-10-22",
     "summary": {
