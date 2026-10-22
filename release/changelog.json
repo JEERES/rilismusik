@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.42",
+    "date": "2026-10-23",
+    "summary": {
+      "id": "Dashboard dirancang ulang untuk Super Admin, Staf, dan Label — semua angka dari menu asalnya.",
+      "en": "Dashboard redesigned for Super Admin, Staff and Label — every number comes from its home menu."
+    },
+    "entries": [
+      {
+        "id": "dev42-dashboard-sa",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Dashboard Super Admin: Sorotan, Uang, Perlu keputusan Anda, Kondisi menu, Pertumbuhan",
+          "en": "Super Admin dashboard: Highlight, Money, Decisions, Menu health, Growth"
+        },
+        "detail": {
+          "id": "Tanggal sama dengan semua menu. Sorotan memilih keputusan yang ditunggu rekan tim, lalu pekerjaanmu yang terlambat. Uang menampilkan siklus berjalan (pengajuan 1–14, bayar s.d. 20), batang kewajiban ke label, dan empat kotak dari pita Royalti, Penarikan, Pemantauan Keuangan, dan Transaksi; angka contoh lama (Rp 131,6 jt, kas 92 jt) dihapus. Perlu keputusan Anda hanya berisi keputusan Super Admin; tab \"Terlambat di tim\" untuk Tugaskan atau Ingatkan (pengingat masuk Kotak Masuk staf). Kondisi menu memakai kalimat pita biru tiap menu. Pertumbuhan hanya dari data tercatat; bulan tanpa data ditulis \"belum ada data\".",
+          "en": "Same date as every menu; Money from the menu bands; only Super Admin decisions; team overdue with assign/remind; menu health from each band; honest growth."
+        }
+      },
+      {
+        "id": "dev42-dashboard-staff",
+        "status": "prototype",
+        "where": {
+          "role": "admin",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Dashboard Staf: Berikutnya untukmu, Pekerjaanku, Hasilku, Pengumuman",
+          "en": "Staff dashboard: Next for you, My work, My results, Announcements"
+        },
+        "detail": {
+          "id": "Pekerjaan staf dari Rilisan, Tiket Bantuan, Layanan Tambahan, dan Pekerjaan dikelompokkan Terlambat · Hari ini · 7 hari ke depan · Menunggu pihak lain; pekerjaan tanpa petugas bisa langsung diambil. Hasilku (tepat waktu), langkah tercatat hari ini, kehadiran (Catat kehadiran), dan pengumuman internal serta jadwal pemeliharaan. Tanpa angka pendapatan bisnis.",
+          "en": "Staff work grouped by time with take-over, on-time rate, today steps, attendance, internal announcements; no business revenue."
+        }
+      },
+      {
+        "id": "dev42-dashboard-label",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Dashboard Label: Royalti & penarikan, Kredit, Rilisan, Pesan & layanan, Pembaruan",
+          "en": "Label dashboard: Royalty & withdrawals, Credits, Releases, Messages & services, Updates"
+        },
+        "detail": {
+          "id": "Sorotan memilih yang paling perlu dilakukan label (perubahan layanan lama, rilisan yang perlu diperbaiki, kredit yang akan berakhir, penarikan berjalan, data lokasi). Lima kartu hitungan lama dan kartu royalti yang tidak pernah tampil diganti kartu yang langsung bisa ditindaklanjuti. Dashboard kini 2–3 kali lebih ringan saat digambar.",
+          "en": "Highlight picks the most needed label action; old count cards replaced with actionable cards; 2–3× lighter to render."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.41",
     "date": "2026-10-22",
     "summary": {

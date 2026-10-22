@@ -455,6 +455,8 @@ const DEF={id:'standards',css:STYLE,html:HTML,
  when:()=>staff()&&(state.page==='standards9'&&!!me().super||state.page==='module'&&typeof v4==='object'&&v4.module==='standards119'),
  init(r){root=r;bind();},
  draw(){intake();load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: sama dengan pita biru Standar & Penanda */
+DEF.sum=function(){load();const d=drafts();return {K:K.length,RL:RL.length,BG:BG.length,d,line:`${K.length} status · ${RL.length} aturan waktu · ${d?`${d} aturan tindak lanjut masih nilai contoh`:'semua nilai sudah diverifikasi'}`,tone:d?'o':'g'};};
 page137(DEF);
 const pageBefore=standardsPage9;standardsPage9=function(){if(DEF.when())return '';return pageBefore.apply(this,arguments);};
 if(typeof standardsPage119==='function'){const b119=standardsPage119;standardsPage119=function(){if(DEF.when())return '';return b119.apply(this,arguments);};}

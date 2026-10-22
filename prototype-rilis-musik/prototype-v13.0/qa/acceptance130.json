@@ -1,14 +1,14 @@
 {
   "version": "13.0",
-  "hash": "D12F1221E75B27CEEC261126ABEEF77345BA58F9773404B3A3186D66BA8E0804",
-  "checkedAt": "2026-10-22T12:25:52.984Z",
+  "hash": "98F4E9AF5F551AF4E9E49BE655ACDB1E6D6BFDB0E232DE3345CFC06449781284",
+  "checkedAt": "2026-10-22T18:09:19.471Z",
   "checks": [
     {
       "name": "super/light/1440 uses one continuous readable masthead",
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 303,
+        "height": 322.5,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -59,7 +59,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 341.5,
+        "height": 335.5,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -110,7 +110,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 530.5,
+        "height": 590.5,
         "barHeight": 112,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -161,7 +161,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 303,
+        "height": 322.5,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -212,7 +212,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 341.5,
+        "height": 335.5,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -263,7 +263,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 530.5,
+        "height": 590.5,
         "barHeight": 112,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -314,7 +314,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 266,
+        "height": 303,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -355,7 +355,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 266,
+        "height": 335,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -396,7 +396,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 426,
+        "height": 526,
         "barHeight": 94,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -437,7 +437,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 266,
+        "height": 303,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -478,7 +478,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 266,
+        "height": 335,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -519,7 +519,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 426,
+        "height": 526,
         "barHeight": 94,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -560,7 +560,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 266,
+        "height": 322.5,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -591,7 +591,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 277,
+        "height": 315.5,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -622,7 +622,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 488,
+        "height": 568.5,
         "barHeight": 132,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -653,7 +653,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 266,
+        "height": 322.5,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -684,7 +684,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 277,
+        "height": 315.5,
         "barHeight": 66,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -715,7 +715,7 @@
       "pass": true,
       "detail": {
         "expanded": true,
-        "height": 488,
+        "height": 568.5,
         "barHeight": 132,
         "background": "rgba(0, 0, 0, 0)",
         "ink": "rgb(245, 249, 255)",
@@ -745,8 +745,8 @@
       "name": "Glass responds to its actual backdrop after the masthead is reunited",
       "pass": true,
       "detail": {
-        "mean": 101.53385382206028,
-        "changed": 0.9158925499536853
+        "mean": 103.43544986033844,
+        "changed": 0.9556119438215508
       }
     },
     {
@@ -762,7 +762,7 @@
         "artParent": "masthead-backdrop130",
         "rounded": "26px",
         "overflow": -15,
-        "before": 303
+        "before": 322.5
       }
     },
     {
@@ -949,22 +949,22 @@
         "overflow": -15,
         "stage": {
           "x": 52,
-          "y": 297.718505859375,
+          "y": 297.7200012207031,
           "width": 1161,
-          "height": 290.25,
-          "top": 297.718505859375,
+          "height": 290.2499694824219,
+          "top": 297.7200012207031,
           "right": 1213,
-          "bottom": 587.968505859375,
+          "bottom": 587.969970703125,
           "left": 52
         },
         "upload": {
           "x": 1041.359375,
-          "y": 239.718505859375,
+          "y": 239.72000122070312,
           "width": 171.640625,
           "height": 38,
-          "top": 239.718505859375,
+          "top": 239.72000122070312,
           "right": 1213,
-          "bottom": 277.718505859375,
+          "bottom": 277.7200012207031,
           "left": 1041.359375
         }
       }
@@ -976,22 +976,22 @@
         "overflow": -15,
         "stage": {
           "x": 52,
-          "y": 297.7195739746094,
+          "y": 297.7186279296875,
           "width": 981,
-          "height": 260.0000305175781,
-          "top": 297.7195739746094,
+          "height": 260,
+          "top": 297.7186279296875,
           "right": 1033,
-          "bottom": 557.7196044921875,
+          "bottom": 557.7186279296875,
           "left": 52
         },
         "upload": {
           "x": 861.359375,
-          "y": 239.71957397460938,
+          "y": 239.7186279296875,
           "width": 171.640625,
           "height": 38,
-          "top": 239.71957397460938,
+          "top": 239.7186279296875,
           "right": 1033,
-          "bottom": 277.7195739746094,
+          "bottom": 277.7186279296875,
           "left": 861.359375
         }
       }
@@ -1003,22 +1003,22 @@
         "overflow": -15,
         "stage": {
           "x": 46,
-          "y": 329.04571533203125,
+          "y": 328.71966552734375,
           "width": 713,
           "height": 260,
-          "top": 329.04571533203125,
+          "top": 328.71966552734375,
           "right": 759,
-          "bottom": 589.0457153320312,
+          "bottom": 588.7196655273438,
           "left": 46
         },
         "upload": {
           "x": 587.359375,
-          "y": 271.04571533203125,
+          "y": 270.71966552734375,
           "width": 171.640625,
           "height": 38,
-          "top": 271.04571533203125,
+          "top": 270.71966552734375,
           "right": 759,
-          "bottom": 309.04571533203125,
+          "bottom": 308.71966552734375,
           "left": 587.359375
         }
       }
@@ -1030,22 +1030,22 @@
         "overflow": -15,
         "stage": {
           "x": 24,
-          "y": 361.29620361328125,
+          "y": 361.29510498046875,
           "width": 557,
           "height": 356.9375,
-          "top": 361.29620361328125,
+          "top": 361.29510498046875,
           "right": 581,
-          "bottom": 718.2337036132812,
+          "bottom": 718.2326049804688,
           "left": 24
         },
         "upload": {
           "x": 420.71875,
-          "y": 303.29620361328125,
+          "y": 303.29510498046875,
           "width": 160.28125,
           "height": 38,
-          "top": 303.29620361328125,
+          "top": 303.29510498046875,
           "right": 581,
-          "bottom": 341.29620361328125,
+          "bottom": 341.29510498046875,
           "left": 420.71875
         }
       }
@@ -1057,22 +1057,22 @@
         "overflow": -15,
         "stage": {
           "x": 24,
-          "y": 419.28619384765625,
+          "y": 419.89007568359375,
           "width": 327,
           "height": 421.09375,
-          "top": 419.28619384765625,
+          "top": 419.89007568359375,
           "right": 351,
-          "bottom": 840.3799438476562,
+          "bottom": 840.9838256835938,
           "left": 24
         },
         "upload": {
           "x": 190.71875,
-          "y": 344.69244384765625,
+          "y": 345.29632568359375,
           "width": 160.28125,
           "height": 38,
-          "top": 344.69244384765625,
+          "top": 345.29632568359375,
           "right": 351,
-          "bottom": 382.69244384765625,
+          "bottom": 383.29632568359375,
           "left": 190.71875
         }
       }
@@ -1113,7 +1113,7 @@
       "theme": "light",
       "width": 1440,
       "expanded": true,
-      "height": 303,
+      "height": 322.5,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1127,7 +1127,7 @@
       "theme": "light",
       "width": 820,
       "expanded": true,
-      "height": 341.5,
+      "height": 335.5,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1141,7 +1141,7 @@
       "theme": "light",
       "width": 390,
       "expanded": true,
-      "height": 530.5,
+      "height": 590.5,
       "barHeight": 112,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1155,7 +1155,7 @@
       "theme": "dark",
       "width": 1440,
       "expanded": true,
-      "height": 303,
+      "height": 322.5,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1169,7 +1169,7 @@
       "theme": "dark",
       "width": 820,
       "expanded": true,
-      "height": 341.5,
+      "height": 335.5,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1183,7 +1183,7 @@
       "theme": "dark",
       "width": 390,
       "expanded": true,
-      "height": 530.5,
+      "height": 590.5,
       "barHeight": 112,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1197,7 +1197,7 @@
       "theme": "light",
       "width": 1440,
       "expanded": true,
-      "height": 266,
+      "height": 303,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1211,7 +1211,7 @@
       "theme": "light",
       "width": 820,
       "expanded": true,
-      "height": 266,
+      "height": 335,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1225,7 +1225,7 @@
       "theme": "light",
       "width": 390,
       "expanded": true,
-      "height": 426,
+      "height": 526,
       "barHeight": 94,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1239,7 +1239,7 @@
       "theme": "dark",
       "width": 1440,
       "expanded": true,
-      "height": 266,
+      "height": 303,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1253,7 +1253,7 @@
       "theme": "dark",
       "width": 820,
       "expanded": true,
-      "height": 266,
+      "height": 335,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1267,7 +1267,7 @@
       "theme": "dark",
       "width": 390,
       "expanded": true,
-      "height": 426,
+      "height": 526,
       "barHeight": 94,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1281,7 +1281,7 @@
       "theme": "light",
       "width": 1440,
       "expanded": true,
-      "height": 266,
+      "height": 322.5,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1295,7 +1295,7 @@
       "theme": "light",
       "width": 820,
       "expanded": true,
-      "height": 277,
+      "height": 315.5,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1309,7 +1309,7 @@
       "theme": "light",
       "width": 390,
       "expanded": true,
-      "height": 488,
+      "height": 568.5,
       "barHeight": 132,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1323,7 +1323,7 @@
       "theme": "dark",
       "width": 1440,
       "expanded": true,
-      "height": 266,
+      "height": 322.5,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1337,7 +1337,7 @@
       "theme": "dark",
       "width": 820,
       "expanded": true,
-      "height": 277,
+      "height": 315.5,
       "barHeight": 66,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",
@@ -1351,7 +1351,7 @@
       "theme": "dark",
       "width": 390,
       "expanded": true,
-      "height": 488,
+      "height": 568.5,
       "barHeight": 132,
       "background": "rgba(0, 0, 0, 0)",
       "ink": "rgb(245, 249, 255)",

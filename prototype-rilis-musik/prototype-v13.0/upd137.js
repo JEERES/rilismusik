@@ -394,6 +394,13 @@ const DEF={id:'updates',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='updates'&&!state.preview,
  init(r){root=r;bind();},
  draw(){load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: sama dengan pita biru Pembaruan */
+DEF.sum=function(){load();const c=s=>F.filter(x=>x.st===s).length,ad=A.filter(a=>a.st==='draft').length,need=c('hold')+c('suggest')+c('draft')+ad,br=A.find(a=>a.id==='BR-1'),brr=br?{t:br.title,r:br.reads.filter(r=>r[2]).length,n:br.reads.length}:null;
+ const sug=F.filter(x=>x.st==='suggest').map(x=>+String(x.ver).replace('dev.','')).filter(Boolean).sort((a,b)=>a-b);
+ return {need,hold:c('hold'),suggest:c('suggest'),sugRange:sug.length?(sug[0]===sug.at(-1)?`${sug[0]}`:`${sug[0]}–${sug.at(-1)}`):'',draft:c('draft')+ad,br:brr,
+  internal:F.filter(x=>x.st==='pub'&&x.aud==='internal').sort((a,b)=>String(b.pubAt).localeCompare(String(a.pubAt))).map(x=>({id:x.id,t:x.title||x.text,d:x.title?x.text:'',at:x.pubAt||'',ver:x.ver||''})),
+  maint:A.filter(a=>a.st==='maint'&&['scheduled','active'].includes(a.wst)).map(a=>({id:a.id,t:a.title,d:a.body,at:a.at,end:a.end,wst:a.wst})),
+  line:`${need?`${need} butir menunggu keputusan`:'Semua butir sudah diputuskan'}${brr?` · ${brr.t} dibaca ${brr.r} dari ${brr.n} label`:''}`,tone:c('hold')?'r':need?'o':'g'};};
 page137(DEF);
 /* halaman Pembaruan label: butir terbit + pengumuman, tanda "Baru" sejak kunjungan terakhir */
 const LHTML='<main><div class="ph rl"><div><h1>Pembaruan</h1><div class="sub">Perubahan fitur dan pengumuman dari tim Rilis Musik.</div></div></div><section class="card rl" id="lbody" style="padding:22px 24px"></section><div class="toast" id="toast"></div></main>';
@@ -402,6 +409,13 @@ const LDEF={id:'updates-label',css:STYLE,html:LHTML,
  when:()=>isLabel10()&&state.page==='module'&&typeof v4==='object'&&v4.module==='updates',
  init(r){lroot=r;r.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){window.stdTab137='waktu';go137('standards');}});},
  draw(){F=store().items;const key=ten.member+':'+ten.now;const first=lvisit!==ten.member;const v=labelView(ten.member,{mark:false});const s=v.html+ten.member;if(s===lastL&&!first)return;lastL=s;lroot.getElementById('lbody').innerHTML=v.html;if(first){lvisit=ten.member;setTimeout(()=>{if(LDEF.host?.isConnected){labelView(ten.member,{mark:true});}},1500);}}};
+/*sum137 — ringkasan untuk Dashboard label: pengumuman & pembaruan yang sama dengan halaman Pembaruan label */
+LDEF.sum=function(member){F=store().items;const key=typeof key132==='function'?key132(member):member,legacy=(()=>{try{return lifeIds132().includes(key);}catch(err){return false;}})();
+ const v=labelView(member,{mark:false}),seen=store().seen[member]||((store().since||1)-1);
+ const ann=newsAll().filter(n=>live(n)&&(n.audience==='lifetime'?legacy:n.aud137!=='internal')).slice().reverse().map(n=>({id:n.id,t:(n.title||[])[0]||'',b:(n.body||[])[0]||'',must:!!n.must,life:n.audience==='lifetime',read:!!n.reads?.[n.audience==='lifetime'?key:member],at:iso(n.at)}));
+ const vis=F.filter(x=>x.st==='pub'&&(x.aud==='all'||x.aud==='legacy'&&legacy)).sort((a,b)=>String(b.pubAt).localeCompare(String(a.pubAt)));
+ let maint=[];try{maint=(system115().areas.maintenance?.published?.windows||[]).filter(w=>['scheduled','active'].includes(maintState131(w))).map(w=>({id:w.id,t:w.title,b:w.message||'',at:iso(w.startAt),end:iso(w.endAt)}));}catch(err){}
+ return {fresh:v.fresh,count:v.count,ann,maint,feat:vis.slice(0,3).map(x=>({id:x.id,g:GRP[x.g]||'',t:x.text,isNew:msOf(x.pubAt)>seen}))};};
 page137(LDEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when()||LDEF.when())return '';return modBefore.apply(this,arguments);};
 /* pengumuman: hanya yang terbit / sudah waktunya tampil yang sampai ke label */

@@ -342,6 +342,13 @@ const DEF={id:'tickets',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='tickets'&&!state.preview&&(typeof allowed112!=='function'||allowed112()),
  init(r){root=r;bind();},
  draw(){intake();load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: sama dengan pita biru Tiket Bantuan */
+DEF.sum=function(){load();const P=T.filter(isOpen),raw=Object.fromEntries((ten.tickets112?.tickets||[]).map(t=>[t.id,t]));
+ const I=P.map(t=>{const x=raw[t.id]||{},esc=[...(x.history||[])].reverse().find(h=>h.action==='escalate');
+  return {id:t.id,src:'ticket',menu:'Tiket Bantuan',ic:'ticket',t:x.request?.subject133||`${t.catName} · ${t.title}`,l:t.lab,m:t.member,s:t.s,st:(ST[t.s]||[t.s])[0],due:t.due,dueDate:t.dueDate,over:t.due!=null&&t.due<0,who:t.handler,
+   wait:t.s==='label'?'Label':t.s==='dist'?'Distributor':t.s==='review'?'Super Admin':'',esc:t.s==='review'?{by:esc?.actor||t.handler||'',at:esc?U.iso16(esc.at):'',note:t.esc||esc?.note||''}:null};});
+ const late=I.filter(t=>t.over).length,rev=I.filter(t=>t.esc).length,merged=T.reduce((n,t)=>n+(t.merged||0),0);
+ return {P:I,late,rev,merged,line:P.length?`${P.length} berjalan · ${late} lewat tenggat${rev?` · ${rev} perlu peninjauan Super Admin`:''}${merged?` · ${merged} pengajuan ganda digabung`:''}`:'Tidak ada tiket berjalan',tone:late||rev?'r':'g'};};
 page137(DEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore.apply(this,arguments);};
 if(typeof detail112==='function'){const detBefore=detail112;detail112=function(id){if(isLabel10()||state.preview)return detBefore.apply(this,arguments);pending=id;if(DEF.when()){lastSig='';render();}else if(!go137('tickets'))return detBefore.apply(this,arguments);};}

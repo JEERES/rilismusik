@@ -416,6 +416,8 @@ const DEF={id:'settings',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.page==='module'&&typeof v4==='object'&&v4.module==='cms'&&!(window.ps137Legacy&&ui115.tab==='appearance')&&(()=>{try{return super114();}catch(err){return false;}})(),
  init(r){root=r;bind();},
  draw(){intake();load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: sama dengan pita biru Pengaturan Platform */
+DEF.sum=function(){load();const r=ready(),c=k=>r.filter(x=>x[0]===k).length;return {n:r.length,items:r.map(x=>x[1]),plans:c('plans'),id:c('id'),nav:c('nav'),web:c('web'),mw:mwSched().length};};
 page137(DEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore.apply(this,arguments);};
 /* tombol Pengaturan di header selalu membuka halaman baru; editor tampilan lengkap dibuka dari bagian Tampilan */

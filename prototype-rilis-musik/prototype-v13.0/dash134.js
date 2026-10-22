@@ -15,7 +15,7 @@ const svg134=(k,w=1.8)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentCol
 const nf134=(n,d=1)=>new Intl.NumberFormat(state.lang==='id'?'id-ID':'en-US',{maximumFractionDigits:d}).format(n);
 const jt134=n=>`Rp ${nf134(Math.round(n/1e5)/10)} ${T('jt','M')}`;
 const tl134=s=>String(s||'').split(' / ')[state.lang==='id'?0:1]||String(s||'');
-const on134=()=>!isLabel10()&&me().super&&state.mode==='platform'&&state.page==='dashboard'&&!state.preview;
+const on134=()=>!isLabel10()&&me().super&&state.mode==='platform'&&state.page==='dashboard'&&!state.preview&&!(typeof db137On==='function'&&db137On());
 const ini134=id=>people.find(p=>p.id===id)?.initials||String(id||'').slice(0,2).toUpperCase();
 const pname134=id=>people.find(p=>p.id===id)?.name||id;
 const delta134=pct=>{const dir=pct>0.05?'up':pct<-0.05?'down':'flat';return `<span class="delta131" data-trend="${dir}"><svg viewBox="0 0 12 12" aria-hidden="true">${deltaArrow131[dir]}</svg>${dir==='up'?'+':dir==='down'?'−':''}${nf134(Math.abs(pct))}%</span>`;};

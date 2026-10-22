@@ -362,7 +362,11 @@ const sig=()=>{const s=M();return s.revision+':'+s.users.map(u=>u.id+u.status+u.
 const DEF={id:'staff',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.page==='access'&&(()=>{try{return super114();}catch(err){return false;}})(),
  init(r){root=r;bind();},
- draw(){load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+ draw(){if(window.saRole137){const id=window.saRole137;window.saRole137=null;S.tab='roles';S.sel.roles=id;S.read=true;S.form=null;S.draft=null;lastSig='';}load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: sama dengan pita biru Staff & Akses */
+DEF.sum=function(){load();const act=P.filter(p=>p.status==='active'),st=act.filter(p=>!p.sa),jobs=act.reduce((n,p)=>n+p.jobs.length,0),present=st.filter(p=>p.tr?.in).length,unrev=RO.filter(r=>!r.reviewed&&r.users.length);
+ return {act:act.length,jobs,present,staff:st.length,unrev:unrev.map(r=>({id:r.id,name:r.name,users:r.users.length,sens:SENS.filter(([k])=>[...r.perms].some(x=>x.endsWith('.'+k))).length,rv:r.rv||null})),sens:sensOn(),inv:P.filter(p=>p.status==='invited').length,
+  people:act.map(p=>({id:p.id,name:p.name,ini:p.ini,sa:p.sa})),line:`${act.length} aktif · ${jobs} pekerjaan berjalan · kehadiran staf ${present}/${st.length} tercatat`,tone:unrev.length?'o':'g'};};
 page137(DEF);
 if(typeof accessPage==='function'){const ab=accessPage;accessPage=function(){if(DEF.when())return '';return ab.apply(this,arguments);};}
 })();

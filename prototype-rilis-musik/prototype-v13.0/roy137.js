@@ -312,6 +312,11 @@ const DEF={id:'royalty',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='analytics'&&!state.preview&&allowed(),
  init(r){root=r;bind();},
  draw(){load();intake();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: laporan & saldo sama dengan pita biru Royalti */
+DEF.sum=function(){load();const R=B.filter(b=>!b.kind),pick=k=>R.filter(b=>b.st===k).sort((a,b)=>String(a.period).localeCompare(String(b.period))).map(b=>({id:b.id,period:b.period,month:month(b.period),total:b.total}));
+ const done=R.filter(b=>b.st==='done'||b.st==='funds').sort((a,b)=>String(b.period).localeCompare(String(a.period))).map(b=>({id:b.id,period:b.period,month:month(b.period),total:b.total,st:b.st,rc:b.receipt}));
+ return {review:pick('review'),ready:pick('ready'),funds:pick('funds'),lag:lagging().map(b=>month(b.period)),done,rep:R.map(b=>({period:b.period,total:b.total,st:b.st})),
+  av:L.reduce((n,l)=>n+l.av,0),pr:L.reduce((n,l)=>n+l.pr,0)};};
 page137(DEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore.apply(this,arguments);};
 /* Satu sumber angka: saldo awal migrasi bukan pendapatan periode mana pun (analitik, laporan label, Pemantauan). */

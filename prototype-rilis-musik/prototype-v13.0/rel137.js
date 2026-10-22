@@ -332,6 +332,13 @@ const DEF={id:'releases',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='releases'&&!state.preview,
  init(r){root=r;bind();},
  draw(){intake();load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: tahap & tenggat sama dengan pita biru Rilisan (tanpa riwayat agar ringan) */
+DEF.sum=function(){const ev=evMap(),c=calendar(),today=day(),mem=Object.fromEntries((ten.members||[]).map(m=>[m.id,m]));
+ const all=(ten.releases||[]).filter(x=>x.status!=='draft').map(x=>{const raw=x.status,s=raw==='cancel_requested'?(STAGE[x.previousStatus]||'submitted'):STAGE[raw];if(!s)return null;
+  const p=PROC.has(s),dueDate=p?(dueOf(x,ev)||''):'',due=dueDate?workDiff(today,dueDate,c):null;
+  return {id:x.id,src:'release',menu:'Rilisan',ic:'disc',t:x.title||'Tanpa judul',l:mem[x.member]?.name||x.member,m:x.member,s,raw,p,st:(ST[raw]||ST[s]||[raw])[0],d:x.date,due,dueDate,over:due!=null&&due<0,who:x.handler102||'',wait:s==='revision'?'Label':''};}).filter(Boolean);
+ const P=all.filter(r=>r.p),late=P.filter(r=>r.over).length,free=P.filter(r=>!r.who).length;
+ return {all,P,late,today:P.filter(r=>r.due===0).length,free,line:P.length?`${P.length} berjalan · ${late} terlambat · ${free} belum ada petugas`:'Tidak ada rilisan berjalan',tone:late?'r':free?'o':'g'};};
 page137(DEF);
 /* Halaman lama tidak digambar lagi saat Rilisan baru aktif (lebih ringan). */
 const modBefore137=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore137.apply(this,arguments);};

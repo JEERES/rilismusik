@@ -340,6 +340,13 @@ const DEF={id:'addons',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&['addons','wami'].includes(v4.module)&&!state.preview,
  init(r){root=r;bind();},
  draw(){if(v4.module!==lastMod){S.svc=v4.module==='wami'?'wami':'all';S.stage=null;lastMod=v4.module;lastSig='';}intake();load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: sama dengan pita biru Layanan Tambahan */
+DEF.sum=function(){load();const P=O.filter(isOpen),raw=Object.fromEntries((ten.addons111?.orders||[]).map(o=>[o.id,o]));
+ const I=P.map(o=>{const x=raw[o.id]||{},g=grp(o),res=o.st==='resolution';
+  return {id:o.id,src:o.isW?'wami':'service',menu:o.isW?'Layanan Tambahan › WAMI':'Layanan Tambahan',ic:'spark',t:`${o.svcName} · ${o.title}`,l:o.lab,m:o.member,s:o.st,st:(ST[o.st]||[o.st])[0],due:o.due,dueDate:o.dueDate,over:!!(o.dueMs&&o.dueMs<ten.now),who:o.handler,
+   wait:res?'Super Admin':g==='wait'?(o.isW?'WAMI':'Label'):g==='mat'?'Label':'',res:res?{by:o.handler||'',note:x.resolutionReason||'',at:U.iso16(x.progress||x.at)}:null,songs:o.isW?o.songs.filter(s=>s.s!=='done').length:0};});
+ const late=I.filter(o=>o.over).length,res=I.filter(o=>o.res).length,ws=I.reduce((n,o)=>n+o.songs,0);
+ return {P:I,late,res,ws,line:P.length?`${P.length} pesanan · ${late} lewat tenggat${res?` · ${res} menunggu keputusan Super Admin`:''} · WAMI: ${ws} lagu belum bernomor`:'Tidak ada pesanan berjalan',tone:late||res?'r':'g'};};
 page137(DEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore.apply(this,arguments);};
 const intercept=name=>{if(typeof window[name]!=='function')return;const before=window[name];window[name]=function(id){if(isLabel10()||state.preview)return before.apply(this,arguments);pending=id;if(DEF.when()){lastSig='';render();}else if(!go137('addons'))return before.apply(this,arguments);};};

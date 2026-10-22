@@ -282,6 +282,10 @@ const DEF={id:'withdraw',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='withdraw'&&!state.preview&&allowed(),
  init(r){root=r;bind();},
  draw(){load();intake();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: siklus & penarikan sama dengan pita biru Penarikan */
+DEF.sum=function(){load();const O=open_(),t=U.today(),cur=t.slice(0,7),inWin=+t.slice(8)<=14,nextCy=inWin?cur:cycleOf(t+'T00:00'),paid=paidL(),thisPaid=paid.filter(w=>(w.paid||'').startsWith(cur));
+ return {open:O.map(w=>({id:w.id,name:w.name,amount:w.amount,status:w.status,st:stg(w.status)[1],cycle:w.cycle,created:w.created,late:lateOf(w),acc:w.acc,outside:w.outside})),tot:O.reduce((n,w)=>n+w.amount,0),inWin,cur,nextCy,
+  thisPaid:{n:thisPaid.length,sum:thisPaid.reduce((n,w)=>n+w.amount,0),last:thisPaid.map(w=>w.paid).sort().at(-1)||''},paid:paid.map(w=>({id:w.id,amount:w.amount,paid:w.paid,acc:w.acc,cycle:w.cycle}))};};
 page137(DEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore.apply(this,arguments);};
 /* Tenggat: pengajuan di luar tanggal 1–14 ikut siklus berikutnya (sama di Pekerjaan & Dashboard). */

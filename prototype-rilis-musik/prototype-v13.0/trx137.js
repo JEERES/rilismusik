@@ -410,6 +410,12 @@ const DEF={id:'transactions',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&['payments','refunds','recon'].includes(v4.module)&&!state.preview&&allowed(),
  init(r){root=r;bind();},
  draw(){load();intake();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: sama dengan pita biru Transaksi */
+DEF.sum=function(){load();const iss=T.filter(openIss),rf=R.filter(r=>WORK.includes(r.st)),byM={};
+ for(const p of store().provider){if(p.refund||p.status!=='paid')continue;const k=iso(p.at).slice(0,7);byM[k]=(byM[k]||0)+p.amount;}
+ return {work:iss.length+rf.length,iss:iss.map(t=>({id:t.id,issue:t.issue,name:(ISS[t.issue]||[t.issue])[0],amount:t.amount||0,lab:t.lab})),
+  rf:rf.map(r=>({id:r.id,src:r.src,lab:r.lab,amount:r.amount||0,st:r.st,stn:(RST[r.st]||[r.st])[0],kind:RK[r.kind]||'',plan:r.plan||'',due:r.due||'',origin:r.origin||''})),
+  rfOpen:{n:rfOpen().length,sum:rfOpen().reduce((a,r)=>a+(r.amount||0),0)},rec:received(),byM,chk:CHK?.at?iso(CHK.at):''};};
 page137(DEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore.apply(this,arguments);};
 const staffSide=()=>!isLabel10()&&!state.preview&&state.mode==='platform'&&allowed();

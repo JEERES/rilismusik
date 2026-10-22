@@ -272,6 +272,9 @@ const DEF={id:'inbox',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='inbox131'&&!state.preview,
  init(r){root=r;bind();},
  draw(){load();const s=sig();if(s===lastSig&&root.querySelector('#strip .sl'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: sama dengan strip Kotak Masuk */
+DEF.sum=function(){load();const u=I.filter(x=>x.unread),c=k=>u.filter(x=>inPill(x,k));
+ return {unread:u.length,reply:c('reply').sort((a,b)=>(a.at||'').localeCompare(b.at||'')).map(x=>({id:x.id,who:x.who,title:x.title,at:x.at})),me:c('me').length,notif:c('notif').length};};
 page137(DEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore.apply(this,arguments);};
 if(typeof inboxPage131==='function'){const ib=inboxPage131;inboxPage131=function(){if(DEF.when())return '';return ib.apply(this,arguments);};}

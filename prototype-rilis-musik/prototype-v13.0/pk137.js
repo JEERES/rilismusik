@@ -294,6 +294,10 @@ const DEF={id:'finance',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='liability9'&&ten.role==='super'&&(()=>{try{return super114();}catch(err){return false;}})()&&!(typeof ui121==='object'&&TOOLS.includes(ui121.monitor)),
  init(r){root=r;bind();},
  draw(){load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};
+/*sum137 — ringkasan untuk Dashboard: kas & kewajiban sama dengan pita biru Pemantauan Keuangan */
+DEF.sum=function(){load();const roy=A('roy'),t=timeline(),st=status(),r=model107();let low=0,lowN=0;
+ for(const a of model108().accounts||[]){const v=Withdraw108.totals(r,a.id).available;if(v>0&&v<1e6){low+=v;lowN++;}}
+ return {known:t.known,cash:roy.exp,lastAt:roy.lastAt,owe:D.owe,av:D.av,pr:D.pr,ready:D.ready,readySum:D.readySum,low,lowN,st,min:t.min,ym:t.ym,svcMonth:D.svcMonth,refundOut:D.refundOut,openWd:D.openWd.map(w=>w.id)};};
 page137(DEF);
 const liabBefore=liabilityPage9;liabilityPage9=function(){if(DEF.when())return '';return liabBefore.apply(this,arguments);};
 /* Tombol Keuangan di header selalu membuka halaman baru; tombol bonus lama tetap membuka alat bonus. */
