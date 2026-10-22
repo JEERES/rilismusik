@@ -378,7 +378,7 @@ const sig=()=>L.map(l=>l.id+':'+l.st+':'+(l.last?.id||'')+':'+l.reminded).join('
 const DEF={id:'contracts',css:STYLE,html:HTML,
  when:()=>!isLabel10()&&state.mode==='platform'&&state.page==='module'&&typeof v4==='object'&&v4.module==='contracts'&&!!me().super,
  init(r){root=r;bind();},
- draw(){load();const s=sig();if(s===lastSig&&root.querySelector('#tabs button'))return;lastSig=s;paint();}};
+ draw(){if(window.ctTab137){S.tab=window.ctTab137;S.read=false;S.form=null;window.ctTab137=null;lastSig='';}load();const s=sig();if(s===lastSig&&root.querySelector('#tabs button'))return;lastSig=s;paint();}};
 page137(DEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore.apply(this,arguments);};
 /* naskah label (modal Kontrak di sisi label) memakai teks CT-1 yang sama */

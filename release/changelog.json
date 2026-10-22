@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.41",
+    "date": "2026-10-22",
+    "summary": {
+      "id": "Pengaturan Platform dirancang ulang dengan pita Kesiapan produksi dan satu versi Paket & Harga.",
+      "en": "Platform Settings redesigned with a production-readiness band and one Plans & Prices version."
+    },
+    "entries": [
+      {
+        "id": "dev41-settings-readiness",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Pengaturan Platform",
+            "en": "Platform Settings"
+          }
+        },
+        "title": {
+          "id": "Kesiapan produksi: nilai yang belum ditetapkan dihitung di satu pita",
+          "en": "Production readiness: undecided values counted in one band"
+        },
+        "detail": {
+          "id": "Pita biru menghitung harga bulanan yang belum ada, harga tahunan yang masih nilai uji, paket kredit yang masih contoh, kontak perusahaan yang kosong (diisi di Kontrak › Penandatangan), menu yang belum diverifikasi, dan website yang belum terbit — dengan \"Isi yang berikutnya\". Prosedur & Pengingat dan Identitas Perusahaan menautkan ke rumah barunya.",
+          "en": "The band counts missing monthly prices, test annual prices, sample credit packs, empty company contact, unverified menus and the unpublished website."
+        }
+      },
+      {
+        "id": "dev41-settings-plans",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Pengaturan Platform",
+            "en": "Platform Settings"
+          }
+        },
+        "title": {
+          "id": "Paket & Harga: satu versi untuk paket, isi paket, harga layanan, dan paket kredit",
+          "en": "Plans & Prices: one version for plans, inclusions, service prices and credit packs"
+        },
+        "detail": {
+          "id": "Harga tahunan/bulanan, layanan yang termasuk paket (Konten Promosi, Smart Link, Video Visualizer, Registrasi WAMI), harga layanan, harga 1 kredit, dan paket kredit diubah di satu tempat lalu terbit sebagai versi baru yang berlaku untuk pembelian baru. Kredit dipakai untuk rilisan (Standard · Express · MAX) setara harga rupiahnya; layanan tambahan dibayar rupiah atau benefit paket. Istilah token dan \"vonis\" tidak dipakai.",
+          "en": "Plan prices, inclusions, service prices, credit price and packs change in one place and publish as a new version for new purchases."
+        }
+      },
+      {
+        "id": "dev41-settings-other",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Pengaturan Platform",
+            "en": "Platform Settings"
+          }
+        },
+        "title": {
+          "id": "Website, Pemeliharaan, Navigasi, Tampilan, dan Riwayat aktivitas",
+          "en": "Website, Maintenance, Navigation, Appearance and Activity"
+        },
+        "detail": {
+          "id": "Website (hero, pratinjau dengan harga & kontak otomatis, FAQ) kini bisa diterbitkan. Pemeliharaan: jadwal baru langsung membuat draf pengumuman di Pembaruan; jadwal bisa dibatalkan. Navigasi membaca menu sebenarnya per jenis akun; urutan dan sembunyikan menu Super Admin tersimpan sebagai versi; tandai diverifikasi. Tampilan membuka editor kartu header lengkap. Riwayat aktivitas dengan saringan menu, pencarian, dan unduh CSV. Perbaikan: tautan pemeliharaan dari Pembaruan tidak lagi tertimpa jeda header.",
+          "en": "Publishable website, maintenance with announcement drafts, real menu order/visibility with versions, appearance editor link, and a filterable activity log with CSV."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.40",
     "date": "2026-10-22",
     "summary": {
