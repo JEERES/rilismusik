@@ -68,7 +68,7 @@ function band136(){
     <p>${at.slice(0,3).map(x=>`${E(x.m.name)} · ${E(x.why[0][0].split(' · ')[0].toLowerCase())}`).join(' · ')}</p>
     <div class="acts135">${at.length?`<button type="button" class="wbtn135" data-l136-seg="attn">${T('Tampilkan semuanya','Show them all')} ${svg135('arrow',2)}</button>`:''}${v?`<button type="button" class="gbtn135" data-l136-tab="ver">${T('Verifikasi menunggu','Verification waiting')} · ${v}</button>`:''}</div></div>
     <div class="stat135"><div><b class="n">${all.filter(x=>x.m.active).length}</b><span>${T('label aktif','active labels')}</span></div><div><b class="n">${all.filter(x=>x.act==='active').length}</b><span>${T('aktif 90 hari','active 90 days')}</span></div><div><b class="n">${all.filter(x=>!x.m.active).length}</b><span>${T('calon member','prospects')}</span></div></div></div>
-   <div class="flow135">${SEG136.map(([k,t,d,fn])=>{const n=all.filter(fn).length;return `<button type="button" class="fn135${k==='attn'&&n?' hot':''}${n?'':' zero'}" data-l136-seg="${k}" aria-pressed="${l136.seg===k}"><span class="dot135 n">${n}</span><span class="t">${L(t)}</span><span class="d">${L(d)}</span></button>`;}).join('')}</div></section>`;
+   <div class="flow135">${SEG136.map(([k,t,d,fn])=>{const n=all.filter(fn).length;return `<button type="button" class="fn135${k==='attn'&&n?' hot act':''}${n?'':' zero'}" data-l136-seg="${k}" aria-pressed="${l136.seg===k}"><span class="dot135 n">${n}</span><span class="t">${L(t)}</span><span class="d">${L(d)}</span></button>`;}).join('')}</div></section>`;
 }
 function list136(){
   const r=visible136();let h='';

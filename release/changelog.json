@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.45",
+    "date": "2026-10-23",
+    "summary": {
+      "id": "Pita ringkasan punya versi terang & gelap, warna penanda kembali sesuai Kamus Penanda, dan kartu dashboard sejajar.",
+      "en": "Summary bands get light & dark versions, indicator colours follow the Indicator Dictionary again, and dashboard cards line up."
+    },
+    "entries": [
+      {
+        "id": "dev45-band",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Semua menu",
+            "en": "All menus"
+          }
+        },
+        "title": {
+          "id": "Pita ringkasan: putih di mode terang, hitam di mode gelap",
+          "en": "Summary band: white in light mode, black in dark mode"
+        },
+        "detail": {
+          "id": "Pita di 14 halaman baru, Kotak Masuk, Pekerjaan, dan Manajemen Label kini punya dua rancangan: kartu putih bertinta gelap dengan tombol utama hitam (terang) dan hitam dengan tombol putih (gelap). Kilau spektrum dilepas dari pita — kilau hanya di ikon header, kartu Sorotan, dan tombol utama saat disorot. Titik \"hari ini\" di judul kecil kini netral (dulu pink).",
+          "en": "Bands in the 14 redesigned pages, Inbox, Work and Label Management have two designs: white with dark ink and a black main button (light), black with a white button (dark). Spectral light removed from bands; the \"today\" dot is neutral (was pink)."
+        }
+      },
+      {
+        "id": "dev45-colour",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Semua menu",
+            "en": "All menus"
+          }
+        },
+        "title": {
+          "id": "Warna penanda kembali sesuai Kamus Penanda",
+          "en": "Indicator colours follow the Indicator Dictionary again"
+        },
+        "detail": {
+          "id": "Titik alur di pita: merah = terlambat, oranye = perlu tindakan (mis. tiket perlu peninjauan, koreksi penarikan, transaksi perlu dicocokkan, hal sebelum produksi), biru = menunggu (dulu semuanya pink). Mode gelap: halaman baru tidak lagi memakai palet lama (merah pink #ff8793, biru/hijau pucat) dan bingkai kaca chip kembali utuh. Dashboard: cincin hitung mundur & langkah siklus biru saat menunggu, oranye saat perlu dibayar/diterbitkan, merah saat terlambat; \"Siap cair\" biru; chip \"Tertinggal\" merah; verifikasi \"Perlu diperiksa\" (dulu \"Menunggu\" oranye); staf menunggu Super Admin = biru; Kondisi menu Tiket/Layanan/Pembaruan: oranye untuk perlu keputusan, merah hanya untuk terlambat.",
+          "en": "Band flow dots: red = overdue, orange = action needed, blue = waiting (all were pink). Dark mode no longer leaks the old palette into new pages. Dashboard ring, cycle steps, chips and Menu health use the same meanings."
+        }
+      },
+      {
+        "id": "dev45-align",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Kartu dashboard sejajar di bawah",
+          "en": "Dashboard cards line up at the bottom"
+        },
+        "detail": {
+          "id": "\"Perlu keputusan Anda\" dan \"Kondisi menu\" kini sama tinggi dengan kaki daftar menempel di bawah; hal yang sama untuk dashboard Staf (Pekerjaanku · Hasilku/Pengumuman) dan Label.",
+          "en": "\"Decisions for you\" and \"Menu health\" now share the same height, as do the Staff and Label dashboard columns."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.44",
     "date": "2026-10-23",
     "summary": {
