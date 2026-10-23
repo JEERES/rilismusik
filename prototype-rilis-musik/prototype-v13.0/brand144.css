@@ -56,6 +56,9 @@ html:root body #app .masthead124 .masthead-atmosphere127.has-image130::after{bac
    Kembalikan ke palet mock yang disetujui (sama dengan :host([data-theme=dark]) di dalam halaman). ---------- */
 html body .m137-host[data-theme=dark]{--bg:#0a0a0b!important;--text:#ededef!important;--muted:#8e8e94!important;--line:#ffffff14!important;--soft:#ffffff0d!important;--green:#3cc458!important;--blue:#5b9be0!important;--red:#e5577a!important;--tint:55%!important}
 
+/* ---------- dev.47: kartu Pekerjaan & Manajemen Label di mode gelap tanpa garis tepi (seragam dengan kartu lain) ---------- */
+html:root[data-theme=dark] body #app .d134-card,html:root[data-theme=dark] body #app .donecard135{box-shadow:none!important}
+
 /* ---------- pita halaman Pekerjaan & Manajemen Label: terang = kartu putih, gelap = hitam; titik ikut Kamus Penanda ---------- */
 /* dev.46 — pita = kartu biasa (sama dengan .d134-card): warna permukaan, sudut 22px, garis 6% teks, tanpa bayangan/gradasi */
 html:root body #app .band135{color:#111113!important;background:var(--surface)!important;border:0!important;border-radius:22px!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 6%,transparent)!important}

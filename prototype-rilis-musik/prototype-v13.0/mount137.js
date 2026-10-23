@@ -345,7 +345,9 @@ background:radial-gradient(120% 120% at 80% 0%,#2a7cff 0%,#0d4fd6 40%,#0a3aa8 70
 :host([data-theme=dark]) .ibstrip .pills button{background:var(--soft)!important;color:#fff!important;box-shadow:none!important}
 :host([data-theme=dark]) .ibstrip .pills button b{color:rgba(255,255,255,.66)!important}
 :host([data-theme=dark]) .ibstrip .pills button[aria-pressed=true]{background:#fff!important;color:#111113!important}
-:host([data-theme=dark]) .ibstrip .pills button[aria-pressed=true] b{color:#55555d!important}`;
+:host([data-theme=dark]) .ibstrip .pills button[aria-pressed=true] b{color:#55555d!important}
+:host([data-theme=dark]) .card,:host([data-theme=dark]) .pc.pc{box-shadow:none}
+.nextc:not(.ok):not(.mute){background:var(--soft);box-shadow:none}`;
 function sheet137(text){try{const s=new CSSStyleSheet();s.replaceSync(text);return s;}catch(err){return null;}}
 function page137(def){M137.defs.push(def);if(def.stub)def.stub();}
 const active137=()=>M137.defs.find(d=>{try{return d.when();}catch(err){return false;}});

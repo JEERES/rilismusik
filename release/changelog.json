@@ -1,5 +1,35 @@
 [
   {
+    "version": "1.1.0-dev.47",
+    "date": "2026-10-23",
+    "summary": {
+      "id": "Kartu di mode gelap seragam tanpa garis tepi; kotak \"Langkah berikutnya\" netral.",
+      "en": "Dark-mode cards are uniform without outlines; the \"Next step\" box is neutral."
+    },
+    "entries": [
+      {
+        "id": "dev47-cards",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Semua menu",
+            "en": "All menus"
+          }
+        },
+        "title": {
+          "id": "Kartu mode gelap tanpa garis tepi",
+          "en": "Dark-mode cards without outlines"
+        },
+        "detail": {
+          "id": "Semua kartu di halaman baru, Pemantauan Keuangan, Pekerjaan, dan Manajemen Label kini sama dengan pita: warna kartu tanpa garis tipis di mode gelap. Kotak \"Langkah berikutnya\" di panel detail tidak lagi kebiruan (sisa warna biru lama) — kini abu lembut seperti kotak lain.",
+          "en": "All cards in the redesigned pages, Finance, Work and Label Management match the band: card colour, no hairline in dark mode. The \"Next step\" box is no longer bluish."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.46",
     "date": "2026-10-23",
     "summary": {
