@@ -1,5 +1,55 @@
 [
   {
+    "version": "1.1.0-dev.49",
+    "date": "2026-10-24",
+    "summary": {
+      "id": "Pil kaca baru untuk semua status, dan badge paket final (Basic abu, Studio zamrud tua, Pro biru, Business plum malam).",
+      "en": "New glass pill for every status, and final plan badges (grey Basic, deep-emerald Studio, blue Pro, night-plum Business)."
+    },
+    "entries": [
+      {
+        "id": "dev49-pill",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Semua menu",
+            "en": "All menus"
+          }
+        },
+        "title": {
+          "id": "Pil kaca untuk semua kapsul status",
+          "en": "Glass pill for every status capsule"
+        },
+        "detail": {
+          "id": "Desain yang disetujui (dicocokkan per piksel dengan referensi): cahaya dari atas — isi terang di atas, bayang silinder di sisi, garis terang di tepi bawah, bayangan luar netral yang tidak pernah berwarna. Warna status hanya titik dan garis tipis di lengkung kiri; huruf selalu netral. Berlaku di halaman baru dan halaman lama (Pekerjaan, Manajemen Label, profil, tiket, transaksi, dan lainnya), terang & gelap. Di mode gelap, kapsul lama tidak lagi berwarna pink pucat.",
+          "en": "The approved design (pixel-matched to the reference): lit from above, side cylinder shading, a bright bottom edge, a neutral never-coloured shadow. Status colour only in the dot and a thin left-curve line; text is always neutral. Applies to new and old pages, light & dark."
+        }
+      },
+      {
+        "id": "dev49-badge",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Semua menu",
+            "en": "All menus"
+          }
+        },
+        "title": {
+          "id": "Badge paket final",
+          "en": "Final plan badges"
+        },
+        "detail": {
+          "id": "Bentuk badge PRO Behance untuk semua paket, tanpa bayangan: Basic abu polos #5D5D63, Studio zamrud tua, Pro biru Behance, Business plum malam — kontras huruf putih ≥ 4,5 di setiap warna. Dipakai di header label, Manajemen Label, Kontrak Label, dialog paket, profil, dan Studio Pratinjau.",
+          "en": "The Behance PRO badge shape for every plan, no shadow: flat grey Basic, deep-emerald Studio, Behance-blue Pro, night-plum Business — white-text contrast ≥ 4.5 on each. Used in the label header, Label Management, Label Contracts, the plan dialog, profiles and the Preview Studio."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.48",
     "date": "2026-10-23",
     "summary": {
