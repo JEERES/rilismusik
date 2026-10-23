@@ -29,7 +29,7 @@ render=function(){if(typeof modelPackages122==='function'&&!Persistence117.block
  const parent=side.querySelector('.side-mode'),oldGenerated=parent?.querySelector('.mode-switch');if(oldGenerated){if(oldMode){oldGenerated.replaceWith(oldMode);syncWorkspace122(oldMode,modeFrom)}else oldGenerated.outerHTML=workspaceSwitch122()}
  const rail=parent?.querySelector('.rail-mode');if(rail){rail.removeAttribute('data-action');rail.dataset.u122='mode';rail.dataset.id=state.mode==='staff'?'platform':'staff';rail.innerHTML=icon(state.mode==='staff'?'grid':'people');rail.setAttribute('aria-label',T('Ganti ruang kerja','Switch workspace'))}
  const newTheme=header.querySelector('[data-theme111]');if(oldTheme&&newTheme){newTheme.replaceWith(oldTheme);syncTheme111()}
- header.insertAdjacentHTML('afterbegin',`<div class="header-brand122"><span class="mark">RM</span><strong>RILIS MUSIK</strong></div>`);app.prepend(header);
+ header.insertAdjacentHTML('afterbegin',`<div class="header-brand122"><span class="mark mark144" aria-hidden="true">RM</span><strong><em class="wm144">rilis musik</em></strong></div>`);app.prepend(header);
  const body=document.createElement('div');body.className='workspace-body122';app.append(body);body.append(side,shell);shell.querySelector('.header')?.remove();
  if(dashboard){main.querySelector('.pagehead')?.remove();shell.querySelectorAll('.insight7,.label-insight106').forEach(e=>e.remove());main.querySelectorAll('.finance-insight7').forEach(e=>{if(!e.children.length)e.remove()});app.insertAdjacentHTML('afterbegin','');header.insertAdjacentHTML('afterend',hero122())}
  const sc=side.querySelector('.side-scroll');if(sc)sc.scrollTop=sideY;stamp122();mountPackages122();

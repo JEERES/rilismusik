@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.44",
+    "date": "2026-10-23",
+    "summary": {
+      "id": "Identitas baru: logo RM kaca, header & pita hitam-putih dengan kilau, dan tiga momen suara untuk label.",
+      "en": "New identity: glass RM logo, black & white header and bands with spectral light, and three sound moments for labels."
+    },
+    "entries": [
+      {
+        "id": "dev44-logo",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Semua menu",
+            "en": "All menus"
+          }
+        },
+        "title": {
+          "id": "Logo baru: RM di balik kaca bening + wordmark \"rilis musik\"",
+          "en": "New logo: RM behind clear glass + \"rilis musik\" wordmark"
+        },
+        "detail": {
+          "id": "Ikon RM tebal di balik kaca dengan kilau spektrum di dua sudut, wordmark huruf kecil tebal. Dipakai di header semua peran, ikon tab browser (versi sederhana 16 px), ikon aplikasi, dialog sambutan, dan layar memuat (ikon bernapas). Aset dibuat sekali (±7 KB per tema).",
+          "en": "Bold RM behind glass with spectral light on two corners and a lowercase bold wordmark — header, favicon, app icon, welcome dialog and loading screen."
+        }
+      },
+      {
+        "id": "dev44-mono",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Semua menu",
+            "en": "All menus"
+          }
+        },
+        "title": {
+          "id": "Header & pita menu hitam-putih dengan kilau",
+          "en": "Black & white header and menu bands with spectral light"
+        },
+        "detail": {
+          "id": "Header Dashboard: putih (mode terang) / hitam pekat (mode gelap) dengan kaca berkilau; kartu Sorotan kaca bening bergaris tepi spektrum; tombol utama hitam/putih dengan cincin spektrum saat disorot. Pita di 14 halaman baru, Pekerjaan, dan Manajemen Label menjadi hitam dengan kilau di sudut. Warna status tetap. Desain header bergambar unggahan tetap bisa dipakai (peneduh kini netral).",
+          "en": "Dashboard header white/black with glass art; clear Highlight card with spectral edge; bands in every redesigned menu are black with corner light. Status colours unchanged."
+        }
+      },
+      {
+        "id": "dev44-sound",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Tiga momen suara untuk label",
+          "en": "Three sound moments for labels"
+        },
+        "detail": {
+          "id": "Sambutan pertama setelah akun aktif, rilisan terkirim, dan rilisan tayang: logo beriak mengikuti tanda suara \"da-da-DAAM\" (dibuat di browser, tanpa berkas audio). Efek hanya dimuat saat momen terjadi dan berhenti setelah 1–3 detik; hormati \"kurangi gerakan\". Suara bisa dimatikan di kartu momen atau Profil Label › Suara momen. Staf & Super Admin tidak pernah mendengarnya. Perbaikan: avatar label kini membuka Profil Label (sebelumnya profil staf).",
+          "en": "First welcome, release submitted and release live: the logo ripples to a synthesised sonic logo; loaded only at the moment; can be muted. Fix: the label avatar now opens Label Profile."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.43",
     "date": "2026-10-23",
     "summary": {

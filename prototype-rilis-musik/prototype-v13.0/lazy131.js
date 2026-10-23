@@ -7,7 +7,7 @@
    memakainya tanpa await tetap berjalan. Build standalone menyisipkan
    keduanya langsung (lihat build.cjs). */
 'use strict';
-const lazyFiles131={"RMDirectory":"directories-data.js","PDFLib":"pdf-lib.min.js"};
+const lazyFiles131={"RMDirectory":"directories-data.js","PDFLib":"pdf-lib.min.js","FX144":"fx144.js"};
 const lazyLog131={};
 
 function lazyLoaded131(name){
@@ -34,7 +34,7 @@ for(const name of Object.keys(lazyFiles131)){
 }
 function prefetchLazy131(){
   for(const [name,file] of Object.entries(lazyFiles131)){
-    if(lazyLoaded131(name))continue;
+    if(lazyLoaded131(name)||name==='FX144')continue; // efek momen label: hanya dimuat saat momen terjadi (dev.44)
     const s=document.createElement('script');
     s.src=file;s.async=true;s.onload=()=>{lazyLog131[name]=lazyLog131[name]||'background';};
     document.head.append(s);

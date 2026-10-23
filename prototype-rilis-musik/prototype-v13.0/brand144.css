@@ -1,0 +1,87 @@
+/* v1.1.0-dev.44 — identitas baru (disetujui 23 Okt 2026, mock Identitas kaca & suara):
+   logo RM di balik kaca bening + wordmark "rilis musik", header & pita hitam-putih dengan kilau spektrum
+   (oranye · merah muda · ungu · biru · sian). Warna status (biru/oranye/merah/hijau) tidak berubah.
+   Selektor sengaja panjang: aturan header lama memakai !important dengan spesifisitas (1,6,2). */
+
+/* ---------- layar memuat: ikon bernapas, tanpa JS ---------- */
+html.booting131 body::before{content:"";position:fixed;inset:0;z-index:2147483646;background:#f2f2f4}
+html.booting131 body::after{content:"";position:fixed;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;z-index:2147483647;background:url(brand144-light.webp) center/contain no-repeat;animation:boot144 2.4s ease-in-out infinite}
+html.booting131[data-theme=dark] body::before{background:#0a0a0b}
+html.booting131[data-theme=dark] body::after{background-image:url(brand144-dark.webp)}
+@keyframes boot144{0%,100%{transform:scale(1);opacity:.92}50%{transform:scale(1.045);opacity:1}}
+@media (prefers-reduced-motion:reduce){html.booting131 body::after{animation:none}}
+
+/* ---------- logo & wordmark di header (semua halaman, semua peran) ---------- */
+html:root body #app .header .header-brand122 .mark.mark144{font-size:0!important;color:transparent!important;background:url(brand144-light.webp) center/118% no-repeat!important;box-shadow:none!important;border:0!important;border-radius:9px!important}
+html:root[data-theme=dark] body #app .header .header-brand122 .mark.mark144{background-image:url(brand144-dark.webp)!important}
+html:root body #app .header.header .header-brand122 strong{letter-spacing:-.045em!important;text-transform:none!important;font-size:17px!important;line-height:1!important}
+html:root body #app .header.header .header-brand122 strong em.wm144.wm144{font-style:normal!important;font-weight:700!important;letter-spacing:inherit!important}
+
+/* ---------- header Dashboard (desain bawaan, bukan gambar unggahan) ---------- */
+html:root body #app .masthead124.masthead124.masthead124:not(.img144) .masthead-atmosphere127{filter:none!important}
+html:root body #app .masthead124.masthead124.masthead124:not(.img144) .masthead-atmosphere127::before,
+html:root body #app .masthead124.masthead124.masthead124:not(.img144) .masthead-atmosphere127::after{display:none!important}
+html:root body #app .masthead124.masthead124.masthead124:not(.img144) .masthead-atmosphere127>*{display:none!important}
+/* terang: putih + kaca kosong berkilau di kanan, tulisan tinta */
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.img144) .masthead-atmosphere127{background:url(brand144-art-light.webp) right -230px bottom -120px/auto 190% no-repeat,radial-gradient(90% 130% at 88% 0%,#ffffff 0%,#f4f4f6 48%,#e8e8ec 100%)!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) :is(.header-brand122 strong,.header-path,.header-path i,.search-bar6,.search-bar6 *,.iconbtn,.iconbtn svg,.tools svg,.control-pill126:not(.active),.control-pill126:not(.active) *,h1,h1 span,.hero-context122,.hero-context122 *,.masthead-key124,.masthead-key124 *){color:#111113!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .search-bar6{background:rgba(0,0,0,.05)!important;box-shadow:none!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .control-pill126.active{background:#111113!important;box-shadow:none!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .control-pill126.active *{color:#fff!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .theme-track111{background:rgba(0,0,0,.1)!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122{-webkit-backdrop-filter:blur(22px) saturate(1.4)!important;backdrop-filter:blur(22px) saturate(1.4)!important;background:linear-gradient(180deg,rgba(255,255,255,.66),rgba(255,255,255,.5))!important;border:0!important;box-shadow:0 18px 40px -24px rgba(0,0,0,.28)!important;color:#111113!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 *{color:#111113!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 :is(.spot-s134,.spot-row134 small){color:#3a3a3e!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 .spot-btn134{background:#111113!important;border:1.5px solid transparent!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 .spot-btn134 *,html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 .spot-btn134{color:#fff!important}
+html:root[data-theme=light] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 .spot-btn134:is(:hover,:focus-visible){background:linear-gradient(#111113,#111113) padding-box,conic-gradient(from 200deg,#ff9f0a,#ff375f,#bf5af2,#5e5ce6,#40c8e0,#ff9f0a) border-box!important}
+/* gelap: hitam pekat + kaca gelap berkilau */
+html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.img144) .masthead-atmosphere127{background:url(brand144-art-dark.webp) right -230px bottom -120px/auto 190% no-repeat,radial-gradient(90% 130% at 88% 0%,#1b1b1f 0%,#08080a 52%,#000 100%)!important}
+html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122{-webkit-backdrop-filter:blur(22px) saturate(1.4)!important;backdrop-filter:blur(22px) saturate(1.4)!important;background:linear-gradient(180deg,rgba(44,44,48,.6),rgba(20,20,22,.46))!important;border:0!important;box-shadow:0 20px 40px -20px rgba(0,0,0,.8)!important}
+html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 .spot-btn134{background:#f5f5f7!important;border:1.5px solid transparent!important}
+html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 .spot-btn134 *,html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 .spot-btn134{color:#000!important}
+html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 .spot-btn134:is(:hover,:focus-visible){background:linear-gradient(#f5f5f7,#f5f5f7) padding-box,conic-gradient(from 200deg,#ff9f0a,#ff375f,#bf5af2,#5e5ce6,#40c8e0,#ff9f0a) border-box!important}
+html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .control-pill126.active{background:#f5f5f7!important}
+html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .control-pill126.active *{color:#000!important}
+/* gambar unggahan: lapisan peneduh netral (dulu kebiruan) */
+html:root body #app .masthead124 .masthead-atmosphere127.has-image130{background-color:#000!important}
+html:root body #app .masthead124 .masthead-atmosphere127.has-image130::after{background:rgba(0,0,0,var(--image-shade130,.6))!important}
+
+/* ---------- pita halaman Pekerjaan & Manajemen Label ---------- */
+html:root body #app .band135{background:radial-gradient(130% 150% at 100% 0%,#2c2c31 0%,#141416 42%,#0a0a0b 100%) padding-box,linear-gradient(225deg,#ff9f0a,#ff375f 7%,#bf5af2 14%,#5e5ce6 21%,rgba(255,255,255,.07) 32%,rgba(255,255,255,.07) 74%,#40c8e0 88%,#5e5ce6 96%) border-box!important;border:1.2px solid transparent!important;box-shadow:0 18px 40px -26px rgba(0,0,0,.55)!important}
+html:root[data-theme=dark] body #app .band135{background:radial-gradient(130% 150% at 100% 0%,#27272c 0%,#141416 45%,#0c0c0d 100%) padding-box,linear-gradient(225deg,#ff9f0a,#ff375f 7%,#bf5af2 14%,#5e5ce6 21%,rgba(255,255,255,.08) 32%,rgba(255,255,255,.08) 74%,#40c8e0 88%,#5e5ce6 96%) border-box!important;box-shadow:none!important}
+html:root body #app .band135 .fn135:not(.hot):not([aria-pressed=true]) .dot135{background:#26262a!important}
+html:root body #app .band135 .fn135[aria-pressed=true] .dot135,html:root body #app .band135 .wbtn135{color:#111113!important}
+
+/* ---------- sambutan label: logo kaca menggantikan ✦ / teks RM ---------- */
+.welcome105 .welcome-spark105.glass144,.welcome105 .welcome-symbol105{display:block!important;width:84px!important;height:84px!important;margin:0 auto 10px!important;font-size:0!important;color:transparent!important;background:url(brand144-light.webp) center/contain no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;position:relative}
+[data-theme=dark] .welcome105 .welcome-spark105.glass144,[data-theme=dark] .welcome105 .welcome-symbol105{background-image:url(brand144-dark.webp)!important}
+.has-fx144{background-image:none!important}
+.fx144{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* ---------- kartu momen (rilisan terkirim · tayang) ---------- */
+.moment144{position:fixed;inset:auto auto 84px 50%;margin:0;height:auto;overflow:visible;z-index:2000;display:grid;grid-template-columns:56px minmax(0,1fr) auto auto;gap:12px;align-items:center;width:min(460px,calc(100vw - 28px));padding:12px 12px 12px 14px;border-radius:22px;color:#111113;
+ background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(255,255,255,.74));border:0;backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);box-shadow:0 22px 50px -24px rgba(0,0,0,.4);
+ transform:translate(-50%,16px);opacity:0;transition:transform .35s cubic-bezier(.2,.9,.25,1),opacity .25s;font-family:inherit}
+.moment144.on{transform:translate(-50%,0);opacity:1}
+[data-theme=dark] .moment144{color:#f5f5f7;background:linear-gradient(180deg,rgba(44,44,48,.86),rgba(22,22,24,.8));box-shadow:0 22px 50px -20px rgba(0,0,0,.8)}
+.moment144 .mic144{position:relative;width:56px;height:56px;background:url(brand144-light.webp) center/contain no-repeat}
+[data-theme=dark] .moment144 .mic144{background-image:url(brand144-dark.webp)}
+.moment144 .mt144{display:grid;gap:2px;min-width:0}.moment144 .mt144 b{font-weight:500;font-size:14.5px;line-height:1.3}.moment144 .mt144 small{font-size:12.5px;opacity:.72;line-height:1.35}
+.moment144 button{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;border:0;background:rgba(127,127,127,.12);color:inherit;cursor:pointer;padding:0}
+.moment144 button svg{width:15px;height:15px}.moment144 .msnd144[aria-pressed=false]{opacity:.55}
+@media (prefers-reduced-motion:reduce){.moment144{transition:opacity .2s}}
+@media (max-width:580px){.moment144{inset:auto auto 72px 50%;grid-template-columns:48px minmax(0,1fr) auto auto}.moment144 .mic144{width:48px;height:48px}}
+
+/* ---------- Profil Label: pengaturan Suara momen ---------- */
+.snd144{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;border-radius:20px;background:var(--card,#fff);box-shadow:0 1px 2px rgba(0,0,0,.05),0 8px 24px -14px rgba(0,0,0,.14);margin-bottom:16px}
+.snd144 b{display:block;font-weight:500;font-size:14.5px}.snd144 small{display:block;color:var(--muted,#6e6e73);font-size:13px;line-height:1.4;margin-top:2px}
+html:root body .welcome105 .welcome-spark105.glass144.glass144,html:root body .welcome105 .welcome-symbol105.welcome-symbol105{background-color:transparent!important;box-shadow:none!important;outline:0!important}
+html:root body .welcome105 .welcome-spark105.glass144.has-fx144{background-image:none!important}
+
+/* garis tepi spektrum kartu Sorotan: cincin 1 px (tidak mewarnai bidang kaca) */
+html:root body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122{position:relative}
+html:root body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122::before{content:""!important;display:block!important;position:absolute!important;inset:0!important;border-radius:inherit!important;padding:1px!important;background:linear-gradient(225deg,#ff9f0a,#ff375f 9%,#bf5af2 18%,#5e5ce6 26%,rgba(0,0,0,.07) 38%,rgba(0,0,0,.07) 64%,#40c8e0 78%,#5e5ce6 88%,#bf5af2 100%)!important;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;-webkit-mask-composite:xor!important;mask-composite:exclude!important;pointer-events:none!important;z-index:0!important;opacity:1!important}
+html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122::before{background:linear-gradient(225deg,#ff9f0a,#ff375f 9%,#bf5af2 18%,#5e5ce6 26%,rgba(255,255,255,.07) 38%,rgba(255,255,255,.07) 64%,#40c8e0 78%,#5e5ce6 88%,#bf5af2 100%)!important}
+.moment144::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(225deg,#ff9f0a,#ff375f 9%,#bf5af2 18%,#5e5ce6 26%,rgba(0,0,0,.07) 38%,rgba(0,0,0,.07) 64%,#40c8e0 78%,#5e5ce6 88%,#bf5af2 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+[data-theme=dark] .moment144::before{background:linear-gradient(225deg,#ff9f0a,#ff375f 9%,#bf5af2 18%,#5e5ce6 26%,rgba(255,255,255,.07) 38%,rgba(255,255,255,.07) 64%,#40c8e0 78%,#5e5ce6 88%,#bf5af2 100%)}

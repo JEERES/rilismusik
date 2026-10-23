@@ -293,7 +293,13 @@ background:radial-gradient(120% 120% at 80% 0%,#2a7cff 0%,#0d4fd6 40%,#0a3aa8 70
 .m137>main{gap:18px}
 .pane.stick{top:var(--m137-top,96px)}
 .wk{scroll-margin-top:96px}
-.toast{z-index:1000}`;
+.toast{z-index:1000}
+.band{background:radial-gradient(130% 150% at 100% 0%,#2c2c31 0%,#141416 42%,#0a0a0b 100%) padding-box,linear-gradient(225deg,#ff9f0a,#ff375f 7%,#bf5af2 14%,#5e5ce6 21%,rgba(255,255,255,.07) 32%,rgba(255,255,255,.07) 74%,#40c8e0 88%,#5e5ce6 96%) border-box!important;border:1.2px solid transparent!important;box-shadow:0 18px 40px -26px rgba(0,0,0,.55)!important}
+:host([data-theme=dark]) .band{background:radial-gradient(130% 150% at 100% 0%,#27272c 0%,#141416 45%,#0c0c0d 100%) padding-box,linear-gradient(225deg,#ff9f0a,#ff375f 7%,#bf5af2 14%,#5e5ce6 21%,rgba(255,255,255,.08) 32%,rgba(255,255,255,.08) 74%,#40c8e0 88%,#5e5ce6 96%) border-box!important;box-shadow:none!important}
+.band .fn:not(.hot):not([aria-pressed=true]) .dot{background:#26262a!important}
+.band .fn[aria-pressed=true] .dot,.band .wbtn,.lbtn,.ibstrip .pills button[aria-pressed=true],.ibstrip .pills button[aria-pressed=true] b{color:#111113!important}
+.ibstrip{background:radial-gradient(130% 180% at 100% 0%,#2c2c31 0%,#141416 45%,#0a0a0b 100%) padding-box,linear-gradient(225deg,#ff9f0a,#ff375f 8%,#bf5af2 16%,#5e5ce6 24%,rgba(255,255,255,.07) 36%,rgba(255,255,255,.07) 74%,#40c8e0 88%,#5e5ce6 96%) border-box!important;border:1.2px solid transparent!important;box-shadow:0 16px 34px -22px rgba(0,0,0,.55)!important}
+:host([data-theme=dark]) .ibstrip{background:radial-gradient(130% 180% at 100% 0%,#27272c 0%,#141416 45%,#0c0c0d 100%) padding-box,linear-gradient(225deg,#ff9f0a,#ff375f 8%,#bf5af2 16%,#5e5ce6 24%,rgba(255,255,255,.08) 36%,rgba(255,255,255,.08) 74%,#40c8e0 88%,#5e5ce6 96%) border-box!important;box-shadow:none!important}`;
 function sheet137(text){try{const s=new CSSStyleSheet();s.replaceSync(text);return s;}catch(err){return null;}}
 function page137(def){M137.defs.push(def);if(def.stub)def.stub();}
 const active137=()=>M137.defs.find(d=>{try{return d.when();}catch(err){return false;}});

@@ -346,7 +346,7 @@ const dueChip=d=>d==null?'':d<0?chip($t(`Lewat ${-d} hari`,`${nd(-d)} overdue`),
 const mini=(id,title)=>id?`<span class="mini" title="${E(title||pname(id))}">${E(pini(id)||String(id).slice(0,2).toUpperCase())}</span>`:`<span class="mini none" title="${$t('Belum ada petugas','Unassigned')}"></span>`;
 const toast=t=>toast137(DEF,t);
 /* tombol aksi asli prototipe (atribut data-*) dijalankan lewat tombol tersembunyi, supaya modal & halaman tujuan tidak berubah */
-function fire(attrs){const b=document.createElement('button');b.type='button';b.hidden=true;for(const [k,v] of Object.entries(attrs))b.setAttribute(k,v);document.body.append(b);try{b.click();}finally{b.remove();}}
+function fire(attrs){const b=document.createElement('button');b.type='button';b.tabIndex=-1;b.setAttribute('aria-hidden','true');b.style.cssText='opacity:0;width:1px;height:1px;padding:0;border:0;margin:0;overflow:hidden';for(const [k,v] of Object.entries(attrs))b.setAttribute(k,v);document.body.append(b);try{b.click();}finally{b.remove();}}
 const cycle=t=>{const [y,m,d]=t.split('-').map(Number),cur=t.slice(0,7),nxt=addM(cur,1),end=new Date(Date.UTC(y,m,0)).getUTCDate();
  if(d<=14)return {phase:'win',cy:cur,n:14-d,date:cur+'-14',p:Math.round(d/14*100)};
  if(d<=20)return {phase:'pay',cy:cur,n:20-d,date:cur+'-20',p:Math.round((d-14)/6*100)};
