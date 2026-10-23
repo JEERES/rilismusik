@@ -1,5 +1,55 @@
 [
   {
+    "version": "1.1.0-dev.46",
+    "date": "2026-10-23",
+    "summary": {
+      "id": "Pita ringkasan kini berkarakter sama dengan kartu lain; sapaan header tanpa bayangan biru.",
+      "en": "Summary bands now look like every other card; the header greeting no longer has a blue shadow."
+    },
+    "entries": [
+      {
+        "id": "dev46-band",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "module",
+          "menu": {
+            "id": "Semua menu",
+            "en": "All menus"
+          }
+        },
+        "title": {
+          "id": "Pita ringkasan = kartu biasa",
+          "en": "Summary band = a regular card"
+        },
+        "detail": {
+          "id": "Mode terang: warna, sudut, dan garis tipis sama dengan kartu lain, tanpa bayangan. Mode gelap: warna kartu yang sama, tanpa gradasi dan tanpa garis tepi. Kotak angka & rumus kas memakai warna lembut kartu (tanpa gradasi). Berlaku di 14 halaman baru, Kotak Masuk, Pekerjaan, dan Manajemen Label.",
+          "en": "Light: same colour, corners and hairline as other cards, no shadow. Dark: same card colour, no gradient, no outline. Applies to all redesigned pages, Inbox, Work and Label Management."
+        }
+      },
+      {
+        "id": "dev46-greet",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Sapaan header tanpa bayangan biru",
+          "en": "Header greeting without the blue shadow"
+        },
+        "detail": {
+          "id": "\"Halo, …\" di header bawaan masih membawa bayangan biru tua dari header biru lama; kini dihapus. Header dengan gambar unggahan tetap memakai bayangan netral agar teks terbaca di atas foto.",
+          "en": "The greeting kept a navy shadow from the old blue header; removed. Uploaded-image headers keep a neutral shadow for legibility."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.45",
     "date": "2026-10-23",
     "summary": {

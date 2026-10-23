@@ -294,7 +294,7 @@ background:radial-gradient(120% 120% at 80% 0%,#2a7cff 0%,#0d4fd6 40%,#0a3aa8 70
 .pane.stick{top:var(--m137-top,96px)}
 .wk{scroll-margin-top:96px}
 .toast{z-index:1000}
-.band,.ibstrip{color:#111113!important;background:linear-gradient(180deg,#fff,#fbfbfc)!important;border:1px solid rgba(0,0,0,.06)!important;box-shadow:0 1px 2px rgba(0,0,0,.04),0 22px 44px -30px rgba(0,0,0,.24)!important}
+.band,.ibstrip{color:#111113!important;background:var(--card)!important;border:0!important;border-radius:24px!important;box-shadow:inset 0 0 0 1px #0000000a!important}
 .focus .k,.ibstrip .k{color:#5f5f67!important}
 .focus .k i,.ibstrip .k i{--kp:rgba(17,17,19,.16);background:#111113!important;box-shadow:0 0 0 3px var(--kp);animation:pulse145 2.4s ease-in-out infinite}
 @keyframes pulse145{50%{box-shadow:0 0 0 7px transparent}}
@@ -303,7 +303,7 @@ background:radial-gradient(120% 120% at 80% 0%,#2a7cff 0%,#0d4fd6 40%,#0a3aa8 70
 .focus p,.ibstrip span{color:#55555d!important}
 .band .wbtn,.band .lbtn{background:#111113!important;color:#fff!important}
 .band .gbtn{background:#fff!important;color:#111113!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)!important}
-.band .sbox{background:#f6f6f7!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)!important}
+.band .sbox{background:var(--soft)!important;box-shadow:none!important}
 .band .sbox span{color:#63636b!important}
 .band .flow:before{background:rgba(0,0,0,.1)!important}
 .band .fn{color:#111113!important}
@@ -313,22 +313,22 @@ background:radial-gradient(120% 120% at 80% 0%,#2a7cff 0%,#0d4fd6 40%,#0a3aa8 70
 .band .fn.hot.act .dot{background:var(--orange)!important;color:#111113!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--orange) 16%,transparent)!important}
 .band .fn.hot.wait .dot{background:var(--blue)!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--blue) 16%,transparent)!important}
 .band .fn[aria-pressed=true] .dot{background:#111113!important;color:#fff!important;box-shadow:0 0 0 5px rgba(17,17,19,.1)!important}
-.band .fn.hot[aria-pressed=true] .dot{box-shadow:0 0 0 2px #fff,0 0 0 4px #111113!important}
-.band .eq{background:#f6f6f7!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)!important}
+.band .fn.hot[aria-pressed=true] .dot{box-shadow:0 0 0 2px var(--card),0 0 0 4px #111113!important}
+.band .eq{background:var(--soft)!important;box-shadow:none!important}
 .band .eq small{color:#63636b!important}
-.band .eq i{color:#7a7a82!important}
+.band .eq i{color:#66666e!important}
 .ibstrip .pills button{background:#fff!important;color:#111113!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)!important}
 .ibstrip .pills button b{color:#6b6b73!important}
 .ibstrip .pills button[aria-pressed=true]{background:#111113!important;color:#fff!important;box-shadow:none!important}
 .ibstrip .pills button[aria-pressed=true] b{color:rgba(255,255,255,.72)!important}
-:host([data-theme=dark]) .band,:host([data-theme=dark]) .ibstrip{color:#fff!important;background:radial-gradient(130% 150% at 100% 0%,#26262b 0%,#141416 45%,#0c0c0d 100%)!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:none!important}
+:host([data-theme=dark]) .band,:host([data-theme=dark]) .ibstrip{color:#fff!important;background:var(--card)!important;border:0!important;box-shadow:none!important}
 :host([data-theme=dark]) .focus .k,:host([data-theme=dark]) .ibstrip .k{color:rgba(255,255,255,.7)!important}
 :host([data-theme=dark]) .focus .k i,:host([data-theme=dark]) .ibstrip .k i{--kp:rgba(255,255,255,.2);background:#fff!important}
 :host([data-theme=dark]) .focus h2{color:#fff!important}
 :host([data-theme=dark]) .focus p,:host([data-theme=dark]) .ibstrip span{color:rgba(255,255,255,.76)!important}
 :host([data-theme=dark]) .band .wbtn,:host([data-theme=dark]) .band .lbtn{background:#fff!important;color:#111113!important}
 :host([data-theme=dark]) .band .gbtn{background:rgba(255,255,255,.1)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)!important}
-:host([data-theme=dark]) .band .sbox{background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.04))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 0 1px rgba(255,255,255,.07)!important}
+:host([data-theme=dark]) .band .sbox{background:var(--soft)!important;box-shadow:none!important}
 :host([data-theme=dark]) .band .sbox span{color:rgba(255,255,255,.7)!important}
 :host([data-theme=dark]) .band .flow:before{background:rgba(255,255,255,.16)!important}
 :host([data-theme=dark]) .band .fn{color:#fff!important}
@@ -338,11 +338,11 @@ background:radial-gradient(120% 120% at 80% 0%,#2a7cff 0%,#0d4fd6 40%,#0a3aa8 70
 :host([data-theme=dark]) .band .fn.hot.act .dot{background:var(--orange)!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--orange) 22%,transparent)!important}
 :host([data-theme=dark]) .band .fn.hot.wait .dot{background:var(--blue)!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--blue) 22%,transparent)!important}
 :host([data-theme=dark]) .band .fn[aria-pressed=true] .dot{background:#fff!important;color:#111113!important;box-shadow:0 0 0 5px rgba(255,255,255,.14)!important}
-:host([data-theme=dark]) .band .fn.hot[aria-pressed=true] .dot{box-shadow:0 0 0 2px #141416,0 0 0 4px #fff!important}
-:host([data-theme=dark]) .band .eq{background:rgba(255,255,255,.07)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)!important}
+:host([data-theme=dark]) .band .fn.hot[aria-pressed=true] .dot{box-shadow:0 0 0 2px var(--card),0 0 0 4px #fff!important}
+:host([data-theme=dark]) .band .eq{background:var(--soft)!important;box-shadow:none!important}
 :host([data-theme=dark]) .band .eq small{color:rgba(255,255,255,.7)!important}
 :host([data-theme=dark]) .band .eq i{color:rgba(255,255,255,.55)!important}
-:host([data-theme=dark]) .ibstrip .pills button{background:rgba(255,255,255,.1)!important;color:#fff!important;box-shadow:none!important}
+:host([data-theme=dark]) .ibstrip .pills button{background:var(--soft)!important;color:#fff!important;box-shadow:none!important}
 :host([data-theme=dark]) .ibstrip .pills button b{color:rgba(255,255,255,.66)!important}
 :host([data-theme=dark]) .ibstrip .pills button[aria-pressed=true]{background:#fff!important;color:#111113!important}
 :host([data-theme=dark]) .ibstrip .pills button[aria-pressed=true] b{color:#55555d!important}`;

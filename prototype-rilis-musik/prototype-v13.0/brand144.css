@@ -43,6 +43,10 @@ html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.i
 html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .hero-insight122 .spot-btn134:is(:hover,:focus-visible){background:linear-gradient(#f5f5f7,#f5f5f7) padding-box,conic-gradient(from 200deg,#ff9f0a,#ff375f,#bf5af2,#5e5ce6,#40c8e0,#ff9f0a) border-box!important}
 html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .control-pill126.active{background:#f5f5f7!important}
 html:root[data-theme=dark] body #app .masthead124.masthead124.masthead124:not(.is-collapsed124):not(.img144) .control-pill126.active *{color:#000!important}
+/* sapaan di header bawaan: tanpa bayangan biru sisa header lama (bayangan hanya untuk header bergambar unggahan) */
+html:root body.release127 #app .masthead124:not(.img144) .hero-copy122 h1{text-shadow:none!important}
+html:root body.release127 #app .masthead124.img144 .hero-copy122 h1{text-shadow:0 1px 12px rgba(0,0,0,.35)!important}
+
 /* gambar unggahan: lapisan peneduh netral (dulu kebiruan) */
 html:root body #app .masthead124 .masthead-atmosphere127.has-image130{background-color:#000!important}
 html:root body #app .masthead124 .masthead-atmosphere127.has-image130::after{background:rgba(0,0,0,var(--image-shade130,.6))!important}
@@ -53,7 +57,8 @@ html:root body #app .masthead124 .masthead-atmosphere127.has-image130::after{bac
 html body .m137-host[data-theme=dark]{--bg:#0a0a0b!important;--text:#ededef!important;--muted:#8e8e94!important;--line:#ffffff14!important;--soft:#ffffff0d!important;--green:#3cc458!important;--blue:#5b9be0!important;--red:#e5577a!important;--tint:55%!important}
 
 /* ---------- pita halaman Pekerjaan & Manajemen Label: terang = kartu putih, gelap = hitam; titik ikut Kamus Penanda ---------- */
-html:root body #app .band135{color:#111113!important;background:linear-gradient(180deg,#fff,#fbfbfc)!important;border:1px solid rgba(0,0,0,.06)!important;box-shadow:0 1px 2px rgba(0,0,0,.04),0 22px 44px -30px rgba(0,0,0,.24)!important}
+/* dev.46 — pita = kartu biasa (sama dengan .d134-card): warna permukaan, sudut 22px, garis 6% teks, tanpa bayangan/gradasi */
+html:root body #app .band135{color:#111113!important;background:var(--surface)!important;border:0!important;border-radius:22px!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 6%,transparent)!important}
 html:root body #app .band135 .k135{color:#5f5f67!important}
 html:root body #app .band135 .k135 i{--kp:rgba(17,17,19,.16);background:#111113!important;box-shadow:0 0 0 3px var(--kp)!important;animation:pulse145 2.4s ease-in-out infinite!important}
 @keyframes pulse145{50%{box-shadow:0 0 0 7px transparent}}
@@ -62,7 +67,7 @@ html:root body #app .band135 .focus135 h2{color:#111113!important}
 html:root body #app .band135 .focus135 p{color:#55555d!important}
 html:root body #app .band135 .wbtn135{background:#111113!important;color:#fff!important}
 html:root body #app .band135 .gbtn135{background:#fff!important;color:#111113!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)!important}
-html:root body #app .band135 .stat135>div{background:#f6f6f7!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)!important}
+html:root body #app .band135 .stat135>div{background:color-mix(in srgb,var(--text) 5%,transparent)!important;box-shadow:none!important}
 html:root body #app .band135 .stat135 span{color:#63636b!important}
 html:root body #app .band135 .flow135::before{background:rgba(0,0,0,.1)!important}
 html:root body #app .band135 .fn135{color:#111113!important}
@@ -71,15 +76,15 @@ html:root body #app .band135 .dot135{background:#fff!important;color:#111113!imp
 html:root body #app .band135 .fn135.hot .dot135{background:var(--r134,#c83255)!important;color:#fff!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--r134,#c83255) 16%,transparent)!important}
 html:root body #app .band135 .fn135.hot.act .dot135{background:var(--o134,#cc6419)!important;color:#111113!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--o134,#cc6419) 16%,transparent)!important}
 html:root body #app .band135 .fn135[aria-pressed=true] .dot135{background:#111113!important;color:#fff!important;box-shadow:0 0 0 5px rgba(17,17,19,.1)!important}
-html:root body #app .band135 .fn135.hot[aria-pressed=true] .dot135{box-shadow:0 0 0 2px #fff,0 0 0 4px #111113!important}
-html:root[data-theme=dark] body #app .band135{color:#fff!important;background:radial-gradient(130% 150% at 100% 0%,#26262b 0%,#141416 45%,#0c0c0d 100%)!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:none!important}
+html:root body #app .band135 .fn135.hot[aria-pressed=true] .dot135{box-shadow:0 0 0 2px var(--surface),0 0 0 4px #111113!important}
+html:root[data-theme=dark] body #app .band135{color:#fff!important;background:var(--surface)!important;border:0!important;box-shadow:none!important}
 html:root[data-theme=dark] body #app .band135 .k135{color:rgba(255,255,255,.7)!important}
 html:root[data-theme=dark] body #app .band135 .k135 i{--kp:rgba(255,255,255,.2);background:#fff!important}
 html:root[data-theme=dark] body #app .band135 .focus135 h2{color:#fff!important}
 html:root[data-theme=dark] body #app .band135 .focus135 p{color:rgba(255,255,255,.76)!important}
 html:root[data-theme=dark] body #app .band135 .wbtn135{background:#fff!important;color:#111113!important}
 html:root[data-theme=dark] body #app .band135 .gbtn135{background:rgba(255,255,255,.1)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)!important}
-html:root[data-theme=dark] body #app .band135 .stat135>div{background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.04))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 0 1px rgba(255,255,255,.07)!important}
+html:root[data-theme=dark] body #app .band135 .stat135>div{background:color-mix(in srgb,var(--text) 5%,transparent)!important;box-shadow:none!important}
 html:root[data-theme=dark] body #app .band135 .stat135 span{color:rgba(255,255,255,.7)!important}
 html:root[data-theme=dark] body #app .band135 .flow135::before{background:rgba(255,255,255,.16)!important}
 html:root[data-theme=dark] body #app .band135 .fn135{color:#fff!important}
@@ -88,7 +93,7 @@ html:root[data-theme=dark] body #app .band135 .dot135{background:#1c1c1f!importa
 html:root[data-theme=dark] body #app .band135 .fn135.hot .dot135{background:var(--r134,#e5577a)!important;color:#111113!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--r134,#e5577a) 22%,transparent)!important}
 html:root[data-theme=dark] body #app .band135 .fn135.hot.act .dot135{background:var(--o134,#e88a3c)!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--o134,#e88a3c) 22%,transparent)!important}
 html:root[data-theme=dark] body #app .band135 .fn135[aria-pressed=true] .dot135{background:#fff!important;color:#111113!important;box-shadow:0 0 0 5px rgba(255,255,255,.14)!important}
-html:root[data-theme=dark] body #app .band135 .fn135.hot[aria-pressed=true] .dot135{box-shadow:0 0 0 2px #141416,0 0 0 4px #fff!important}
+html:root[data-theme=dark] body #app .band135 .fn135.hot[aria-pressed=true] .dot135{box-shadow:0 0 0 2px var(--surface),0 0 0 4px #fff!important}
 
 /* ---------- sambutan label: logo kaca menggantikan ✦ / teks RM ---------- */
 .welcome105 .welcome-spark105.glass144,.welcome105 .welcome-symbol105{display:block!important;width:84px!important;height:84px!important;margin:0 auto 10px!important;font-size:0!important;color:transparent!important;background:url(brand144-light.webp) center/contain no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;position:relative}
