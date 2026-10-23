@@ -1,5 +1,55 @@
 [
   {
+    "version": "1.1.0-dev.48",
+    "date": "2026-10-23",
+    "summary": {
+      "id": "Studio Pratinjau baru: masuk sebagai siapa saja, lompat ke langkah mana pun per menu, atur waktu, dan lewati formulir.",
+      "en": "New Preview Studio: sign in as anyone, jump to any step per menu, set the time, and skip forms."
+    },
+    "entries": [
+      {
+        "id": "dev48-studio",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Studio Pratinjau",
+            "en": "Preview Studio"
+          }
+        },
+        "title": {
+          "id": "Studio Pratinjau v2",
+          "en": "Preview Studio v2"
+        },
+        "detail": {
+          "id": "Satu panel (tombol Studio di pil bawah atau tekan ): Masuk sebagai — Jeck, Eka, Cantika, dan satu label per paket (Basic, Studio, Pro, Business, paket lama) plus keadaan label (calon, baru aktif, aktif, paket berakhir, kontrak diakhiri); Alur & langkah — 10 menu, 74 langkah, klik peran di tiap langkah untuk langsung melihatnya sebagai orang itu dengan data contoh lengkap; Jalani alur — pil berubah jadi penunjuk langkah ◀ ▶ dan peran berganti otomatis; Waktu — lompat ke tanggal 3/14/17/21, Jumat 12.55, malam, atau +1 jam/+1/+3 hari kerja; Jalan pintas — tombol “Lewati” ke langkah berikutnya tanpa mengisi formulir; Data — pulihkan, mulai ulang, simpan titik; Arsip — daftar lama per versi tetap ada. Pil bawah kini menampilkan siapa dan kapan.",
+          "en": "One panel (Studio button in the bottom pill or press ): sign in as Jeck, Eka, Cantika or one label per plan plus label states; jump to any of 74 steps across 10 menus as any role with complete sample data; walk a flow with ◀ ▶ and automatic role switching; set the time; “Skip” to the next step without filling forms; restore, restart and save checkpoints; the old per-version list stays in the Archive."
+        }
+      },
+      {
+        "id": "dev48-fixes",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "dashboard",
+          "menu": {
+            "id": "Dashboard",
+            "en": "Dashboard"
+          }
+        },
+        "title": {
+          "id": "Perbaikan: Eka & dashboard label Studio/Business",
+          "en": "Fixes: Eka & Studio/Business label dashboard"
+        },
+        "detail": {
+          "id": "Memilih Eka di Studio dulu tetap masuk sebagai Jeck — kini benar Eka. Dashboard label paket Studio/Business berhenti tampil karena mencari bagian halaman lama (.pagehead); label paket lama juga bisa gagal saat pemeriksaan lokasi tanpa data label. Keduanya sudah aman.",
+          "en": "Choosing Eka used to sign in as Jeck — now it is Eka. The Studio/Business label dashboard stopped rendering because it looked for an old page section; legacy labels could also fail in the location check. Both are fixed."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.47",
     "date": "2026-10-23",
     "summary": {
