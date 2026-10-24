@@ -330,6 +330,36 @@ class LabelTransferHttpTests(unittest.TestCase):
         self.assertEqual(response.status_code, 400, response.text)
         self.assertIn("Believe", response.json()["detail"])
 
+    def test_admin_request_is_created_and_returned(self):
+        asyncio.run(self.db.labels.insert_many([
+            {"id": "ghost", "user_id": None, "label_name": "Pel Fendo"},
+            {"id": "elv", "user_id": "elv-owner", "label_name": "ELVNONE"},
+        ]))
+        asyncio.run(self.db.releases.insert_one({"id": "r1", "label_id": "ghost", "release_title": "Satu"}))
+        payload = {"mode": "releases", "source_label_id": "ghost", "target_label_id": "elv", "release_ids": ["r1"],
+                   "cross_account_same_owner": True, "reference": "UPC 3617667739357", "reason": "Pindah di Believe",
+                   "believe_confirmed": True}
+        with patch.object(service, "db", self.db), patch.object(service, "db_bg", self.db), patch.object(deps, "db", self.db):
+            response = self.client.post("/api/admin/label-transfers", json=payload)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()["status"], "pending")
+        self.assertNotIn("_id", response.json())
+        self.assertEqual(asyncio.run(self.db.label_transfers.count_documents({})), 1)
+
+    def test_label_request_is_created_and_returned(self):
+        asyncio.run(self.db.labels.insert_many([
+            {"id": "pel", "user_id": "owner", "label_name": "Pelpendo"},
+            {"id": "elf", "user_id": "owner", "label_name": "Elfnon"},
+        ]))
+        self.user = OWNER
+        with patch.object(service, "db", self.db), patch.object(service, "db_bg", self.db), patch.object(deps, "db", self.db), \
+                patch.object(royalty_adjustment_balance, "db_bg", self.db), \
+                patch("routes.kyc_service.ensure_label_kyc", new_callable=AsyncMock):
+            response = self.client.post("/api/label/transfers", json={
+                "mode": "merge", "source_label_id": "pel", "target_label_id": "elf", "reason": "Pindah di Believe"})
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()["status"], "pending")
+
     def test_admin_without_manage_cannot_create(self):
         self.user = {**SUPPORT, "permissions": ["labels.view"]}
         response = self.client.post("/api/admin/label-transfers", json={
