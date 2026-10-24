@@ -86,6 +86,26 @@
           "id": "Slip terakhir dengan gaji tetap, tunjangan, bonus penjualan, dan Bonus Apresiasi beserta status Dibayar/Belum dibayar, kartu rekening gaji (contoh, memakai desain kartu bank), riwayat slip, dan Unduh slip. Tab Tim: total dan yang belum dibayar per bulan, Bayar bonus penjualan sekaligus, Lihat slip per anggota, dan Bonus Apresiasi.",
           "en": "Latest payslip with base salary, allowance, sales bonus and Appreciation Bonus with Paid/Unpaid status, a salary account card (sample, using the bank card design), payslip history and Download. Team tab: monthly total and unpaid amount, pay all sales bonuses at once, View payslip per member, and Appreciation Bonus."
         }
+      },
+      {
+        "id": "dev52-access",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "access",
+          "menu": {
+            "id": "Anggota & Akses",
+            "en": "Members & Access"
+          }
+        },
+        "title": {
+          "id": "Kinerja hanya di Beranda Staf",
+          "en": "Performance only in Staff Home"
+        },
+        "detail": {
+          "id": "Anggota & Akses kini khusus urusan akses: peran, izin, pekerjaan aktif, kehadiran hari ini, riwayat akses, dan akun. Blok “Kinerja” (lingkaran % tepat waktu) dan kotak “% tepat waktu · staf” dihapus supaya tidak ada dua angka kinerja yang berbeda. Di Beranda Staf, tombol Rincian pada tabel kinerja menampilkan rincian KPI orang itu (empat ukuran, bobot, alasan, dan tren) langsung di bawah tabel.",
+          "en": "Members & Access is now only about access: role, permissions, active work, today’s attendance, access history and account. The “Performance” block (on-time % ring) and the “% on time · staff” box are removed so there are never two different performance numbers. In Staff Home, Details in the performance table shows that person’s KPI breakdown (four measures, weights, reasons and trend) right below the table."
+        }
       }
     ]
   },
