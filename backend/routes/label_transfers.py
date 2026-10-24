@@ -64,6 +64,7 @@ async def label_create_transfer(body: LabelTransferIn, user: dict = Depends(requ
     await build_plan(doc)  # refuse now what could never be applied
     doc["believe_confirmed"] = False  # only an admin can confirm the Believe side
     await db.label_transfers.insert_one(doc)
+    doc.pop("_id", None)  # insert_one adds Mongo's ObjectId, which JSON cannot encode
     await log_activity(user["id"], "label_transfer_request", "label", doc["source_label_id"], after={"transfer_id": doc["id"], "summary": summarize(doc)})
     await notify_submitted(doc)
     return serialize(doc)
@@ -131,6 +132,7 @@ async def admin_create_transfer(body: LabelTransferIn, user: dict = Depends(requ
         doc.update({"status": "approved", "decided_by": user["id"], "decided_by_name": doc["requested_by_name"],
                     "decided_at": now_iso(), "decision_note": "Diterapkan langsung"})
     await db.label_transfers.insert_one(doc)
+    doc.pop("_id", None)  # insert_one adds Mongo's ObjectId, which JSON cannot encode
     await log_activity(user["id"], "label_transfer_request", "label", doc["source_label_id"], after={"transfer_id": doc["id"], "summary": summarize(doc), "direct": direct})
     if direct:
         return await apply_transfer(doc["id"], user)
