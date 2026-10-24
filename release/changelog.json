@@ -1,5 +1,75 @@
 [
   {
+    "version": "1.1.0-dev.54",
+    "date": "2026-10-24",
+    "summary": {
+      "id": "Aturan KPI bisa diubah, rekening gaji dengan konfirmasi, dan gerak yang mengikuti data di Mode Staf.",
+      "en": "Editable KPI rules, salary accounts with confirmation, and data-led motion in Staff mode."
+    },
+    "entries": [
+      {
+        "id": "dev54-kpirules",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "standards9",
+          "menu": {
+            "id": "Standar & Penanda",
+            "en": "Standards & Indicators"
+          }
+        },
+        "title": {
+          "id": "Aturan KPI",
+          "en": "KPI rules"
+        },
+        "detail": {
+          "id": "Tab baru Aturan KPI di Standar & Penanda. Super Admin bisa mengubah bobot keempat ukuran (jumlahnya harus 100%), target jumlah selesai Staf, dan batas nilai Sangat baik/Baik. Perubahan diterbitkan sebagai versi baru yang berlaku mulai bulan berikutnya; nilai bulan yang sudah lewat tidak dihitung ulang. Riwayat versi tercatat lengkap. Cara menghitung di Beranda Staf menunjukkan versi yang dipakai dan punya tombol Ubah di Aturan KPI.",
+          "en": "A new KPI rules tab in Standards & Indicators. Super Admins can change the weights of the four measures (they must total 100%), the Staff completion target, and the Very good/Good thresholds. Changes are published as a new version that applies from the next month; past months are not recalculated. Version history is kept. How it is scored in Staff Home shows the version in use and has Edit in KPI rules."
+        }
+      },
+      {
+        "id": "dev54-bank",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "compensation",
+          "menu": {
+            "id": "Gaji",
+            "en": "Pay"
+          }
+        },
+        "title": {
+          "id": "Rekening gaji dengan konfirmasi",
+          "en": "Salary accounts with confirmation"
+        },
+        "detail": {
+          "id": "Rekening gaji kini tersimpan sebagai data. Di Gaji › Saya ada tombol Ubah rekening (pilih bank, nomor, atas nama). Pengajuan Staf dikonfirmasi Super Admin; pengajuan Super Admin dikonfirmasi Super Admin lain. Pengajuan muncul di Perlu keputusanmu (Setujui/Tolak), pemohon mendapat notifikasi, dan kartu rekening memakai desain bank yang sesuai. Nomor awal adalah contoh prototipe.",
+          "en": "Salary accounts are now stored as data. Pay › Me has Change account (bank, number, holder). Staff requests are confirmed by a Super Admin; a Super Admin’s request by the other Super Admin. Requests appear in Needs your decision (Approve/Decline), the requester is notified, and the card uses the matching bank design. Starting numbers are prototype samples."
+        }
+      },
+      {
+        "id": "dev54-motion",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "overview",
+          "menu": {
+            "id": "Mode Staf & angka ringkasan",
+            "en": "Staff mode & summary numbers"
+          }
+        },
+        "title": {
+          "id": "Gerak yang mengikuti data",
+          "en": "Motion that follows the data"
+        },
+        "detail": {
+          "id": "Mode Staf kini bergerak saat tampilannya berganti (pindah menu, tab, atau orang di pita tim), tidak setiap layar diperbarui: kartu muncul berurutan, nilai KPI dan total gaji menghitung naik, batang ukuran tumbuh ke nilainya, batang tren naik, foto pita tim muncul lalu angkanya, kalender muncul per minggu, dan baris keputusan bergeser keluar setelah diputuskan. Angka di kotak ringkas setiap menu dan kartu uang Dashboard juga menghitung naik saat menu dibuka. Semua gerak mati bila perangkat meminta gerak dikurangi.",
+          "en": "Staff mode now moves when its view changes (switching menu, tab or a person in the team strip), not on every refresh: cards rise in order, KPI scores and pay totals count up, measure bars grow to their value, trend bars rise, team strip photos appear then their numbers, the calendar appears week by week, and decision rows slide out once decided. Summary box numbers on every menu and Dashboard money cards also count up when a menu opens. All motion is off when the device asks for reduced motion."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.53",
     "date": "2026-10-24",
     "summary": {
