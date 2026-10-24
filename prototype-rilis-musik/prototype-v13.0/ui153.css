@@ -1,0 +1,41 @@
+/* v1.1.0-dev.53 — penanda lebih tenang (owner 24 Okt: "pil kaca jadi warna-warni, jelek"; ikon label flat; tanpa bayangan ikon profil).
+   Aturan: status di daftar, kartu ringkas, dan tabel = TEKS, bukan pil. Hanya terlambat/bermasalah yang berwarna (merah);
+   perlu tindakan = teks tebal warna biasa; selain itu teks abu. Pil kaca tersisa hanya di judul rincian satu item (tanpa titik,
+   kecuali merah). Tahapan satu warna (tinta), tanpa denyut. Ikon inisial flat abu, tanpa gradasi & bayangan.
+   Halaman Shadow DOM mendapat aturan yang sama dari ui153.js. */
+:root{--txs153:#c83255}:root[data-theme=dark]{--txs153:#e5577a}
+/* ---------- status111 → teks ---------- */
+html:root:root :is(#x153,body) .status111.status111.status111.status111[data-tone]{display:inline!important;height:auto!important;min-height:0!important;padding:0!important;gap:0!important;margin:0;background:none!important;box-shadow:none!important;border:0!important;outline:0!important;border-radius:0!important;color:var(--muted)!important;font-size:12.5px!important;font-weight:400!important;line-height:inherit!important;letter-spacing:0!important;animation:none!important;vertical-align:baseline}
+html:root:root :is(#x153,body) .status111.status111.status111.status111[data-tone]::before,html:root:root :is(#x153,body) .status111.status111.status111.status111[data-tone]::after{display:none!important}
+html:root:root :is(#x153,body) .status111.status111.status111.status111[data-tone=red]{color:var(--txs153)!important;font-weight:500!important}
+html:root:root :is(#x153,body) .status111.status111.status111.status111[data-tone=mustard]{color:var(--text)!important;font-weight:500!important}
+/* judul rincian satu item: tetap satu pil kaca, tanpa titik kecuali merah */
+html:root:root :is(#x153,body) .meta135 .status111.status111.status111.status111[data-tone]{display:inline-flex!important;align-items:center;gap:5px!important;height:22px!important;padding:0 9px!important;margin:0;border-radius:999px!important;font-size:11.5px!important;font-weight:400!important;color:var(--kp-tx)!important;
+ background:linear-gradient(180deg,var(--kp-t) 0%,transparent 26%,transparent 62%,var(--kp-b) 100%),linear-gradient(90deg,var(--kp-0) 0%,var(--kp-1) 13%,var(--kp-2) 35%,var(--kp-3) 62%,var(--kp-2) 88%,var(--kp-1) 100%)!important;
+ box-shadow:inset 0 1px 0 var(--kp-rt),inset 0 -1.5px 0 var(--kp-rb),0 0 0 .5px var(--kp-ol),var(--kp-sh)!important}
+html:root:root :is(#x153,body) .meta135 .status111.status111.status111.status111[data-tone=red]::before{content:""!important;display:block!important;width:5px!important;height:5px!important;min-width:5px!important;border-radius:50%!important;background:var(--txs153)!important;position:static!important}
+/* titik kelompok daftar */
+html:root body #app .gh135 i{display:none}
+/* ---------- tahapan (Pekerjaan, rincian label): satu warna, tanpa denyut ---------- */
+html:root:root :is(#x153,body) .steps135::before,html:root:root :is(#x153,body) .prog135{top:10px!important}
+html:root:root :is(#x153,body) .prog135{background:var(--text)!important}
+html:root:root :is(#x153,body) .b135{width:22px!important;height:22px!important;box-shadow:inset 0 0 0 1.5px var(--line)!important;background:var(--surface)!important}
+html:root:root :is(#x153,body) .st135.done .b135{background:var(--text)!important;color:var(--surface)!important;box-shadow:none!important}
+html:root:root :is(#x153,body) .st135.now .b135{box-shadow:inset 0 0 0 2px var(--text)!important}
+html:root:root :is(#x153,body) .st135.now .b135::after{background:var(--text)!important}
+html:root:root :is(#x153,body) .st135.wait .b135{box-shadow:inset 0 0 0 2px var(--muted)!important}
+html:root:root :is(#x153,body) .st135.wait .b135::after{background:var(--muted)!important}
+html:root:root :is(#x153,body) .st135 .b135::before{display:none!important;animation:none!important}
+html:root:root :is(#x153,body) .st135.now>span:last-child{font-weight:500}
+html:root:root :is(#x153,body) .checks136 .ok b{background:color-mix(in srgb,var(--text) 10%,transparent)!important;color:var(--text)!important}
+/* ---------- ikon inisial: flat, tanpa gradasi & bayangan ---------- */
+html:root:root :is(#x153,body) .lav136{background:color-mix(in srgb,var(--text) 9%,var(--surface))!important;color:var(--text)!important;box-shadow:none!important;font-weight:500}
+html:root:root :is(#x153,body) .cover135{box-shadow:none!important}
+/* ---------- Manajemen Label: baris & kotak perhatian ikut aturan yang sama ---------- */
+html:root body #app .why136{color:var(--text);font-weight:500}
+html:root body #app .why136.r{color:var(--txs153)}
+html:root body #app .attn136>div{background:color-mix(in srgb,var(--text) 5%,transparent)}
+html:root body #app .attn136>div i{display:none}
+html:root body #app .attn136>div.r{background:color-mix(in srgb,var(--txs153) 8%,transparent)}
+html:root body #app .attn136>div.r i{display:block;background:var(--txs153)}
+html:root:root[data-theme] body #app .band135 .fn135.hot.act .dot135,html:root:root:not([data-theme]) body #app .band135 .fn135.hot.act .dot135{background:var(--text)!important;color:var(--surface)!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--text) 12%,transparent)!important}

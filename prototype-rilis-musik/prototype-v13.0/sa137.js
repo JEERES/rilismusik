@@ -187,7 +187,7 @@ button.cell:hover{box-shadow:inset 0 0 0 1.5px var(--text)}
 .lockl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.lockl>div{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--soft);font-size:13.5px}.lockl svg{width:15px;height:15px;color:var(--blue);flex:none}.lockl span{display:grid;gap:2px}.lockl small{color:var(--muted);font-size:12px}
 .opts button[disabled]{opacity:.45;cursor:not-allowed}
 @media (max-width:820px){.shell.noside{padding:14px 16px 70px!important}.kpi{grid-template-columns:1fr}.mxh{display:none}.mxr{grid-template-columns:1fr 1fr 1fr}.mxr .mxn{grid-column:1/-1}.mxd,.lockl{grid-template-columns:1fr}}`;const HTML=`<main><div class="ph rl"><span class="nb">1</span>
-  <div><h1>Staff &amp; Akses</h1><div class="sub">Siapa di tim, apa yang sedang dikerjakan, dan apa yang boleh dilakukan — satu tempat untuk orang dan izinnya.</div></div>
+  <div><h1>Anggota &amp; Akses</h1><div class="sub">Siapa di tim, apa yang sedang dikerjakan, dan apa yang boleh dilakukan — satu tempat untuk orang dan izinnya.</div></div>
  </div>
  <div class="tabsx" id="tabs"></div>
  <section class="band rv rl" id="band"><span class="nb">2</span></section>
@@ -232,7 +232,7 @@ const wide=()=>innerWidth>1240;
 const store=()=>{ten.staff137??={reviewed:{},hist:[]};return ten.staff137;};
 /* menu baru → kelompok izin Staff114; keputusan khusus Super Admin dikunci (ditegakkan di model masing-masing) */
 const ROWS=[['releases',['Rilisan','Releases'],['releases'],{on:['releases.approve'],label:['Setujui hasil pemeriksaan','Approve review results']}],['labels',['Manajemen Label','Label Management'],['labels','claims'],{sa:['Setujui klaim, rekening & tarif','Approve claims, bank accounts & rates']}],['tickets',['Tiket Bantuan','Support Tickets'],['tickets'],{sa:['Peninjauan eskalasi','Escalation review']}],['services',['Layanan Tambahan (+ WAMI)','Add-on Services (+ WAMI)'],['services','wami'],{sa:['Penyelesaian & pengembalian','Resolution & refunds']}],['transactions',['Transaksi','Transactions'],['transactions'],{sa:['Setujui pengembalian','Approve refunds']}],['royalty',['Royalti','Royalties'],['royalty'],{sa:['Terbitkan laporan, sesuaikan saldo','Publish reports, adjust balances']}],['withdraw',['Penarikan','Withdrawals'],['withdraw'],{sa:['Mulai transfer & tandai dibayar','Start transfers & mark paid']}],['team',['Ringkasan Tim','Team Summary'],['team'],{sa:'—'}]];
-const SAONLY=[['Kontrak Label','Label Contracts'],['Pemantauan Keuangan','Financial Monitoring'],['Staff & Akses','Staff & Access'],['Pengaturan Platform','Platform Settings'],['Pembaruan (terbitkan)','Updates (publish)']];
+const SAONLY=[['Kontrak Label','Label Contracts'],['Pemantauan Keuangan','Financial Monitoring'],['Anggota & Akses','Members & Access'],['Pengaturan Platform','Platform Settings'],['Pembaruan (terbitkan)','Updates (publish)']];
 const isSens=id=>/\.(bank|export)$/.test(id);
 const SENS=[['bank',['Lihat rekening lengkap','View full bank account'],['Nomor rekening penuh; di tempat lain ditampilkan ••••1234.','Full account number; shown as ••••1234 elsewhere.']],['export',['Ekspor data','Export data'],['Mengunduh data identitas, transaksi, atau royalti label.','Downloads label identity, transaction, or royalty data.']]];
 const CAT=()=>Staff114.catalog;
@@ -379,7 +379,7 @@ function bind(){
  root.querySelectorAll('.rv').forEach(el=>io?io.observe(el):el.classList.add('in'));}
 const sig=()=>{const s=M();return s.revision+':'+s.users.map(u=>u.id+u.status+u.version).join(',')+':'+s.roles.map(r=>r.id+r.version).join(',')+':'+JOBS.length+JOBS.map(j=>j.handler).join('')+':'+JSON.stringify(store().reviewed)+':'+U.today()+state.user+state.lang;};
 const DEF={id:'staff',css:STYLE,html:HTML,
- i18n:{'Staff & Akses':'Staff & Access','Siapa di tim, apa yang sedang dikerjakan, dan apa yang boleh dilakukan — satu tempat untuk orang dan izinnya.':'Who is on the team, what they are working on, and what they may do — one place for people and their permissions.'},
+ i18n:{'Anggota & Akses':'Members & Access','Staff & Akses':'Staff & Access','Siapa di tim, apa yang sedang dikerjakan, dan apa yang boleh dilakukan — satu tempat untuk orang dan izinnya.':'Who is on the team, what they are working on, and what they may do — one place for people and their permissions.'},
  when:()=>!isLabel10()&&state.page==='access'&&(()=>{try{return super114();}catch(err){return false;}})(),
  init(r){root=r;bind();},
  draw(){if(window.saRole137){const id=window.saRole137;window.saRole137=null;S.tab='roles';S.sel.roles=id;S.read=true;S.form=null;S.draft=null;lastSig='';}load();const s=sig();if(s===lastSig&&root.querySelector('#band .top'))return;lastSig=s;paint();}};

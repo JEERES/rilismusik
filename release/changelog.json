@@ -1,5 +1,175 @@
 [
   {
+    "version": "1.1.0-dev.53",
+    "date": "2026-10-24",
+    "summary": {
+      "id": "Penanda lebih tenang: status jadi teks, tahapan satu warna, ikon label flat tanpa bayangan; Standar & Penanda dan WAMI untuk label dirapikan.",
+      "en": "Calmer indicators: statuses as text, single-colour stages, flat label icons without shadows; Standards & Indicators and WAMI tidied for labels."
+    },
+    "entries": [
+      {
+        "id": "dev53-indicators",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Semua menu",
+            "en": "All menus"
+          }
+        },
+        "title": {
+          "id": "Status sebagai teks, hanya merah yang berwarna",
+          "en": "Statuses as text, only red is coloured"
+        },
+        "detail": {
+          "id": "Di daftar, kartu ringkas, dan tabel, status tidak lagi berupa pil kaca berwarna. Status kini teks biasa: terlambat atau bermasalah berwarna merah, yang perlu tindakan ditulis tebal, sisanya abu. Pil kaca hanya tersisa di judul rincian satu item, tanpa titik kecuali merah. Kondisi menu di Dashboard tanpa titik warna: kalimat menu yang bermasalah berwarna merah, yang perlu tindakan ditulis tebal. Titik kelompok daftar dihapus; titik belum dibaca jadi netral.",
+          "en": "In lists, summary cards and tables, statuses are no longer coloured glass pills. They are plain text: late or problem in red, needs action in bold, the rest grey. The glass pill stays only in the header of a single item’s details, with no dot unless red. Menu status on the Dashboard has no coloured dots: a menu with problems shows its sentence in red, one needing action in bold. List group dots are removed; unread dots are neutral."
+        }
+      },
+      {
+        "id": "dev53-stages",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Royalti, Penarikan, Pekerjaan, dll.",
+            "en": "Royalties, Withdrawals, Work, etc."
+          }
+        },
+        "title": {
+          "id": "Tahapan dan pemeriksaan satu warna",
+          "en": "Single-colour stages and checks"
+        },
+        "detail": {
+          "id": "Tahapan memakai satu warna tinta: tahap selesai berisi centang, tahap berjalan berupa cincin dengan titik, tanpa cahaya biru berdenyut dan garis hijau. Centang Pemeriksaan otomatis jadi lingkaran lembut; yang gagal tetap merah.",
+          "en": "Stages use one ink colour: done stages hold a check, the current one is a ring with a dot, without the pulsing blue glow and green line. Automatic check marks become soft circles; failures stay red."
+        }
+      },
+      {
+        "id": "dev53-avatars",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "labels9",
+          "menu": {
+            "id": "Manajemen Label & menu lain",
+            "en": "Label Management & other menus"
+          }
+        },
+        "title": {
+          "id": "Ikon inisial flat tanpa bayangan",
+          "en": "Flat initial icons without shadows"
+        },
+        "detail": {
+          "id": "Ikon label dan anggota yang belum punya foto kini flat abu dengan inisial, tanpa gradasi warna-warni dan tanpa bayangan (terutama terasa di mode terang). Bayangan sampul rilisan besar juga dihapus. Baris label dan kotak Perlu perhatian di Manajemen Label ikut aturan warna baru.",
+          "en": "Label and member icons without a photo are now flat grey with initials, no colourful gradients and no shadows (most noticeable in light mode). Large release cover shadows are removed too. Label rows and Needs attention boxes in Label Management follow the new colour rule."
+        }
+      },
+      {
+        "id": "dev53-kpi",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "overview",
+          "menu": {
+            "id": "Beranda Staf",
+            "en": "Staff Home"
+          }
+        },
+        "title": {
+          "id": "Baris nilai KPI lebih jelas",
+          "en": "Clearer KPI score row"
+        },
+        "detail": {
+          "id": "Di kartu KPI, kategori (mis. Sangat baik) dan perubahan dari bulan lalu (▲ 4 dari Juli) tampil sebagai teks, bukan pil. Tren berupa batang tipis dengan angka tiap bulan.",
+          "en": "On the KPI card, the band (e.g. Very good) and change from last month (▲ 4 from July) show as text, not pills. The trend uses thin bars with each month’s score."
+        }
+      },
+      {
+        "id": "dev53-label-std",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "module",
+          "menu": {
+            "id": "Standar & Penanda (label)",
+            "en": "Standards & Indicators (label)"
+          }
+        },
+        "title": {
+          "id": "Standar & Penanda versi label",
+          "en": "Label version of Standards & Indicators"
+        },
+        "detail": {
+          "id": "Label kini membaca halaman Standar & Penanda yang baru dengan tiga tab: Kamus status, Syarat lencana, dan Standar layanan. Catatan desain internal dari halaman lama tidak lagi terlihat, begitu juga hitungan data semua label, aturan waktu internal, riwayat perubahan, nama label lain, dan draf staf.",
+          "en": "Labels now read the new Standards & Indicators page with three tabs: Status dictionary, Badge requirements and Service standards. Internal design notes from the old page are no longer visible, nor are counts across all labels, internal time rules, change history, other labels’ names or staff drafts."
+        }
+      },
+      {
+        "id": "dev53-wami",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "module",
+          "menu": {
+            "id": "Layanan Tambahan (label)",
+            "en": "Add-on Services (label)"
+          }
+        },
+        "title": {
+          "id": "Registrasi WAMI pindah ke Layanan Tambahan",
+          "en": "WAMI Registration moves into Add-on Services"
+        },
+        "detail": {
+          "id": "Menu Registrasi WAMI di sidebar label dihapus. Layanan Tambahan label kini punya tab Registrasi WAMI yang membuka halaman pengajuan yang sama; sidebar menyorot Layanan Tambahan.",
+          "en": "The WAMI Registration sidebar item is removed for labels. Add-on Services for labels now has a WAMI Registration tab that opens the same submission page; the sidebar highlights Add-on Services."
+        }
+      },
+      {
+        "id": "dev53-errors",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Semua menu (EN)",
+            "en": "All menus (EN)"
+          }
+        },
+        "title": {
+          "id": "Pesan galat dalam bahasa Inggris",
+          "en": "Error messages in English"
+        },
+        "detail": {
+          "id": "Saat aplikasi memakai bahasa Inggris, pesan galat dari sistem (360 kalimat) kini tampil dalam bahasa Inggris di notifikasi singkat dan formulir.",
+          "en": "When the app is in English, system error messages (360 sentences) now show in English in toasts and forms."
+        }
+      },
+      {
+        "id": "dev53-paydue",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "mywork9",
+          "menu": {
+            "id": "Pekerjaan",
+            "en": "Work"
+          }
+        },
+        "title": {
+          "id": "Batas bayar penarikan dari data asli",
+          "en": "Withdrawal pay-by date from real data"
+        },
+        "detail": {
+          "id": "Rincian penarikan di Pekerjaan memakai batas bayar dari siklus penarikannya (tanggal 20), bukan tanggal contoh, dan penarikan masuk kelompok waktu yang benar. Nama Staff & Akses di judul halaman dan Dashboard menjadi Anggota & Akses.",
+          "en": "Withdrawal details in Work use the pay-by date from the withdrawal’s cycle (the 20th) instead of a sample date, and withdrawals fall into the right time group. Staff & Access in the page title and Dashboard is renamed Members & Access."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.52",
     "date": "2026-10-24",
     "summary": {

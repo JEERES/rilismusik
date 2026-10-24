@@ -17,6 +17,8 @@ const role135=id=>TEAM134.owners.includes(id)?'Super Admin':T('Staf','Staff');
 const days135=(a,b)=>Math.round((Date.parse(b+'T00:00:00Z')-Date.parse(a+'T00:00:00Z'))/864e5);
 const fdate135=d=>{if(!d)return '';const [y,m,dd]=String(d).slice(0,10).split('-');return `${+dd} ${MONS134[(+m||1)-1]}${y&&y!==String(day()).slice(0,4)?' '+y:''}`;};
 const say135=s=>{if(typeof toast==='function')toast(s);};
+/* dev.53: batas bayar penarikan dari ringkasan Penarikan (siklus YYYY-MM → bayar paling lambat tanggal 20) */
+const wdOpen135=id=>{try{return M137.defs.find(d=>d.id==='withdraw')?.sum?.()?.open?.find(x=>x.id===id)||null;}catch(e){return null;}};
 const hue135=id=>[...String(id)].reduce((h,c)=>(h*31+c.charCodeAt(0))%360,7);
 
 /* ---------- data: baca baris halaman lama ---------- */
@@ -47,7 +49,7 @@ function item135(r){
     title=tl134(task.title);label=task.label||'';handler=task.handler||null;due=task.due||null;}
   else if(op){const rf=String(op.id).startsWith('RF-');ty=rf?'money':'appr';go=rf?T('Pesan','Messages'):T('Persetujuan','Approvals');handler=me().id;
     due=op.created?new Date(Date.parse(op.created+'T00:00:00Z')+864e5).toISOString().slice(0,10):null;}
-  else if(/Penarikan/i.test(r.sec)){ty='money';go=T('Penarikan','Withdrawals');handler=me().id;title=T('Transfer penarikan','Withdrawal payout');}
+  else if(/Penarikan/i.test(r.sec)){ty='money';go=T('Penarikan','Withdrawals');handler=me().id;title=T('Transfer penarikan','Withdrawal payout');const o=wdOpen135(r.id);if(o?.cycle)due=o.cycle+'-20';}
   else if(/WAMI/i.test(r.sec)){ty='wami';go='Registrasi WAMI';}
   else if(/Layanan/i.test(r.sec)){ty='addon';go=T('Layanan Tambahan','Add-on Services');}
   else if(/Tiket/i.test(r.sec)){ty='msg';go=T('Pesan','Messages');}
@@ -141,7 +143,7 @@ function pane135(w){
     else b+=sec135(nx(),T('Rincian','Details'),`<p class="para135">${E(det)}</p>`);
     if(w.op.policy)b+=sec135(nx(),T('Aturan waktu','Timing rule'),`<p class="para135"><b>${E(L(w.op.policy.name))}</b> · ${E(L(w.op.policy.desc))}</p>`);}
   if(w.ty==='money'&&!w.op){const y=cycle134(),amount=(w.sub.match(/Rp[\s ][\d.]+/)||[''])[0];
-    b+=sec135(nx(),T('Transfer','Payout'),`<div class="facts135">${[[T('Label','Label'),w.label],[T('Kode','Code'),w.sub.split(' · ')[0]],[T('Jumlah','Amount'),amount],[T('Batas bayar','Pay by'),`${y.c.payDue} ${y.month}`]].filter(x=>x[1]).map(([a,v])=>`<span>${a}</span><b>${E(v)}</b>`).join('')}</div><div class="cash135">${T('Sisa kas setelah semua pembayaran bulan ini','Cash left after this month’s payouts')} <span class="ex134">${T('contoh kas','sample cash')}</span><b class="n">${jt134(KAS134-y.d.unpaid)}</b></div>`);}
+    b+=sec135(nx(),T('Transfer','Payout'),`<div class="facts135">${[[T('Label','Label'),w.label],[T('Kode','Code'),w.sub.split(' · ')[0]],[T('Jumlah','Amount'),amount],[T('Batas bayar','Pay by'),(()=>{const o=wdOpen135(w.id);return o?.cycle?fdate135(o.cycle+'-20')+(o.late?T(' · terlambat',' · late'):''):'—';})()]].filter(x=>x[1]).map(([a,v])=>`<span>${a}</span><b>${E(v)}</b>`).join('')}</div><div class="cash135">${T('Sisa kas setelah semua pembayaran bulan ini','Cash left after this month’s payouts')} <span class="ex134">${T('contoh kas','sample cash')}</span><b class="n">${jt134(KAS134-y.d.unpaid)}</b></div>`);}
   if(w.task&&w.ty!=='rel'){const reason=w.task.reason?L(w.task.reason):'';
     b+=sec135(nx(),T('Rincian','Details'),`<div class="facts135">${[[T('Label','Label'),w.label],[T('Kode','Code'),w.id],[T('Dibuat','Created'),fdate135(w.task.created)],[T('Tenggat','Due'),fdate135(w.task.due)]].filter(x=>x[1]).map(([a,v])=>`<span>${a}</span><b>${E(v)}</b>`).join('')}</div>${reason?`<p class="fine135">${E(reason)}</p>`:''}`);}
   if(w.ty==='rel'&&w.task?.reason&&!/^tindak lanjut rilisan/i.test(L(w.task.reason)))b+=sec135(nx(),T('Catatan','Note'),`<p class="para135">${E(L(w.task.reason))}</p>`);
