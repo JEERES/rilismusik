@@ -1,5 +1,95 @@
 [
   {
+    "version": "1.1.0-dev.52",
+    "date": "2026-10-24",
+    "summary": {
+      "id": "Mode Staf baru: Beranda Staf, Anggota & Akses, Kehadiran, dan Gaji — dengan KPI yang dihitung dari data kerja.",
+      "en": "New Staff mode: Staff Home, Members & Access, Attendance and Pay — with KPI calculated from work data."
+    },
+    "entries": [
+      {
+        "id": "dev52-menu",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "overview",
+          "menu": {
+            "id": "Mode Staf",
+            "en": "Staff mode"
+          }
+        },
+        "title": {
+          "id": "Menu Staf menurut topik",
+          "en": "Staff menus by topic"
+        },
+        "detail": {
+          "id": "Mode Staf kini berisi Beranda Staf · Anggota & Akses (khusus Super Admin) · Kehadiran · Gaji. Isinya menyesuaikan peran: Super Admin punya tab Tim dan Saya, Staf hanya melihat bagian miliknya. Ikon Staff & Akses di header dihapus; halamannya pindah ke Anggota & Akses. Profil Saya dihapus karena isinya (KPI) kini ada di Beranda Staf. Avatar kanan atas tetap untuk data akun, sandi, dan foto.",
+          "en": "Staff mode now has Staff Home · Members & Access (Super Admins only) · Attendance · Pay. Content adapts to the role: Super Admins get Team and Me tabs, Staff see only their own part. The Staff & Access header icon is removed; its page moves to Members & Access. My Profile is removed because its content (KPI) now lives in Staff Home. The avatar, top right, stays for account data, password and photo."
+        }
+      },
+      {
+        "id": "dev52-home",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "overview",
+          "menu": {
+            "id": "Beranda Staf",
+            "en": "Staff Home"
+          }
+        },
+        "title": {
+          "id": "Beranda Staf dengan pita tim dan KPI baru",
+          "en": "Staff Home with team strip and new KPI"
+        },
+        "detail": {
+          "id": "Tab Tim: pita tim di lekukan kartu (angka = pekerjaan terbuka, sama dengan Pekerjaan; klik foto untuk menyaring), siapa yang aktif hari ini, keputusan yang menunggu (cuti, koreksi kehadiran, bonus penjualan) dengan tombol Setujui/Tolak/Bayar, dan tabel kinerja tim. Tab Saya: nilai KPI bulan terakhir, empat ukuran dengan bobot dan alasannya, tren bulanan, hari ini, cuti, dan slip terakhir. KPI Staf = ketepatan waktu 40% + mutu 30% + jumlah selesai 20% (target 55/bulan) + kehadiran 10%; KPI Super Admin = kecepatan keputusan 40% + tim tidak tertahan 30% + mutu keputusan 20% + keaktifan 10%. Dihitung dari riwayat kerja dan catatan jam; tidak memengaruhi gaji maupun bonus.",
+          "en": "Team tab: the team strip in the card notch (number = open work, same as Work; click a photo to filter), who is active today, decisions waiting (leave, attendance fixes, sales bonus) with Approve/Decline/Pay, and the team performance table. Me tab: last month’s KPI, four measures with weights and reasons, monthly trend, today, leave and latest payslip. Staff KPI = on time 40% + quality 30% + completed 20% (target 55/month) + attendance 10%; Super Admin KPI = decision speed 40% + team not blocked 30% + decision quality 20% + activity 10%. Calculated from work history and clock records; does not affect pay or bonuses."
+        }
+      },
+      {
+        "id": "dev52-att",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "attendance",
+          "menu": {
+            "id": "Kehadiran",
+            "en": "Attendance"
+          }
+        },
+        "title": {
+          "id": "Kehadiran: jam untuk Staf, Jejak Kerja untuk Super Admin",
+          "en": "Attendance: clock for Staff, Work Log for Super Admins"
+        },
+        "detail": {
+          "id": "Staf mencatat masuk dan pulang langsung dari halaman (tersimpan sebagai catatan jam), melihat kalender kehadiran, saldo dan riwayat cuti, Ajukan cuti, dan Ajukan koreksi. Super Admin tidak absen jam: Jejak Kerja menampilkan hari aktif dan pekerjaan yang ditangani per menu dari riwayat kerja. Tab Tim untuk Super Admin: siapa yang bekerja hari ini, pengajuan yang menunggu, saldo cuti Staf (Sesuaikan), dan kebijakan kehadiran (Ubah kebijakan).",
+          "en": "Staff clock in and out right from the page (saved as clock records) and see the attendance calendar, leave balance and history, Request leave and Request a correction. Super Admins don’t clock in: the Work Log shows active days and work handled per menu from the work history. Team tab for Super Admins: who is working today, pending requests, Staff leave balance (Adjust) and the attendance policy (Edit policy)."
+        }
+      },
+      {
+        "id": "dev52-pay",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "compensation",
+          "menu": {
+            "id": "Gaji",
+            "en": "Pay"
+          }
+        },
+        "title": {
+          "id": "Gaji dengan komponen yang sama untuk semua peran",
+          "en": "Pay with the same components for every role"
+        },
+        "detail": {
+          "id": "Slip terakhir dengan gaji tetap, tunjangan, bonus penjualan, dan Bonus Apresiasi beserta status Dibayar/Belum dibayar, kartu rekening gaji (contoh, memakai desain kartu bank), riwayat slip, dan Unduh slip. Tab Tim: total dan yang belum dibayar per bulan, Bayar bonus penjualan sekaligus, Lihat slip per anggota, dan Bonus Apresiasi.",
+          "en": "Latest payslip with base salary, allowance, sales bonus and Appreciation Bonus with Paid/Unpaid status, a salary account card (sample, using the bank card design), payslip history and Download. Team tab: monthly total and unpaid amount, pay all sales bonuses at once, View payslip per member, and Appreciation Bonus."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.51",
     "date": "2026-10-24",
     "summary": {

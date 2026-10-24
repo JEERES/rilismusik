@@ -27,21 +27,23 @@ function diff(a,b){const x=png(a),y=png(b);assert.equal(x.w,y.w);assert.equal(x.
   await scene();const expanded=await header();
   await page.locator('.workspace-switch122 [data-id=staff]').click();await page.waitForTimeout(65);const switched=await header();
   check('Platform to Staff preserves the expanded header without folding',switched.expanded&&!await page.locator('.masthead124.is-folding129').count()&&await page.evaluate(()=>!navigation129.pending),{...switched,before:expanded.height}); // dev.29: tinggi boleh beda — sejak dev.24 header Platform memuat kotak Sorotan; yang dijaga: tidak terlipat
-  await page.waitForTimeout(450);const centre=await page.evaluate(()=>{const main=document.querySelector('#main').getBoundingClientRect(),selector=document.querySelector('.staff-carousel122').getBoundingClientRect();return {main:(main.left+main.right)/2,selector:(selector.left+selector.right)/2};});
-  check('Team profile selector is centred in the menu',Math.abs(centre.main-centre.selector)<1,centre);
-  const beforeStaff=await page.evaluate(()=>({id:selectedStaff122().id,name:selectedStaff122().name}));await page.locator('[data-u122=staff-next]').click();await page.waitForTimeout(70);
-  check('Changing profiles slides the card group and keeps the header still',await page.evaluate(before=>ui122.staff!==before&&document.querySelector('.staff-board122').getAnimations().length>0&&document.querySelectorAll('.staff-snapshot130').length===1&&ui124.expanded,beforeStaff.id));
-  await page.waitForTimeout(430);
-  check('Selected profile updates every card without leaving an overlay',await page.evaluate(()=>{const selected=selectedStaff122();return document.querySelector('.staff-board122').dataset.staff122===selected.id&&document.querySelector('.staff-person122 h2').textContent===selected.name&&document.querySelector('.staff-activity122>header>span').textContent===selected.name&&document.querySelectorAll('.staff-snapshot130').length===0&&document.querySelector('.staff-slide130').style.height==='';}));
-  await page.locator('[data-u122=staff-prev]').click();await page.waitForTimeout(430);check('Previous profile works in the opposite direction',await page.evaluate(id=>ui122.staff===id,beforeStaff.id));
-  await page.locator('.staff-choice122.selected').focus();await page.keyboard.press('ArrowRight');await page.waitForTimeout(430);check('Profile selector is keyboard operable',await page.evaluate(id=>ui122.staff!==id,beforeStaff.id));
-  for(let i=0;i<3;i++)await page.locator('[data-u122=staff-next]').click();await page.waitForTimeout(430);check('Rapid profile changes leave only the final card group',await page.locator('.staff-board122').count()===1&&await page.locator('.staff-snapshot130').count()===0);
-  const beforeSwipe=await page.evaluate(()=>ui122.staff),touch=await page.context().newCDPSession(page),touchBoard=await page.locator('.staff-work122').boundingBox();
-  const touchX=touchBoard.x+touchBoard.width*.7,touchY=touchBoard.y+touchBoard.height*.5;
-  await touch.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:touchX,y:touchY}]});
-  await touch.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:touchX-90,y:touchY+2}]});
-  await touch.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await page.waitForTimeout(430);await touch.detach();
-  check('A horizontal touch gesture changes the profile',await page.evaluate(id=>ui122.staff!==id,beforeSwipe));
+  await page.waitForTimeout(450); // dev.52: Mode Staf baru (Beranda Staf · Anggota & Akses · Kehadiran · Gaji) menggantikan carousel Ringkasan Tim
+  const st52=await page.evaluate(()=>{const r=document.querySelector('#main .m137-host[data-m137=staf152]')?.shadowRoot;return r?{bays:r.querySelectorAll('.ba').length,tabs:r.querySelectorAll('[data-tab]').length,side:[...document.querySelectorAll('.side-scroll [data-page]')].map(b=>b.dataset.page).join(',')}:null;});
+  check('Staff mode opens Beranda Staf with the team strip',!!st52&&st52.bays===3&&st52.tabs===2,st52);
+  check('Staff menu is grouped by topic',st52?.side==='overview,access,attendance,compensation',st52);
+  await page.evaluate(()=>document.querySelector('#main .m137-host[data-m137=staf152]')?.shadowRoot.querySelector('.ba[data-who=cantika]').click());await page.waitForTimeout(120);
+  check('Clicking a team photo filters the team view',await page.evaluate(()=>{const r=document.querySelector('#main .m137-host[data-m137=staf152]')?.shadowRoot;return r.querySelectorAll('.tr:not(.head)').length===1&&r.querySelector('.ba[data-who=cantika]').getAttribute('aria-pressed')==='true';}));
+  await page.evaluate(()=>document.querySelector('#main .m137-host[data-m137=staf152]')?.shadowRoot.querySelector('.ba[data-who=cantika]').click());await page.evaluate(()=>document.querySelector('#main .m137-host[data-m137=staf152]')?.shadowRoot.querySelector('[data-rules]').click());await page.waitForTimeout(120);
+  check('KPI explains how it is scored',await page.evaluate(()=>{const r=document.querySelector('#main .m137-host[data-m137=staf152]')?.shadowRoot;return !!r.querySelector('.rules .rc')&&r.querySelectorAll('.rules .rr').length===8;}));
+  await page.evaluate(()=>document.querySelector('#main .m137-host[data-m137=staf152]')?.shadowRoot.querySelector('[data-close]').click());
+  check('Header no longer carries Staff & Access',await page.locator('[data-control126=access]').count()===0);
+  await page.locator('.side-scroll [data-page=attendance]').click();await page.waitForTimeout(650);
+  check('Kehadiran shows today, requests and leave balance',await page.evaluate(()=>{const r=document.querySelector('#main .m137-host[data-m137=staf152]')?.shadowRoot;return !!r&&r.querySelectorAll('.tr.att:not(.head)').length===3&&r.querySelectorAll('.leave').length>=1;}));
+  await page.locator('.side-scroll [data-page=compensation]').click();await page.waitForTimeout(650);
+  check('Gaji lists every team member payslip',await page.evaluate(()=>{const r=document.querySelector('#main .m137-host[data-m137=staf152]')?.shadowRoot;return !!r&&r.querySelectorAll('.pay:not(.head)').length===3;}));
+  await page.locator('.side-scroll [data-page=access]').click();await page.waitForTimeout(650);
+  check('Anggota & Akses opens Staff & Access inside Staf mode',await page.evaluate(()=>state.mode==='staff'&&state.page==='access'&&!!document.querySelector('#main .m137-host[data-m137=staff]')));
+  await page.locator('.side-scroll [data-page=overview]').click();await page.waitForTimeout(650);
   await page.screenshot({path:path.join(__dirname,'staff-light130.png')});
   await page.mouse.move(1050,700);await page.mouse.wheel(0,150);await page.waitForTimeout(400);const collapsed=await header();
   check('Collapsed header remains readable and plain',!collapsed.expanded&&collapsed.background!=='rgba(0, 0, 0, 0)'&&collapsed.frameShadow==='none',collapsed);
@@ -93,10 +95,10 @@ function diff(a,b){const x=png(a),y=png(b);assert.equal(x.w,y.w);assert.equal(x.
   }
   await page.setViewportSize({width:1440,height:1000});await page.evaluate(()=>{themeMode105('dark');render();});await page.waitForTimeout(650);await page.screenshot({path:path.join(__dirname,'appearance-dark130.png')});
   await navigate('[data-control126=home]');await page.locator('.workspace-switch122 [data-id=staff]').click();await page.waitForTimeout(430);
-  await page.emulateMedia({reducedMotion:'reduce'});await page.locator('[data-u122=staff-next]').click();check('Reduced motion skips profile sliding',await page.locator('.staff-snapshot130').count()===0&&await page.locator('.staff-board122').evaluate(e=>e.getAnimations().length===0));
+  await page.emulateMedia({reducedMotion:'reduce'});check('Reduced motion shows Beranda Staf at once',await page.locator('#main .m137-host[data-m137=staf152]').count()===1);
   await page.locator('.workspace-switch122 [data-id=platform]').click();check('Reduced motion keeps workspace changes immediate without folding',await page.evaluate(()=>ui124.expanded&&state.mode==='platform'&&!navigation129.pending));
   await page.emulateMedia({reducedMotion:'no-preference'});await page.evaluate(()=>{state.lang=ten.lang='en';render();});await navigate('[data-control126=settings]');await page.locator('.it[data-sel=look]').click();await page.waitForTimeout(200);await page.locator('[data-look-editor]').click();await page.waitForTimeout(250);check('Appearance uses the matching English labels',await page.locator('.design-heading130 h2').textContent()==='Current header card'&&await page.locator('[data-upload130]').textContent()==='Upload new design');
-  for(const id of ['finance','access','settings']){await navigate('[data-control126='+id+']');check('Dedicated '+id+' layout remains centred with sidebar hidden',(await page.locator('.control-heading128').count()===1||await page.locator('#main .m137-host[data-m137='+({access:'staff'}[id]||id)+']').count()===1)&&!await page.locator('.side5').isVisible());} // dev.35/40: Keuangan (pk137) dan Staff & Akses (sa137) memakai halaman baru dengan judulnya sendiri
+  for(const id of ['finance','settings']){await navigate('[data-control126='+id+']');check('Dedicated '+id+' layout remains centred with sidebar hidden',(await page.locator('.control-heading128').count()===1||await page.locator('#main .m137-host[data-m137='+({access:'staff'}[id]||id)+']').count()===1)&&!await page.locator('.side5').isVisible());} // dev.52: Staff & Akses pindah ke mode Staf (Anggota & Akses). dev.35/40: Keuangan (pk137) dan Staff & Akses (sa137) memakai halaman baru dengan judulnya sendiri
   check('No runtime errors',errors.length===0,errors);
   const report={version:'13.0',hash:crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex').toUpperCase(),checkedAt:new Date().toISOString(),checks,views,errors};fs.writeFileSync(path.join(__dirname,'acceptance130.json'),JSON.stringify(report,null,2));console.log(JSON.stringify({checks:checks.length,views:views.length,errors,hash:report.hash}));
  }catch(error){fs.writeFileSync(path.join(__dirname,'failure130.json'),JSON.stringify({checks,views,errors,failure:error.stack},null,2));await page.screenshot({path:path.join(__dirname,'failure130.png')});throw error;}
