@@ -1,5 +1,35 @@
 [
   {
+    "version": "1.1.0-dev.50",
+    "date": "2026-10-24",
+    "summary": {
+      "id": "Kartu rekening kini berwarna sesuai bank tujuan penarikan.",
+      "en": "Bank account cards now take the colours of the payout bank."
+    },
+    "entries": [
+      {
+        "id": "dev50-bank",
+        "status": "prototype",
+        "where": {
+          "role": "label",
+          "page": "module",
+          "menu": {
+            "id": "Penarikan & Profil Label",
+            "en": "Withdrawals & Label Profile"
+          }
+        },
+        "title": {
+          "id": "Kartu rekening sesuai bank",
+          "en": "Bank cards that match the bank"
+        },
+        "detail": {
+          "id": "Kartu rekening di Penarikan, Profil Label › Rekening, dan dialog periksa rekening memakai gradasi lembut dalam warna identitas bank: BCA, Mandiri, BRI, BNI, BSI, CIMB Niaga, Permata, Danamon, BTN, Jago; bank lain memakai desain grafit umum. Nama bank dibaca dari data rekening (mis. “Bank Central Asia” → BCA). Tanpa garis, lingkaran hiasan, atau bayangan; tanpa logo bank. Nomor tetap disamarkan seperti sebelumnya.",
+          "en": "Bank cards in Withdrawals, Label Profile › Bank and the bank-review dialog use soft gradients in the bank’s identity colours (BCA, Mandiri, BRI, BNI, BSI, CIMB Niaga, Permata, Danamon, BTN, Jago; other banks get a general graphite design). No lines, rings, shadows or logos; numbers stay masked as before."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.49",
     "date": "2026-10-24",
     "summary": {
