@@ -1,0 +1,55 @@
+/* v1.1.0-dev.51 — pita tim Pekerjaan (disetujui 25 Okt) + Pulau Dinamis (mock v3 disetujui 23 Okt) */
+:root{--pt151:#fdfdfd;--isl151:#000;--isl-ease151:cubic-bezier(.22,1.18,.36,1);--isl-in151:.62s;--isl-out151:.48s}
+:root[data-theme=dark]{--pt151:#1c1c1e;--isl151:#202023}
+
+/* ---------- pita tim: foto menggantung di lekukan tengah tepi atas kartu "Berikutnya untukmu" ---------- */
+html:root body #app .band135.pita151{container:band151/inline-size}
+html:root body #app .band135.pita151 .top135{flex-wrap:nowrap;align-items:flex-start}
+html:root body #app .band135.pita151 .focus135,html:root body #app .band135.pita151 .donecard135{max-width:calc(50% - 176px);min-width:0}
+html:root body #app .band135.pita151 .donecard135{flex:none;width:auto;background:var(--pt151);box-shadow:none!important}
+.bay151{position:absolute;top:0;left:50%;transform:translateX(-50%);display:flex;height:80px;z-index:1}
+html:root body #app .bay151 svg.w{width:56px!important;height:80px!important;flex:none;fill:var(--bg);margin:0 -.5px;pointer-events:none}
+html:root body #app .bay151 svg.w.r{transform:scaleX(-1)}
+html:root body #app .bay151 svg.w path{fill:var(--bg)!important;stroke:none!important}
+.bay151 .bf{position:relative;z-index:1;display:flex;gap:5.5px;margin:0 -8px;background:linear-gradient(var(--bg),var(--bg)) 8px 0/calc(100% - 16px) 100% no-repeat}
+html:root body #app .ba151{position:relative;width:52px;height:72px;display:block;flex:none;padding:0;margin:0;border:0;border-radius:0;background:none;box-shadow:none;cursor:pointer;font:inherit;color:var(--text)}
+.ba151 .c{position:absolute;top:0;left:0;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--pt151);font-weight:500;font-size:15px;letter-spacing:.01em;color:var(--text);transition:box-shadow .15s}
+.ba151.none .c{background:transparent;border:1.5px dashed color-mix(in srgb,var(--text) 30%,transparent);color:var(--muted)}
+html:root body #app .ba151 .c svg{width:20px!important;height:20px!important}
+.ba151:hover .c{box-shadow:0 0 0 1.5px var(--line)}
+.ba151[aria-pressed=true] .c{box-shadow:0 0 0 2px var(--text)}
+.ba151:focus-visible{outline:none}.ba151:focus-visible .c{box-shadow:0 0 0 2px var(--text),0 0 0 5px color-mix(in srgb,var(--text) 16%,transparent)}
+.ba151 .n{position:absolute;top:50px;left:16px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:500;line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+.ba151 .n.red{background:#c83255}.ba151 .n.orange{background:#b5560f}.ba151 .n.blue{background:#2e689e}.ba151 .n.grey{background:#5d5d63}
+.ba151 .n.add{background:var(--pt151);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.08),0 0 0 .5px rgba(0,0,0,.05)}
+:root[data-theme=dark] .ba151 .n.add{background:#2a2a2d;box-shadow:none}
+html:root body #app .ba151 .n svg{width:11px!important;height:11px!important}
+/* kartu sempit: pita tetap di tengah atas, isi turun ke bawahnya */
+@container band151 (max-width:860px){
+ html:root body #app .band135.pita151 .top135{flex-wrap:wrap;padding-top:74px}
+ html:root body #app .band135.pita151 .focus135{max-width:none;flex:1 1 300px}
+ html:root body #app .band135.pita151 .donecard135{max-width:none}}
+
+/* ---------- Pulau Dinamis: bentuk hitam (lingkaran ikon + leher + pil) digabung filter goo, teks di lapisan terpisah ---------- */
+.goo151{position:fixed;z-index:2147483000;pointer-events:none;filter:url(#goo151);opacity:0;transition:opacity .16s}
+.goo151.on{opacity:1}
+.goo151 i{position:absolute;display:block;background:var(--isl151);border-radius:999px}
+.goo151 .gb{border-radius:4px;transition:left var(--isl-in151) var(--isl-ease151),top var(--isl-in151) var(--isl-ease151),width var(--isl-in151) var(--isl-ease151),height var(--isl-in151) cubic-bezier(.3,1,.4,1)}
+.goo151 .gp{transition:left var(--isl-in151) var(--isl-ease151),top var(--isl-in151) var(--isl-ease151),width var(--isl-in151) var(--isl-ease151),height var(--isl-in151) var(--isl-ease151)}
+.goo151.out .gb,.goo151.out .gp{transition-duration:var(--isl-out151);transition-timing-function:cubic-bezier(.5,0,.3,1)}
+.islc151{position:fixed;z-index:2147483001;opacity:0;pointer-events:none;color:#fff;transition:opacity .18s}
+.islc151.on{opacity:1;pointer-events:auto;transition:opacity .22s .26s}
+.islc151 .row{display:flex;align-items:center;gap:10px;width:100%;height:100%;padding:0 16px 0 8px;margin:0;border:0;border-radius:999px;background:none;color:inherit;font:inherit;white-space:nowrap;cursor:pointer;text-align:left}
+.islc151 .row:hover{background:rgba(255,255,255,.05)}
+.islc151 .row:focus-visible{outline:2px solid rgba(255,255,255,.7);outline-offset:-3px}
+.islc151 .ava{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:10.5px;font-weight:600;background:rgba(255,255,255,.16)}
+.islc151 .ava svg{width:14px;height:14px}
+.islc151 .ln{font-size:13px;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.islc151 .ln b{font-weight:600}
+.islc151 .ln span{color:rgba(255,255,255,.66)}
+.islg151{position:fixed;z-index:2147483001;display:grid;place-items:center;color:#fff;pointer-events:none;opacity:0;transition:opacity .15s}
+.islg151.on{opacity:1}
+.islg151 svg{width:18px;height:18px}
+.gulp151{animation:gulp151 .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes gulp151{40%{transform:scale(1.16)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){:root{--isl-in151:.01ms;--isl-out151:.01ms}.gulp151{animation:none}}

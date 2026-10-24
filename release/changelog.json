@@ -1,5 +1,55 @@
 [
   {
+    "version": "1.1.0-dev.51",
+    "date": "2026-10-24",
+    "summary": {
+      "id": "Pulau Dinamis untuk pesan & notifikasi baru, dan pita tim di Pekerjaan.",
+      "en": "A Dynamic Island for new messages & notices, and a team strip in Work."
+    },
+    "entries": [
+      {
+        "id": "dev51-island",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "dashboard",
+          "menu": {
+            "id": "Kotak Masuk & Pesan",
+            "en": "Inbox & Messages"
+          }
+        },
+        "title": {
+          "id": "Pulau Dinamis",
+          "en": "Dynamic Island"
+        },
+        "detail": {
+          "id": "Saat pesan atau notifikasi baru masuk, satu baris kecil (siapa + apa) tumbuh cair dari ikon Kotak Masuk — untuk label dari ikon Pesan — tampil sekitar 3,5 detik (berhenti saat disorot), lalu kembali ke ikon. Klik untuk langsung membuka menu terkait (tiket, layanan, rilisan, transaksi, atau Kotak Masuk). Pesan berikutnya muncul bergiliran; Esc atau menggulir menutupnya. Hanya untuk item baru — yang sudah ada saat halaman dibuka atau saat ganti skenario tidak dimunculkan.",
+          "en": "When a new message or notice arrives, one small line (who + what) flows out of the Inbox icon — for labels, the Messages icon — stays about 3.5 seconds (pauses on hover), then flows back. Click to open the related menu (ticket, service, release, transaction or Inbox). Further items follow in turn; Esc or scrolling closes it. New items only — what already exists when the page opens or a scenario changes is not shown."
+        }
+      },
+      {
+        "id": "dev51-strip",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "mywork9",
+          "menu": {
+            "id": "Pekerjaan",
+            "en": "Work"
+          }
+        },
+        "title": {
+          "id": "Pita tim di Pekerjaan",
+          "en": "Team strip in Work"
+        },
+        "detail": {
+          "id": "Foto tim kini menggantung di lekukan tengah kartu “Berikutnya untukmu”, menggantikan kotak “untukmu · belum ditangani · aktif di tim” (angkanya sama). Angka di bawah foto = pekerjaan terbuka orang itu; warnanya mengikuti Kamus Penanda (merah ada yang terlambat, oranye jatuh tempo hari ini, biru menunggu pihak lain, abu tidak mendesak); + = tidak memegang pekerjaan. Lingkaran putus-putus = belum dipegang siapa pun. Klik foto untuk menampilkan daftar dan alur waktu orang itu saja. Cincin “selesai hari ini” pindah ke kanan kartu dengan jumlah yang masih terbuka.",
+          "en": "Team photos now hang in a notch in the middle of the “Next for you” card, replacing the “for you · unassigned · active” boxes (same numbers). The number under a photo = that person’s open work, coloured by the Indicator Guide (red something late, orange due today, blue waiting on others, grey not urgent); + = holds nothing. The dashed circle = unassigned. Click a photo to show only that person’s list and time flow. The “done today” ring moves to the right of the card with the number still open."
+        }
+      }
+    ]
+  },
+  {
     "version": "1.1.0-dev.50",
     "date": "2026-10-24",
     "summary": {

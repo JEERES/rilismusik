@@ -2,7 +2,7 @@
    Halaman lama (myWork9 + integrasi WAMI, layanan, tiket, transaksi, penarikan) tetap
    menjadi sumber data: barisnya dibaca lalu ditampilkan ulang, dan tombol "Buka" memakai
    atribut aksi aslinya sehingga modal/halaman tujuan tidak berubah. */
-const w135={g:'',q:'',sel:null,read:false,done:false,seen:new Set(),io:null,last:''};
+const w135={g:'',q:'',p:'',sel:null,read:false,done:false,seen:new Set(),io:null,last:''};
 const on135=()=>!isLabel10()&&me().super&&state.mode==='platform'&&state.page==='mywork9'&&!state.preview;
 const RM135=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
 const wide135=()=>innerWidth>1240;
@@ -83,29 +83,49 @@ const order135=GR135.map(g=>g[0]);
 const sort135=r=>r.slice().sort((a,b)=>order135.indexOf(a.g)-order135.indexOf(b.g)||String(a.due||'9').localeCompare(String(b.due||'9')));
 const mini135=id=>id?`<span class="mini134" title="${E(pname134(id))} · ${E(role135(id))}">${E(ini134(id))}</span>`:`<span class="mini134 none" title="${T('Belum ada penanggung jawab','Unassigned')}">+</span>`;
 
+/* dev.51 — pita tim (disetujui 25 Okt): foto tim menggantung di lekukan tengah tepi atas kartu "Berikutnya untukmu".
+   Angka = pekerjaan terbuka orang itu; warna = status paling mendesak (merah terlambat · oranye hari ini · biru semua
+   menunggu pihak lain · abu tidak mendesak); + = tidak memegang. Lingkaran putus-putus = belum dipegang siapa pun.
+   Klik foto → daftar & alur waktu hanya untuk orang itu. Bentuk lekukan diukur dari referensi (dalam 80, dinding 56). */
+const inP135=w=>!w135.p||(w135.p==='none'?!w.handler:w.handler===w135.p);
+function load135(all,k){const L=all.filter(w=>k==='none'?!w.handler:w.handler===k),g=new Set(L.map(w=>w.g));
+  return {n:L.length,late:L.filter(w=>w.g==='late').length,tone:!L.length?'add':g.has('late')?'red':g.has('today')?'orange':[...g].every(v=>v==='wait')?'blue':'grey'};}
+function loadTxt135(l,k){if(!l.n)return k==='none'?T('Semua pekerjaan sudah ada yang memegang','Every item has an owner'):T('Tidak memegang pekerjaan terbuka','No open work');
+  return T(`${l.n} pekerjaan`,`${l.n} item${l.n>1?'s':''}`)+(l.late?T(` · ${l.late} terlambat`,` · ${l.late} late`):l.tone==='orange'?T(' · jatuh tempo hari ini',' · due today'):l.tone==='blue'?T(' · menunggu pihak lain',' · waiting on others'):'');}
+const BAY135='M0,0H56V80C52,80 32.8,62 32,58L24,20C23.2,16 6,0 0,0Z';
+function bay135(all){
+  const plus='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>',
+    person='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>';
+  const one=(k,inner,cls)=>{const l=load135(all,k),nm=k==='none'?T('Belum dipegang','Unassigned'):pname134(k)+(k===me().id?T(' (kamu)',' (you)'):''),tip=`${nm} · ${loadTxt135(l,k)}`;
+    return `<button type="button" class="ba151${cls?' '+cls:''}" data-w135-p="${E(k)}" aria-pressed="${w135.p===k}" title="${E(tip)}" aria-label="${E(tip)}"><span class="c">${inner}</span><span class="n ${l.tone}">${l.n||plus}</span></button>`;};
+  const wall=r=>`<svg class="w${r?' r':''}" viewBox="0 0 56 80" aria-hidden="true"><path d="${BAY135}"/></svg>`;
+  return `<div class="bay151">${wall()}<div class="bf" role="group" aria-label="${T('Saring menurut orang','Filter by person')}">${TEAM135().map(id=>one(id,E(ini134(id)))).join('')}${one('none',person,'none')}</div>${wall(1)}</div>`;}
+
 /* ---------- tampilan ---------- */
-function band135(all){
-  const next=sort135(all.filter(w=>w.g!=='wait'&&(w.handler===me().id||!w.handler)))[0],c=k=>all.filter(w=>w.g===k).length;
-  return `<section class="band135 rv135" data-w135="band"><div class="top135"><div class="focus135">
+function band135(all,ring){
+  const next=sort135(all.filter(w=>w.g!=='wait'&&(w.handler===me().id||!w.handler)))[0],c=k=>all.filter(w=>w.g===k&&inP135(w)).length;
+  return `<section class="band135 rv135 pita151" data-w135="band">${bay135(all)}<div class="top135"><div class="focus135">
     <div class="k135"><i></i>${T('Berikutnya untukmu','Next for you')}</div>
     <h2>${next?E(next.title)+(next.label?` · ${E(next.label)}`:''):T('Semua beres','All clear')}</h2>
     <p>${next?`${E(next.chips[0]?.[0]||'')}${next.chips.length?' · ':''}${E(due135(next))} · ${T('dikerjakan di menu','handled in')} ${E(next.go)}`:T('Tidak ada pekerjaan yang menunggumu.','Nothing is waiting for you.')}</p>
     ${next?`<div class="acts135"><button type="button" class="wbtn135" data-w135-open="${E(next.id)}">${T('Lihat rincian','View details')} ${svg135('arrow',2)}</button>${next.task&&!next.handler?`<button type="button" class="gbtn135" data-w135-take="${E(next.id)}">${T('Ambil','Take')}</button>`:''}</div>`:''}
-   </div><div class="stat135"><div><b class="n">${all.filter(w=>w.handler===me().id&&w.g!=='wait').length}</b><span>${T('untukmu','for you')}</span></div><div><b class="n">${all.filter(w=>!w.handler).length}</b><span>${T('belum ditangani','unassigned')}</span></div><div><b class="n">${all.length}</b><span>${T('aktif di tim','active')}</span></div></div></div>
+   </div>${ring}</div>
    <div class="flow135">${GR135.map(([k,l,h])=>`<button type="button" class="fn135${k==='late'&&c(k)?' hot':''}${c(k)?'':' zero'}" data-w135-g="${k}" aria-pressed="${w135.g===k}"><span class="dot135 n">${c(k)}</span><span class="t">${L(l)}</span><span class="d">${L(h)}</span></button>`).join('')}</div></section>`;
 }
 function list135(all){
-  let r=all.filter(w=>!w135.g||w.g===w135.g);
+  let r=all.filter(w=>inP135(w)&&(!w135.g||w.g===w135.g));
   if(w135.q)r=r.filter(w=>(w.title+' '+w.label+' '+w.id).toLowerCase().includes(w135.q));
   r=sort135(r);
-  const G=GR135.find(g=>g[0]===w135.g),recs=typeof todayRecords==='function'?todayRecords():[];
-  let h=`<section class="d134-card list135 rv135" data-w135="list"><div class="ch135"><h2>${T('Semua pekerjaan','All work')} <small class="n">${all.length}</small></h2><label class="find135">${svg135('search',2)}<input data-w135-q placeholder="${T('Cari judul, label, kode','Search title, label, code')}" value="${E(w135.q)}"></label></div>`;
-  if(G)h+=`<div class="flt135"><span>${T('Hanya','Only')} <b>${L(G[1])}</b></span><button type="button" data-w135-g="${G[0]}">${T('Tampilkan semua','Show all')}</button></div>`;
+  const G=GR135.find(g=>g[0]===w135.g),P=w135.p,recs=typeof todayRecords==='function'?todayRecords():[];
+  const ttl=!P?T('Semua pekerjaan','All work'):P==='none'?T('Belum dipegang','Unassigned'):P===me().id?T('Pekerjaanku','My work'):T('Pekerjaan ','Work of ')+String(pname134(P)).split(' ')[0];
+  let h=`<section class="d134-card list135 rv135" data-w135="list"><div class="ch135"><h2>${ttl} <small class="n">${all.filter(inP135).length}</small></h2><label class="find135">${svg135('search',2)}<input data-w135-q placeholder="${T('Cari judul, label, kode','Search title, label, code')}" value="${E(w135.q)}"></label></div>`;
+  if(G||P)h+=`<div class="flt135"><span>${T('Hanya','Only')} <b>${[P?(P==='none'?T('belum dipegang','unassigned'):E(pname134(P))):'',G?L(G[1]):''].filter(Boolean).join(' · ')}</b></span><button type="button" data-w135-clear>${T('Tampilkan semua','Show all')}</button></div>`;
   let cur='',i=0;
   r.forEach(w=>{if(w.g!==cur){cur=w.g;const g=GR135.find(x=>x[0]===cur);h+=`<div class="gh135" style="--c:${g[3]}"><i></i><b>${L(g[1])}</b> · ${r.filter(x=>x.g===cur).length}</div>`;}
     h+=`<div class="it135${w135.sel===w.id?' sel':''}" data-w135-row="${E(w.id)}" style="--i:${i++}"><span class="ty134">${svg135(w.ty)}</span><div class="mid135"><div class="tt135">${E(w.title)} ${w.chips.slice(0,1).map(c=>statusBadge111(c[0],c[1])).join('')}</div><div class="sub135">${w.label?E(w.label)+' · ':''}${E(w.go)} · <span class="${dueCls135(w)}">${E(due135(w))}</span></div></div>
       <div class="rt135">${w.task&&!w.handler?`<button type="button" class="qbtn135" data-w135-take="${E(w.id)}">${T('Ambil','Take')}</button>`:`<button type="button" class="qbtn135" ${w.act}>${E(w.verb)}</button>`}${mini135(w.handler)}</div></div>`;});
-  if(!r.length)h+=`<div class="empty135"><b>${T('Semua beres','All clear')} ✓</b>${T('Tidak ada pekerjaan di kelompok ini.','Nothing in this group.')}</div>`;
+  const idle=P&&P!=='none'&&!w135.g&&!w135.q,nUn=load135(all,'none').n;
+  if(!r.length)h+=idle?`<div class="empty135"><b>${T(`${E(pname134(P))} tidak memegang pekerjaan terbuka`,`${E(pname134(P))} holds no open work`)}</b>${nUn?`<button type="button" class="qbtn135" data-w135-p="none">${T(`Lihat ${nUn} yang belum dipegang`,`See ${nUn} unassigned`)}</button>`:''}</div>`:`<div class="empty135"><b>${T('Semua beres','All clear')} ✓</b>${T('Tidak ada pekerjaan di kelompok ini.','Nothing in this group.')}</div>`;
   if(!w135.g&&!w135.q&&recs.length)h+=`<button type="button" class="doneh135" data-w135-done aria-expanded="${w135.done}"><span>${svg135('check',2.6)}</span>${T('Selesai hari ini','Done today')} · ${recs.length}${svg135('down',2)}</button>${w135.done?`<div class="donel135">${recs.map(x=>`<div>${mini135(x.staff)}<span>${E(tl134(x.title))}</span><small>${E(x.time||'')}</small></div>`).join('')}</div>`:''}`;
   return h+'</section>';
 }
@@ -140,9 +160,10 @@ function pane135(w){
 }
 function page135(all){
   const y=cycle134(),recs=typeof todayRecords==='function'?todayRecords():[],done=recs.length,total=done+all.length;
-  return `<div class="d134 w135"><div class="ph135"><div><h1>${T('Pekerjaan','Work')}</h1><div class="sub135">${E(new Date(day()+'T00:00:00Z').toLocaleDateString(state.lang==='id'?'id-ID':'en-US',{weekday:'long',day:'numeric',month:'long',timeZone:'UTC'}))} · ${T('semua pekerjaan dari semua menu','all work from every menu')}</div></div>
-    <div class="donecard135" title="${T('Pekerjaan selesai hari ini','Work finished today')}"><div class="dring135"><svg viewBox="0 0 36 36"><circle class="trk" cx="18" cy="18" r="15.9"/><circle class="arc" cx="18" cy="18" r="15.9" pathLength="100" style="--p:${total?Math.round(done/total*100):0}"/></svg><b>${svg135('check',2.6)}</b></div><div><div class="big135 n">${done}<small>/${total}</small></div><div class="lb135">${T('selesai hari ini','done today')}</div></div></div></div>
-    ${band135(all)}
+  /* dev.51: cincin "selesai hari ini" pindah ke kanan kartu atas (kotak 3 untukmu · 6 belum ditangani · 10 aktif di tim → pita tim) */
+  const ring=`<div class="donecard135" title="${T('Pekerjaan selesai hari ini','Work finished today')}"><div class="dring135"><svg viewBox="0 0 36 36"><circle class="trk" cx="18" cy="18" r="15.9"/><circle class="arc" cx="18" cy="18" r="15.9" pathLength="100" style="--p:${total?Math.round(done/total*100):0}"/></svg><b>${svg135('check',2.6)}</b></div><div><div class="big135 n">${done}<small>/${total}</small></div><div class="lb135">${T('selesai hari ini','done today')}<br>${T(`${all.length} masih terbuka`,`${all.length} still open`)}</div></div></div>`;
+  return `<div class="d134 w135"><div class="ph135"><div><h1>${T('Pekerjaan','Work')}</h1><div class="sub135">${E(new Date(day()+'T00:00:00Z').toLocaleDateString(state.lang==='id'?'id-ID':'en-US',{weekday:'long',day:'numeric',month:'long',timeZone:'UTC'}))} · ${T('semua pekerjaan dari semua menu','all work from every menu')}</div></div></div>
+    ${band135(all,ring)}
     <div class="wk135">${list135(all)}<section class="d134-card pane135" data-w135="pane"><div class="pin135">${pane135(all.find(w=>w.id===w135.sel))}</div></section></div></div>`;
 }
 
@@ -158,7 +179,7 @@ function mount135(main){
 }
 function draw135(){
   const main=document.querySelector('#main');if(!main)return;
-  const all=rows135(),vis=all.filter(w=>(!w135.g||w.g===w135.g)&&(!w135.q||(w.title+' '+w.label+' '+w.id).toLowerCase().includes(w135.q)));
+  const all=rows135(),vis=all.filter(w=>inP135(w)&&(!w135.g||w.g===w135.g)&&(!w135.q||(w.title+' '+w.label+' '+w.id).toLowerCase().includes(w135.q)));
   if(wide135()&&(!w135.sel||!vis.some(w=>w.id===w135.sel)))w135.sel=sort135(vis)[0]?.id||null;
   const focusQ=document.activeElement?.matches?.('[data-w135-q]');
   main.classList.add('dashboard-main124','work135-main');main.innerHTML=page135(all);
@@ -181,10 +202,12 @@ function open135(id){w135.sel=id;w135.read=true;draw135();const wk=document.quer
   if(!wide135()||(pane&&pane.getBoundingClientRect().top<80))wk?.scrollIntoView({behavior:RM135()?'auto':'smooth',block:'start'});}
 document.addEventListener('click',e=>{
   if(!on135())return;
-  const t=e.target,hit=t.closest('[data-w135-g],[data-w135-done],[data-w135-take],[data-w135-open],[data-w135-assign],[data-w135-to],[data-w135-back],[data-w135-row]');
+  const t=e.target,hit=t.closest('[data-w135-p],[data-w135-clear],[data-w135-g],[data-w135-done],[data-w135-take],[data-w135-open],[data-w135-assign],[data-w135-to],[data-w135-back],[data-w135-row]');
   if(!hit){if(!t.closest('[data-w135-pop]'))document.querySelectorAll('.pop135.on').forEach(p=>p.classList.remove('on'));return;}
   if(hit.matches('[data-w135-row]')&&t.closest('button'))return; // tombol aksi asli di dalam baris
   e.preventDefault();e.stopImmediatePropagation();
+  if(hit.hasAttribute('data-w135-p')){const k=hit.dataset.w135P;w135.p=w135.p===k?'':k;w135.g='';w135.read=false;draw135();return;}
+  if(hit.hasAttribute('data-w135-clear')){w135.p='';w135.g='';w135.read=false;draw135();return;}
   if(hit.dataset.w135G){w135.g=w135.g===hit.dataset.w135G?'':hit.dataset.w135G;w135.read=false;draw135();return;}
   if(hit.hasAttribute('data-w135-done')){w135.done=!w135.done;draw135();return;}
   if(hit.dataset.w135Take){const x=(data.tasks||[]).find(x=>x.id===hit.dataset.w135Take);if(x){x.handler=me().id;if(typeof assignRelease137==='function')assignRelease137(x.id,me().id);say135(T(`${tl134(x.title)} sekarang kamu yang tangani`,`You now handle ${tl134(x.title)}`));}w135.sel=hit.dataset.w135Take;render();return;}

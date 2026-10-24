@@ -296,6 +296,16 @@ const DEF={id:'inbox',css:STYLE,html:HTML,
 /*sum137 — ringkasan untuk Dashboard: sama dengan strip Kotak Masuk */
 DEF.sum=function(){load();const u=I.filter(x=>x.unread),c=k=>u.filter(x=>inPill(x,k));
  return {unread:u.length,reply:c('reply').sort((a,b)=>(a.at||'').localeCompare(b.at||'')).map(x=>({id:x.id,who:x.who,title:x.title,at:x.at})),me:c('me').length,notif:c('notif').length};};
+/*feed151 — Pulau Dinamis (dev.51): item belum dibaca sebagai satu baris "siapa + apa"; id berubah bila ada pesan baru di tiket yang sama */
+const ACT151={reply:['membalas tiket','replied to a ticket'],a:['menugaskan tiket kepadamu','assigned you a ticket'],e:['meneruskan tiket ke Super Admin','escalated a ticket'],s:['mengusulkan penyelesaian layanan','proposed a service resolution'],mention:['menyebutmu di catatan internal','mentioned you in an internal note']};
+DEF.feed=function(){load();return I.filter(x=>x.unread).map(x=>{const a=x.kind==='reply'?ACT151.reply:x.kind==='mention'?ACT151.mention:x.kind==='assign'?ACT151[x.id[0]]:null;
+ return {id:x.id+'#'+(x.mark??''),ref:x.id,kind:x.kind==='notif'?'notif':'chat',who:x.kind==='notif'?x.title:x.who,line:a?$t(a[0],a[1]):''};});};
+DEF.open=function(ref){load();const x=I.find(z=>z.id===ref);
+ if(x&&(x.kind==='reply'||x.kind==='assign')&&x.t)return openHome('ticket',x);
+ if(x&&x.kind==='assign'&&x.o)return openHome('addon',x);
+ if(x&&x.kind==='notif'&&x.n.obj)return openObj(x.n.obj,x);
+ if(x&&x.kind==='notif'&&x.n.page){markRead(x);try{save10();go(x.n.page,'staff');return;}catch(err){}}
+ if(x){S.sel=x.id;S.read=true;S.pill='all';}try{openInbox131();}catch(err){go137('inbox');}};
 page137(DEF);
 const modBefore=modulePage;modulePage=function(){if(DEF.when())return '';return modBefore.apply(this,arguments);};
 if(typeof inboxPage131==='function'){const ib=inboxPage131;inboxPage131=function(){if(DEF.when())return '';return ib.apply(this,arguments);};}
