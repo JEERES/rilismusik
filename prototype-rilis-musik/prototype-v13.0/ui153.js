@@ -41,6 +41,17 @@ const CSS=`
 .pb2.ok{background:color-mix(in srgb,var(--text) 10%,transparent)!important;color:var(--text)!important}
 .lav,.lav.big{background:color-mix(in srgb,var(--text) 9%,var(--card))!important;color:var(--text)!important;box-shadow:none!important;font-weight:500}
 .cv.big,.lav.big{box-shadow:none!important}
+/* pita bersama: merah tetap untuk terlambat/bermasalah tanpa cincin; perlu tindakan = tinta; menunggu = netral */
+.band .fn.hot.hot .dot{box-shadow:none!important}
+.band .fn.hot.act.act .dot{background:#111113!important;color:#fff!important;box-shadow:none!important}
+.band .fn.hot.wait.wait .dot{background:#fff!important;color:#111113!important;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.2)!important}
+:host([data-theme=dark]) .band .fn.hot.hot .dot{box-shadow:none!important}
+:host([data-theme=dark]) .band .fn.hot.act.act .dot{background:#fff!important;color:#111113!important;box-shadow:none!important}
+:host([data-theme=dark]) .band .fn.hot.wait.wait .dot{background:#1c1c1f!important;color:#fff!important;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3)!important}
+.band .fn.fn.fn.wait[aria-pressed=true] .dot{background:#111113!important;color:#fff!important}
+:host([data-theme=dark]) .band .fn.fn.fn.wait[aria-pressed=true] .dot{background:#fff!important;color:#111113!important}
+.band .fn.fn.fn.hot[aria-pressed=true] .dot{box-shadow:0 0 0 2px var(--card),0 0 0 4px #111113!important}
+:host([data-theme=dark]) .band .fn.fn.fn.hot[aria-pressed=true] .dot{box-shadow:0 0 0 2px var(--card),0 0 0 4px #fff!important}
 `;
 let sheet=null;
 function make(){if(sheet)return sheet;try{sheet=new CSSStyleSheet();sheet.replaceSync(CSS);}catch(e){sheet=false;}return sheet;}

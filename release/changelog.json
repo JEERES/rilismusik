@@ -66,6 +66,26 @@
           "id": "Mode Staf kini bergerak saat tampilannya berganti (pindah menu, tab, atau orang di pita tim), tidak setiap layar diperbarui: kartu muncul berurutan, nilai KPI dan total gaji menghitung naik, batang ukuran tumbuh ke nilainya, batang tren naik, foto pita tim muncul lalu angkanya, kalender muncul per minggu, dan baris keputusan bergeser keluar setelah diputuskan. Angka di kotak ringkas setiap menu dan kartu uang Dashboard juga menghitung naik saat menu dibuka. Semua gerak mati bila perangkat meminta gerak dikurangi.",
           "en": "Staff mode now moves when its view changes (switching menu, tab or a person in the team strip), not on every refresh: cards rise in order, KPI scores and pay totals count up, measure bars grow to their value, trend bars rise, team strip photos appear then their numbers, the calendar appears week by week, and decision rows slide out once decided. Summary box numbers on every menu and Dashboard money cards also count up when a menu opens. All motion is off when the device asks for reduced motion."
         }
+      },
+      {
+        "id": "dev54-ring",
+        "status": "prototype",
+        "where": {
+          "role": "super",
+          "page": "standards9",
+          "menu": {
+            "id": "Standar & Penanda",
+            "en": "Standards & Indicators"
+          }
+        },
+        "title": {
+          "id": "Titik pita tanpa cincin warna",
+          "en": "Strip dots without coloured rings"
+        },
+        "detail": {
+          "id": "Titik angka di pita ringkasan tidak lagi punya cincin berwarna. Merah tetap hanya untuk yang terlambat atau bermasalah; yang perlu tindakan memakai tinta; yang menunggu pihak lain netral. Sama di tema terang dan gelap.",
+          "en": "Number dots in the summary strip no longer have coloured rings. Red stays only for late or problem items; items needing action use ink; items waiting on others are neutral. Same in light and dark themes."
+        }
       }
     ]
   },
