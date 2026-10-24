@@ -5,10 +5,10 @@
 /* ---------- pita tim: foto menggantung di lekukan tengah tepi atas kartu "Berikutnya untukmu" ---------- */
 html:root body #app .band135.pita151{container:band151/inline-size}
 html:root body #app .band135.pita151 .top135{flex-wrap:nowrap;align-items:flex-start}
-html:root body #app .band135.pita151 .focus135,html:root body #app .band135.pita151 .donecard135{max-width:calc(50% - 176px);min-width:0}
+html:root body #app .band135.pita151 .focus135,html:root body #app .band135.pita151 .donecard135{max-width:calc(50% - 184px);min-width:0}
 html:root body #app .band135.pita151 .donecard135{flex:none;width:auto;background:var(--pt151);box-shadow:none!important}
 .bay151{position:absolute;top:0;left:50%;transform:translateX(-50%);display:flex;height:80px;z-index:1}
-html:root body #app .bay151 svg.w{width:56px!important;height:80px!important;flex:none;fill:var(--bg);margin:0 -.5px;pointer-events:none}
+html:root body #app .bay151 svg.w{width:64px!important;height:80px!important;flex:none;fill:var(--bg);margin:0 -.5px;pointer-events:none}
 html:root body #app .bay151 svg.w.r{transform:scaleX(-1)}
 html:root body #app .bay151 svg.w path{fill:var(--bg)!important;stroke:none!important}
 .bay151 .bf{position:relative;z-index:1;display:flex;gap:5.5px;margin:0 -8px;background:linear-gradient(var(--bg),var(--bg)) 8px 0/calc(100% - 16px) 100% no-repeat}

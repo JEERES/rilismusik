@@ -3182,10 +3182,10 @@ html:root:root :is(#x150,body) :is(.bank-card108,.payout-card-ui)[data-bank150=j
 /* ---------- pita tim: foto menggantung di lekukan tengah tepi atas kartu "Berikutnya untukmu" ---------- */
 html:root body #app .band135.pita151{container:band151/inline-size}
 html:root body #app .band135.pita151 .top135{flex-wrap:nowrap;align-items:flex-start}
-html:root body #app .band135.pita151 .focus135,html:root body #app .band135.pita151 .donecard135{max-width:calc(50% - 176px);min-width:0}
+html:root body #app .band135.pita151 .focus135,html:root body #app .band135.pita151 .donecard135{max-width:calc(50% - 184px);min-width:0}
 html:root body #app .band135.pita151 .donecard135{flex:none;width:auto;background:var(--pt151);box-shadow:none!important}
 .bay151{position:absolute;top:0;left:50%;transform:translateX(-50%);display:flex;height:80px;z-index:1}
-html:root body #app .bay151 svg.w{width:56px!important;height:80px!important;flex:none;fill:var(--bg);margin:0 -.5px;pointer-events:none}
+html:root body #app .bay151 svg.w{width:64px!important;height:80px!important;flex:none;fill:var(--bg);margin:0 -.5px;pointer-events:none}
 html:root body #app .bay151 svg.w.r{transform:scaleX(-1)}
 html:root body #app .bay151 svg.w path{fill:var(--bg)!important;stroke:none!important}
 .bay151 .bf{position:relative;z-index:1;display:flex;gap:5.5px;margin:0 -8px;background:linear-gradient(var(--bg),var(--bg)) 8px 0/calc(100% - 16px) 100% no-repeat}
@@ -11475,19 +11475,19 @@ const mini135=id=>id?`<span class="mini134" title="${E(pname134(id))} · ${E(rol
 /* dev.51 — pita tim (disetujui 25 Okt): foto tim menggantung di lekukan tengah tepi atas kartu "Berikutnya untukmu".
    Angka = pekerjaan terbuka orang itu; warna = status paling mendesak (merah terlambat · oranye hari ini · biru semua
    menunggu pihak lain · abu tidak mendesak); + = tidak memegang. Lingkaran putus-putus = belum dipegang siapa pun.
-   Klik foto → daftar & alur waktu hanya untuk orang itu. Bentuk lekukan diukur dari referensi (dalam 80, dinding 56). */
+   Klik foto → daftar & alur waktu hanya untuk orang itu. Bentuk lekukan diukur dari referensi (dalam 80, dinding 64 — bahu bulat, dinding tegak, kaki bulat). */
 const inP135=w=>!w135.p||(w135.p==='none'?!w.handler:w.handler===w135.p);
 function load135(all,k){const L=all.filter(w=>k==='none'?!w.handler:w.handler===k),g=new Set(L.map(w=>w.g));
   return {n:L.length,late:L.filter(w=>w.g==='late').length,tone:!L.length?'add':g.has('late')?'red':g.has('today')?'orange':[...g].every(v=>v==='wait')?'blue':'grey'};}
 function loadTxt135(l,k){if(!l.n)return k==='none'?T('Semua pekerjaan sudah ada yang memegang','Every item has an owner'):T('Tidak memegang pekerjaan terbuka','No open work');
   return T(`${l.n} pekerjaan`,`${l.n} item${l.n>1?'s':''}`)+(l.late?T(` · ${l.late} terlambat`,` · ${l.late} late`):l.tone==='orange'?T(' · jatuh tempo hari ini',' · due today'):l.tone==='blue'?T(' · menunggu pihak lain',' · waiting on others'):'');}
-const BAY135='M0,0H56V80C52,80 32.8,62 32,58L24,20C23.2,16 6,0 0,0Z';
+const BAY135='M0,0H64V80C42,80 37.3,62 32,40C26.7,18 22,0 0,0Z';
 function bay135(all){
   const plus='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>',
     person='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>';
   const one=(k,inner,cls)=>{const l=load135(all,k),nm=k==='none'?T('Belum dipegang','Unassigned'):pname134(k)+(k===me().id?T(' (kamu)',' (you)'):''),tip=`${nm} · ${loadTxt135(l,k)}`;
     return `<button type="button" class="ba151${cls?' '+cls:''}" data-w135-p="${E(k)}" aria-pressed="${w135.p===k}" title="${E(tip)}" aria-label="${E(tip)}"><span class="c">${inner}</span><span class="n ${l.tone}">${l.n||plus}</span></button>`;};
-  const wall=r=>`<svg class="w${r?' r':''}" viewBox="0 0 56 80" aria-hidden="true"><path d="${BAY135}"/></svg>`;
+  const wall=r=>`<svg class="w${r?' r':''}" viewBox="0 0 64 80" aria-hidden="true"><path d="${BAY135}"/></svg>`;
   return `<div class="bay151">${wall()}<div class="bf" role="group" aria-label="${T('Saring menurut orang','Filter by person')}">${TEAM135().map(id=>one(id,E(ini134(id)))).join('')}${one('none',person,'none')}</div>${wall(1)}</div>`;}
 
 /* ---------- tampilan ---------- */
